@@ -1,0 +1,30 @@
+{
+  "eyebrow": "SSS",
+  "title": "Sık sorulan sorular",
+  "items": [
+    {
+      "question": "Ücretli mi?",
+      "answer": "Hayır. Üyelik her zaman ücretsiz. Giderler sezon sponsorları ve bireysel destekle karşılanır; harcamalar açık raporlanır."
+    },
+    {
+      "question": "Katılımcı olmak için ne kadar bilgi gerekiyor?",
+      "answer": "Git kullanabiliyor ve en az bir dilde küçük bir program yazabiliyorsan yeterli. Projelerde her seviyeye uygun issue'lar var ve takıldığında Çarşamba akşamları eşli çalışma saati açık."
+    },
+    {
+      "question": "Usta olmak ne kadar zaman alır?",
+      "answer": "Altı hafta boyunca haftada 2–3 saat: 45 dakikalık bir ekip senkronu ve en az üç PR review'u. Sezon sonunda ekibini Demo Günü'ne taşıyan her usta, profilinde doğrulanmış bir mentorluk kaydı alır."
+    },
+    {
+      "question": "Yapay zekâ araçları kullanabilir miyim?",
+      "answer": "Evet, serbest. Tek kural: PR açıklamasında belirt ve gönderdiğin kodu açıklayabil. Anlamadığın kodu göndermek yasak, araç kullanmak değil."
+    },
+    {
+      "question": "Projelerin sahibi kim olur?",
+      "answer": "Kod herkese açık kalır ve repo Koina organizasyonunda durur; fikir sahibi kapatamaz. Lisansı fikir sahibi üç seçenekten seçer: serbest (MIT/Apache), paylaşımcı (AGPL: kodu SaaS olarak sunan değişikliklerini açmak zorunda) ya da SaaS korumalı (FSL: iki yıl boyunca rakip SaaS yasak, sonra Apache'ye döner). Hangi lisans olursa olsun commit geçmişin ve demon senin portföyündedir."
+    },
+    {
+      "question": "Türkiye dışından katılabilir miyim?",
+      "answer": "Evet. Çalışma dili Türkçe ama dokümantasyon ve kod İngilizce. Senkron saatleri Türkiye saatine göre akşamları."
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+# `v*.*.*` etiketinde Cloudflare Workers Static Assets'e deploy eder. Gerekli secret'lar
+# (Settings → Secrets and variables → Actions): CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID.
+# CLOUDFLARE_PROJECT_NAME ARTIK KULLANILMIYOR: Pages'te proje adı deploy komutunda verilirdi,
+# Workers'ta `wrangler.toml` → `name` tek kaynaktır. Şablondan site türetirken o adı
+# değiştirmeyi unutmayın, yoksa iki repo aynı Worker'a deploy eder.
+name: Release
+
+on:
+  push:
+    tags: ['v*.*.*']
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  deployments: write
+
+# RUNNER_LINUX: repo/org düzeyinde `vars.RUNNER_LINUX` tanımlıysa self-hosted runner kullanılır.
+# Tanımsızsa GitHub-hosted ubuntu-latest'e düşer.
+jobs:
+  deploy:
+    runs-on: ${{ vars.RUNNER_LINUX || 'ubuntu-latest' }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      # bun sürümü bilerek sabit. `latest` her yeni bun sürümünde self-hosted runner'da
+      # yeniden indirme tetikler; o sırada başka bir iş ikiliyi çalıştırıyorsa setup-bun
+      # üzerine yazamaz ve adım `ETXTBSY: text file is busy` ile düşer. Sabit sürüm
+      # runner önbelleğinden gelir, ikiliye hiç yazılmaz. `concurrency` grupları depo
+      # kapsamlı olduğu için farklı depoların işlerini sıraya sokamaz, çare değildir.
+      # package.json'daki `packageManager` alanıyla aynı tutulmalı.
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+
+      - run: bun install --frozen-lockfile
+
+      - name: Tip denetimi
+        run: bun run check
+
+      - name: Testler (vitest)
+        run: bun run test
+
+      - name: Format denetimi
+        run: bun run format:check
+
+      # `prebuild` wrangler.toml `[vars]`tan .env üretir; tek doğruluk kaynağı wrangler.toml'dur.
+      - name: Build
+        run: bun run build
+
+      # `pages-action` Cloudflare tarafından arşivlendi; desteklenen yol `wrangler-action`'dır.
+      # Statik asset istekleri Workers'ta da Pages'teki gibi ücretsiz ve sınırsız; `dist/` yolu
+      # ve proje adı komutta DEĞİL `wrangler.toml` içinde tanımlı olduğu için komut çıplak.
+      - name: Cloudflare Workers'a dağıt
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,35 @@
+---
+interface Props {
+  label: string;
+  name: string;
+  type?: string;
+  required?: boolean;
+  textarea?: boolean;
+  /**
+   * Gateway sözleşmesinin alt sınırını TARAYICIYA taşır (`name` 2, `message` 10 karakter —
+   * bkz. nafru-form/src/http/validation.ts). Sunucu tarafı zaten reddediyor; burada
+   * bildirilmezse kullanıcı `INVALID_SUBMISSION` sonrası ayrımsız bir hata mesajı görür.
+   */
+  minlength?: number;
+}
+const { label, name, type = 'text', required = false, textarea = false, minlength } = Astro.props;
+const classes =
+  'w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 focus:outline-none dark:border-gray-700 dark:bg-gray-900';
+---
+
+<label class="block">
+  <span class="mb-1.5 block text-sm font-medium">{label}</span>
+  {
+    textarea ? (
+      <textarea {name} {required} {minlength} rows="4" class={classes} />
+    ) : (
+      <input
+        type={type as astroHTML.JSX.HTMLInputTypeAttribute}
+        {name}
+        {required}
+        {minlength}
+        class={classes}
+      />
+    )
+  }
+</label>

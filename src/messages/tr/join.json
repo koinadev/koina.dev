@@ -1,0 +1,13 @@
+{
+  "title": "Sezon 1'e başvur",
+  "description": "Başvurular 20 Aralık 2026'ya kadar açık. Eşleşmeler 2 Ocak'ta, kickoff 4 Ocak'ta.",
+  "steps": [
+    { "name": "Discord'a katıl", "text": "Topluluğu tanı, #tanış kanalında kendini anlat. Başvurmadan önce bir yayını izlemen iyi olur." },
+    { "name": "Formu doldur", "text": "Rolünü, deneyimini, haftalık ayırabileceğin saati ve GitHub profilini yaz." },
+    { "name": "Kısa görüşme", "text": "Ustalarla 20 dakikalık bir tanışma; katılımcılar için grup tanışması." },
+    { "name": "Eşleşme", "text": "2 Ocak'ta ekibin ve projen duyurulur, proje kanalın açılır." }
+  ],
+  "formTitle": "Başvuru formu",
+  "formHint": "Mesaj alanına şunları yaz: başvurduğun rol (Katılımcı, Usta ya da Fikir sahibi), kısaca deneyimin, haftada ayırabileceğin saat ve GitHub profilin.",
+  "discord": { "label": "Discord'a katıl", "href": "https://discord.gg/koinadev" }
+}

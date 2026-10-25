@@ -1,0 +1,33 @@
+---
+import Section from '../ui/Section.astro';
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import Reveal from '../ui/Reveal.astro';
+import { getMessages } from '../../messages';
+import type { Locale } from '../../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const { team } = getMessages(locale);
+---
+
+<Section id="team">
+  <Container>
+    <SectionHeading eyebrow={team.eyebrow} title={team.title} />
+    <div class="grid grid-cols-2 gap-8 sm:grid-cols-4">
+      {
+        team.members.map((member, i) => (
+          <Reveal delay={i * 0.08} class="text-center">
+            <div class="mx-auto flex size-20 items-center justify-center rounded-full bg-brand-100 text-xl font-bold text-brand-700 dark:bg-brand-950 dark:text-brand-300">
+              {member.initials}
+            </div>
+            <p class="mt-4 font-semibold">{member.name}</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400">{member.role}</p>
+          </Reveal>
+        ))
+      }
+    </div>
+  </Container>
+</Section>

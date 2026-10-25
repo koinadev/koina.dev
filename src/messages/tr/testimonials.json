@@ -1,0 +1,27 @@
+{
+  "eyebrow": "Yorumlar",
+  "title": "Kullananlar ne diyor?",
+  "items": [
+    {
+      "quote": "İki günde kampanya sayfamızı yayına aldık. Lighthouse 100, ekip mutlu.",
+      "name": "Ayşe Yılmaz",
+      "role": "Pazarlama Direktörü, Acme"
+    },
+    {
+      "quote": "Özellik çıkarma sistemi dahiyane — kullanmadığımız her şeyi tek komutla attık.",
+      "name": "Mehmet Kaya",
+      "role": "CTO, Globex"
+    },
+    {
+      "quote": "Çok dilli kurulum için ekstra hiçbir şey yapmadık, kutudan çıktı.",
+      "name": "Elif Demir",
+      "role": "Ürün Yöneticisi, Initech"
+    },
+    {
+      "quote": "Animasyonlar siteye hayat verdi ama performanstan hiç ödün vermedik.",
+      "name": "Can Öztürk",
+      "role": "Kurucu, Stark Labs"
+    }
+  ],
+  "slider": { "prev": "Önceki", "next": "Sonraki" }
+}

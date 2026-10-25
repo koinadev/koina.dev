@@ -1,0 +1,135 @@
+---
+import Container from '../ui/Container.astro';
+import Button from '../ui/Button.astro';
+import { getMessages } from '../../messages';
+import type { Locale } from '../../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const { hero } = getMessages(locale);
+
+// Bir sezonun katkı ızgarası: 26 sütun (gün grupları) × 7 satır. Değerler deterministik —
+// her build aynı resmi çizer. 0 boş, 1–3 katılımcı yoğunluğu, 4 usta review'u.
+// Katılımcı katkısı sezon ilerledikçe artar; usta review'ları her sütuna seyrek serpilir.
+const COLS = 26;
+const ROWS = 7;
+let seed = 20270104;
+const rand = () => {
+  seed = (seed * 1103515245 + 12345) & 0x7fffffff;
+  return seed / 0x7fffffff;
+};
+const cells: number[] = [];
+for (let c = 0; c < COLS; c++) {
+  for (let r = 0; r < ROWS; r++) {
+    const progress = c / (COLS - 1);
+    const weekend = r >= 5 ? 0.45 : 1;
+    const heat = (0.25 + progress * 0.85) * weekend * rand();
+    let level = heat > 0.62 ? 3 : heat > 0.36 ? 2 : heat > 0.16 ? 1 : 0;
+    if (level > 0 && rand() > 0.86) level = 4;
+    cells.push(level);
+  }
+}
+---
+
+<section class="koina-hero relative overflow-hidden pt-14 pb-16 sm:pt-20 sm:pb-24">
+  <Container>
+    <p class="inline-flex items-center gap-2 rounded-md bg-sprout px-3 py-1.5 text-sm font-semibold text-pine">
+      {hero.eyebrow}
+    </p>
+    <h1
+      class="font-display mt-6 max-w-[14ch] text-[clamp(3rem,9vw,7.25rem)] leading-[0.92] font-extrabold tracking-[-0.045em] text-balance"
+    >
+      {hero.title}
+    </h1>
+    <div class="mt-8 grid gap-8 lg:grid-cols-[minmax(0,38rem)_1fr] lg:items-end">
+      <p class="text-lg leading-relaxed text-gray-700 sm:text-xl dark:text-gray-300">{hero.description}</p>
+      <div class="flex flex-wrap gap-3 lg:justify-end">
+        <Button href={hero.primaryCta.href} size="lg" analytics={{ event: 'hero_cta', cta: 'primary' }}>
+          {hero.primaryCta.label}
+        </Button>
+        <Button
+          href={hero.secondaryCta.href}
+          size="lg"
+          variant="secondary"
+          analytics={{ event: 'hero_cta', cta: 'secondary' }}
+        >
+          {hero.secondaryCta.label}
+        </Button>
+      </div>
+    </div>
+
+    <figure class="mt-14">
+      <div class="contrib" style={`--cols:${COLS}`} role="img" aria-label={hero.legend.caption}>
+        {cells.map((level, i) => <i data-l={level} style={`--d:${Math.floor(i / ROWS) * 38 + (i % ROWS) * 9}ms`} />)}
+      </div>
+      <figcaption class="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-600 dark:text-gray-400">
+        <span class="inline-flex items-center gap-2"
+          ><i class="swatch bg-brand-600 dark:bg-brand-400"></i>{hero.legend.learner}</span
+        >
+        <span class="inline-flex items-center gap-2"><i class="swatch bg-pollen-400"></i>{hero.legend.mentor}</span>
+        <span class="basis-full sm:basis-auto sm:ml-auto">{hero.legend.caption}</span>
+      </figcaption>
+    </figure>
+  </Container>
+</section>
+
+<style>
+  .contrib {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    grid-template-rows: repeat(7, auto);
+    grid-auto-flow: column;
+    gap: clamp(3px, 0.55vw, 7px);
+  }
+  .contrib i {
+    aspect-ratio: 1;
+    border-radius: 22%;
+    background: var(--cell, var(--color-gray-200));
+    animation: cell-in 520ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: var(--d);
+  }
+  :global(.dark) .contrib i {
+    background: var(--cell, var(--color-gray-900));
+  }
+  .contrib i[data-l='1'] {
+    --cell: var(--color-brand-200);
+  }
+  .contrib i[data-l='2'] {
+    --cell: var(--color-brand-400);
+  }
+  .contrib i[data-l='3'] {
+    --cell: var(--color-brand-600);
+  }
+  .contrib i[data-l='4'] {
+    --cell: var(--color-pollen-400);
+  }
+  :global(.dark) .contrib i[data-l='1'] {
+    --cell: var(--color-brand-900);
+  }
+  :global(.dark) .contrib i[data-l='2'] {
+    --cell: var(--color-brand-700);
+  }
+  :global(.dark) .contrib i[data-l='3'] {
+    --cell: var(--color-brand-400);
+  }
+  .swatch {
+    display: inline-block;
+    width: 0.85rem;
+    height: 0.85rem;
+    border-radius: 22%;
+  }
+  /* Sayfanın tek yüklenme anı: hücreler soldan sağa, sezonun akışı yönünde dolar. */
+  @keyframes cell-in {
+    from {
+      background: var(--color-gray-200);
+      transform: scale(0.6);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .contrib i {
+      animation: none;
+    }
+  }
+</style>

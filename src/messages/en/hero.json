@@ -1,0 +1,9 @@
+{
+  "eyebrow": "Season 1: January 4, 2027",
+  "title": "Meet in the same repo.",
+  "description": "Koina brings experienced developers and people early in their careers together on open source projects. In six weeks you ship a project together: participants get real reviews, mentors prove their mentorship, and both meet the people they actually built with.",
+  "primaryCta": { "label": "Apply for Season 1", "href": "/en/join/" },
+  "secondaryCta": { "label": "How it works", "href": "#how" },
+  "legend": { "learner": "Participant commits", "mentor": "Mentor reviews", "caption": "One season's contribution grid: both sides in the same project, in the same weeks." },
+  "image": { "src": "/og-default.png", "alt": "" }
+}

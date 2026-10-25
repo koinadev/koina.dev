@@ -1,0 +1,141 @@
+---
+import Container from '../ui/Container.astro';
+import Button from '../ui/Button.astro';
+import Badge from '../ui/Badge.astro';
+import { getMessages } from '../../messages';
+import type { Locale } from '../../i18n/utils';
+
+interface Props {
+  locale: Locale;
+  variant?: 'centered' | 'split' | 'media';
+}
+const { locale, variant = 'centered' } = Astro.props;
+const { hero } = getMessages(locale);
+---
+
+<section class="relative overflow-hidden py-20 sm:py-28">
+  <div
+    class="absolute inset-0 -z-10 bg-gradient-to-b from-brand-50 to-transparent dark:from-brand-950/40"
+    aria-hidden="true"
+  >
+  </div>
+  {
+    variant === 'centered' && (
+      <Container class="text-center">
+        <div data-reveal>
+          <Badge>{hero.eyebrow}</Badge>
+        </div>
+        <h1 class="mx-auto mt-6 max-w-3xl text-4xl font-bold tracking-tight sm:text-6xl" data-split-title>
+          {hero.title}
+        </h1>
+        <p
+          class="mx-auto mt-6 max-w-2xl text-lg text-gray-600 dark:text-gray-400"
+          data-reveal
+          data-reveal-delay="0.2"
+        >
+          {hero.description}
+        </p>
+        <div class="mt-10 flex justify-center gap-4" data-reveal data-reveal-delay="0.3">
+          <Button href={hero.primaryCta.href} size="lg" analytics={{ event: 'hero_cta', cta: 'primary' }}>
+            {hero.primaryCta.label}
+          </Button>
+          <Button
+            href={hero.secondaryCta.href}
+            size="lg"
+            variant="secondary"
+            analytics={{ event: 'hero_cta', cta: 'secondary' }}
+          >
+            {hero.secondaryCta.label}
+          </Button>
+        </div>
+        {/* `width`/`height` ŞART: görsel dış kaynaktan geliyor ve boyutsuz bir `<img>` yüklenene
+            kadar SIFIR yükseklikli bir kutu. Sıcak cache'te ölçülen CLS 0 çıkar, soğuk yüklemede
+            altındaki her şey aşağı itilir. Ölçüler asset'in gerçek boyutu (1200x700); tarayıcı
+            oranı bunlardan hesaplar. `fetchpriority` LCP adayını kuyruğun önüne alır. */}
+        <img
+          src={hero.image.src}
+          alt={hero.image.alt}
+          width="1200"
+          height="700"
+          loading="eager"
+          fetchpriority="high"
+          class="mx-auto mt-16 rounded-2xl border border-gray-200 shadow-2xl dark:border-gray-800"
+          data-reveal
+          data-reveal-delay="0.4"
+        />
+      </Container>
+    )
+  }
+  {
+    variant === 'split' && (
+      <Container class="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <div data-reveal>
+            <Badge>{hero.eyebrow}</Badge>
+          </div>
+          <h1 class="mt-6 text-4xl font-bold tracking-tight sm:text-5xl" data-split-title>
+            {hero.title}
+          </h1>
+          <p class="mt-6 text-lg text-gray-600 dark:text-gray-400" data-reveal>
+            {hero.description}
+          </p>
+          <div class="mt-10 flex gap-4" data-reveal data-reveal-delay="0.2">
+            <Button href={hero.primaryCta.href} size="lg" analytics={{ event: 'hero_cta', cta: 'primary' }}>
+              {hero.primaryCta.label}
+            </Button>
+            <Button
+              href={hero.secondaryCta.href}
+              size="lg"
+              variant="secondary"
+              analytics={{ event: 'hero_cta', cta: 'secondary' }}
+            >
+              {hero.secondaryCta.label}
+            </Button>
+          </div>
+        </div>
+        <img
+          src={hero.image.src}
+          alt={hero.image.alt}
+          width="1200"
+          height="700"
+          loading="eager"
+          fetchpriority="high"
+          class="rounded-2xl border border-gray-200 shadow-xl dark:border-gray-800"
+          data-reveal
+          data-reveal-delay="0.3"
+        />
+      </Container>
+    )
+  }
+  {
+    variant === 'media' && (
+      <div class="relative">
+        {/* Dekoratif zemin: `absolute` olduğu için düzeni İTMEZ, bu yüzden boyut attribute'una
+            gerek yok; yine de ilk boyanın parçası olduğundan önceliği yükseltiliyor. */}
+        <img
+          src={hero.image.src}
+          alt=""
+          aria-hidden="true"
+          fetchpriority="high"
+          class="absolute inset-0 -z-10 size-full object-cover opacity-20"
+        />
+        <Container class="py-16 text-center">
+          <div data-reveal>
+            <Badge>{hero.eyebrow}</Badge>
+          </div>
+          <h1 class="mx-auto mt-6 max-w-3xl text-4xl font-bold tracking-tight sm:text-6xl" data-split-title>
+            {hero.title}
+          </h1>
+          <p class="mx-auto mt-6 max-w-2xl text-lg text-gray-600 dark:text-gray-400" data-reveal>
+            {hero.description}
+          </p>
+          <div class="mt-10 flex justify-center gap-4" data-reveal data-reveal-delay="0.2">
+            <Button href={hero.primaryCta.href} size="lg" analytics={{ event: 'hero_cta', cta: 'primary' }}>
+              {hero.primaryCta.label}
+            </Button>
+          </div>
+        </Container>
+      </div>
+    )
+  }
+</section>

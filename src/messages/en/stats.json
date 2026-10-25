@@ -1,0 +1,8 @@
+{
+  "items": [
+    { "value": 4, "suffix": "", "label": "projects in Season 1" },
+    { "value": 6, "suffix": " weeks", "label": "length of a season" },
+    { "value": 2, "suffix": " hours", "label": "a mentor's weekly commitment" },
+    { "value": 0, "suffix": " €", "label": "membership fee, always" }
+  ]
+}

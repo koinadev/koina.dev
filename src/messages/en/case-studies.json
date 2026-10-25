@@ -1,0 +1,9 @@
+{
+  "eyebrow": "Idea pool",
+  "title": "Some of the ideas being voted on for Season 1",
+  "items": [
+    { "title": "Open source job post parser", "summary": "A small service and dataset that extracts skills, salary range and remote policy from Turkish job posts.", "metric": "v0.1", "metricLabel": "target: 6 weeks", "tags": ["Python", "NLP", "Data"] },
+    { "title": "PR review assistant", "summary": "A GitHub Action that pre-reviews a PR against team rules, with rules learned from mentor comments.", "metric": "v0.1", "metricLabel": "target: 6 weeks", "tags": ["TypeScript", "GitHub Actions", "LLM"] },
+    { "title": "Community event calendar", "summary": "An open directory of software events in Türkiye in one calendar, with ICS and RSS feeds.", "metric": "v0.1", "metricLabel": "target: 6 weeks", "tags": ["Astro", "Scraping", "Open data"] }
+  ]
+}

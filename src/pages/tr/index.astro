@@ -1,0 +1,37 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import KoinaHero from '@/components/sections/KoinaHero.astro';
+import Roles from '@/components/sections/Roles.astro';
+import Season from '@/components/sections/Season.astro';
+import Stats from '@/components/sections/Stats.astro';
+import About from '@/components/sections/About.astro';
+import Rhythm from '@/components/sections/Rhythm.astro';
+import CaseStudies from '@/components/sections/CaseStudies.astro'; /* @feature:case-studies */
+import Faq from '@/components/sections/Faq.astro';
+import Cta from '@/components/sections/Cta.astro';
+import Newsletter from '@/components/sections/Newsletter.astro'; /* @feature:newsletter */
+import { useTranslations } from '@/i18n/utils';
+import { alternatesFor } from '@/i18n/routes';
+
+// Koina ana sayfası. Şablonun Team, Testimonials ve LogoCloud bölümleri bilerek yok: gerçek
+// ustalar, gerçek yorumlar ve gerçek sponsorlar gelene kadar uydurma içerik göstermiyoruz.
+const t = useTranslations('tr');
+const alternates = alternatesFor('home');
+---
+
+<BaseLayout title={t('site.title')} description={t('site.description')} locale="tr" {alternates} route="home">
+  <KoinaHero locale="tr" />
+  <Stats locale="tr" />
+  <Roles locale="tr" />
+  <Season locale="tr" />
+  <About locale="tr" />
+  <Rhythm locale="tr" />
+  <!-- @feature:case-studies -->
+  <CaseStudies locale="tr" />
+  <!-- @/feature:case-studies -->
+  <Faq locale="tr" />
+  <Cta locale="tr" />
+  <!-- @feature:newsletter -->
+  <Newsletter locale="tr" />
+  <!-- @/feature:newsletter -->
+</BaseLayout>

@@ -1,0 +1,99 @@
+---
+import Section from '../ui/Section.astro';
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import Input from '../ui/Input.astro';
+import Button from '../ui/Button.astro';
+import { getMessages } from '../../messages';
+import { siteConfig } from '../../config/site.config';
+import type { Locale } from '../../i18n/utils';
+
+interface Props {
+  locale: Locale;
+  // Ana sayfada bir BÖLÜM (`h2`), `/iletisim` sayfasında sayfanın TEK başlığı (`h1`).
+  // Sabitlenseydi ya iletişim sayfası `<h1>`siz kalırdı ya da ana sayfada ikinci bir `<h1>` olurdu.
+  headingLevel?: 'h1' | 'h2';
+  // Başvuru sayfası aynı formu kendi başlığıyla kullanır.
+  title?: string;
+  description?: string;
+}
+const { locale, headingLevel = 'h2' } = Astro.props;
+const { contact } = getMessages(locale);
+---
+
+<Section id="contact" class="bg-gray-50 dark:bg-gray-900/40">
+  <Container class="max-w-2xl">
+    <SectionHeading
+      as={headingLevel}
+      eyebrow={Astro.props.title ? undefined : contact.eyebrow}
+      title={Astro.props.title ?? contact.title}
+      description={Astro.props.description ?? contact.description}
+    />
+    <!--
+      Provider/endpoint formun data özniteliklerinden okunur; `submitContactForm` alanları custom
+      Worker, Formspark veya Web3Forms sözleşmesine dönüştürür. `data-astro-reload` şart:
+      `<ClientRouter />` submit olaylarını da yakalayıp
+      istemci-taraflı gezinme başlatıyor, fetch ile birlikte gönderim çift tetikleniyordu
+      (network log'da ölçüldü). Bu attribute ClientRouter'ı devre dışı bırakır, preventDefault
+      native gönderimi durdurur.
+    -->
+    <form
+      data-contact-form
+      data-provider={siteConfig.forms.provider}
+      data-endpoint={siteConfig.forms.endpoint}
+      data-access-key={siteConfig.forms.accessKey}
+      data-astro-reload
+      data-labels={JSON.stringify({
+        success: contact.form.success,
+        error: contact.form.error,
+        sending: contact.form.sending,
+        submit: contact.form.submit,
+      })}
+      class="space-y-5"
+      data-reveal
+    >
+      <Input label={contact.form.name} name="name" required minlength={2} />
+      <Input label={contact.form.email} name="email" type="email" required />
+      <Input label={contact.form.message} name="message" textarea required minlength={10} />
+      <!-- Ortak honeypot; provider adaptörü custom için `website`, Formspark için `_gotcha` yollar.
+           Gateway BOŞ olmasını şart koşar: dolu gelirse `INVALID_SUBMISSION`. -->
+      <input
+        type="text"
+        name="website"
+        value=""
+        tabindex="-1"
+        autocomplete="off"
+        aria-hidden="true"
+        class="hidden"
+      />
+      <div
+        class="cf-turnstile"
+        data-sitekey={siteConfig.turnstileSiteKey}
+        data-action={siteConfig.forms.turnstileAction}
+      >
+      </div>
+      <Button type="submit" size="lg" class="w-full">{contact.form.submit}</Button>
+      <!-- Dinamik gelen durum mesajı ekran okuyucuya duyurulmalı. -->
+      <p data-form-status hidden role="status" aria-live="polite" class="rounded-lg px-4 py-3 text-sm"></p>
+    </form>
+  </Container>
+</Section>
+<!--
+  `onload`/`onerror` satır içi: api.js'in ne zaman hazır olduğunu bilmenin tek deterministik yolu
+  (modül değerlendirmesi + `astro:page-load` ikisi de api.js'ten önce koşarsa yeniden deneme
+  olmuyordu — ölçüldü). Olay `document`e gönderilir çünkü dinleyiciler orada; yarış yok, hangisi
+  önce koşarsa diğerini o tetikler.
+-->
+<script
+  is:inline
+  src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+  async
+  defer
+  onload="document.dispatchEvent(new Event('nafru:turnstile-ready'))"
+  onerror="document.dispatchEvent(new Event('nafru:turnstile-error'))"></script>
+<script>
+  // GSAP'te olduğu gibi (bkz. lib/animations.ts) mantık ayrı modülde; burada yalnızca
+  // dinamik import + Astro'nun sayfa yaşam döngüsüne bağlama var.
+  const { initContactForm } = await import('../../lib/contact-form');
+  initContactForm();
+</script>

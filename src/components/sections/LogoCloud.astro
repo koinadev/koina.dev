@@ -1,0 +1,33 @@
+---
+import { getMessages } from '../../messages';
+import type { Locale } from '../../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const { logos } = getMessages(locale);
+const doubled = [...logos.items, ...logos.items];
+---
+
+<section class="border-y border-gray-100 py-10 dark:border-gray-900">
+  <p class="mb-6 text-center text-sm font-medium text-gray-600 dark:text-gray-400">{logos.title}</p>
+  <div
+    class="overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]"
+  >
+    <div class="flex w-max animate-marquee gap-16 motion-reduce:animate-none" aria-hidden="true">
+      {
+        doubled.map((name) => (
+          <span class="text-xl font-bold whitespace-nowrap text-gray-400 dark:text-gray-600">{name}</span>
+        ))
+      }
+    </div>
+  </div>
+  <!--
+    Kayan şerit aria-hidden olduğu için ekran okuyucular firma adlarını duymaz. Tekrarsız listeyi
+    sr-only olarak veriyoruz: görsel olarak gizli, erişilebilirlik ağacında mevcut.
+  -->
+  <ul class="sr-only">
+    {logos.items.map((name) => <li>{name}</li>)}
+  </ul>
+</section>

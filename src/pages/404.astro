@@ -1,0 +1,25 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { defaultLocale, useTranslations } from '@/i18n/utils';
+
+// 404 dil öneki taşımayan bir yol; BaseLayout'un zorunlu `locale` prop'u için varsayılan dil
+// kullanılıyor. Ziyaretçinin gerçek tercihi kök yönlendirmede izleniyor, burada bilinmiyor.
+const t = useTranslations(defaultLocale);
+---
+
+<BaseLayout
+  title={`404 — ${t('notFound.title')}`}
+  description={t('notFound.title')}
+  locale={defaultLocale}
+  noindex
+>
+  <div class="flex min-h-[60vh] flex-col items-center justify-center gap-6 text-center">
+    <p class="text-7xl font-bold text-brand-600">404</p>
+    <h1 class="text-2xl font-semibold">{t('notFound.title')}</h1>
+    <!-- `data-astro-reload` şart: kök `/` yönlendirme mantığı `is:inline` script'te yaşıyor,
+         tam sayfa yükleme swap sonrası çalışacağını garantiler. -->
+    <a href="/" data-astro-reload class="text-brand-600 underline hover:text-brand-700"
+      >{t('notFound.back')}</a
+    >
+  </div>
+</BaseLayout>

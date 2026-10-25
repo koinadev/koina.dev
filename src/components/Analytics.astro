@@ -1,0 +1,83 @@
+---
+import { siteConfig } from '../config/site.config';
+const { analytics } = siteConfig;
+---
+{analytics.provider !== 'none' && (
+  <script is:inline define:vars={{ analytics }}>
+    const injectAnalytics = () => {
+      // Bayrak DOM'da değil `window`'da: view transition `<head>`'i değiştirir, DOM sorgusuna
+      // dayanan bir guard her geçişte "enjekte edilmemiş" derdi. `window` swap'tan sağ çıkar.
+      if (window.__analyticsInjected) return;
+      window.__analyticsInjected = true;
+      if (analytics.provider === 'plausible') {
+        // Plausible'ın güncel (Ekim 2025+) snippet sözleşmesi: siteye özel `pa-…js` URL'i,
+        // olay kuyruğu VE `plausible.init()`. Script yüklenmeden önceki olaylar `.q` içinde
+        // birikir; init seçenekleri `.o` içinde tutulur. Panel snippet'iyle aynı sırayı koruyoruz.
+        window.plausible =
+          window.plausible ||
+          function () {
+            (window.plausible.q = window.plausible.q || []).push(arguments);
+          };
+        window.plausible.init =
+          window.plausible.init ||
+          function (options) {
+            window.plausible.o = options || {};
+          };
+        window.plausible.init();
+        const s = document.createElement('script');
+        s.async = true;
+        s.setAttribute('data-analytics-script', '');
+        s.src = analytics.plausibleScriptUrl;
+        document.head.appendChild(s);
+      } else if (analytics.provider === 'ga4') {
+        // Aşağıdaki `config` oturum başına tek page_view gönderir; istemci-taraflı gezinmeler
+        // GA4'ün "Gelişmiş Ölçüm" ayarıyla sayılır (varsayılan açık). Kapatılırsa bu şablon
+        // oturum başına tek page_view kaydeder — Plausible'daki pushState kancasından farklı.
+        // GA4'te ayrı bir kuyruk stub'ına gerek YOK: `dataLayer` zaten kuyruğun kendisidir ve
+        // aşağıda script yüklenmeden önce tanımlanıyor.
+        const s = document.createElement('script');
+        s.async = true;
+        s.setAttribute('data-analytics-script', '');
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=' + analytics.ga4Id;
+        document.head.appendChild(s);
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () { window.dataLayer.push(arguments); };
+        window.gtag('js', new Date());
+        window.gtag('config', analytics.ga4Id);
+      }
+    };
+    const injectIfConsented = () => {
+      if (localStorage.getItem('cookie-consent') === 'granted') injectAnalytics();
+    };
+
+    // Astro geçişte `<head>`'i değiştirir ve enjekte edilen script elemanı silinir, ama bu
+    // çalışmış script'i geri almaz — Plausible/GA4 pushState'i zaten kancalamıştır ve
+    // istemci-taraflı gezinmeleri kendi sayar. Ölçüldü: eleman silinip yeniden enjeksiyon
+    // engellenmezse her geçiş bir pageview daha ekliyor (1, +2, +3, ... sınırsız şişiyor).
+    // Enjeksiyon bu yüzden oturum başına BİR KEZ (yukarıdaki `window` bayrağı); onay geri
+    // alma bu yapıda oturum içinde mümkün değil, tam sayfa yenileme gerekir.
+    if (!window.__analyticsListenersBound) {
+      window.__analyticsListenersBound = true;
+      document.addEventListener('astro:page-load', injectIfConsented);
+      window.addEventListener('consent:granted', injectAnalytics);
+    }
+    injectIfConsented();
+  </script>
+)}
+{/*
+  OLAY katmanı ayrı bir modülde: yukarıdaki `is:inline` script `define:vars` kullandığı için
+  import EDEMEZ (bir `is:inline` script bundle'a girmez, dolayısıyla modül çözümlemesi yoktur).
+  Dinleyici onaydan BAĞIMSIZ bağlanır — onay kontrolü `track()` içinde, olayın atıldığı anda
+  yapılır; böylece ziyaretçi "Kabul Et"e bastıktan sonra sayfayı yenilemeden yaptığı tıklamalar
+  da sayılır. (JSX yorumu HTML yorumuna tercih edildi: HTML yorumu çıktıda `<head>`de kalırdı.)
+
+  Bu script BİLEREK koşulsuz. Astro hoist edilen `<script>` etiketlerini STATİK olarak toplar —
+  çevresine `{provider !== 'none' && ...}` yazmak çıktıyı DEĞİŞTİRMEZ, yalnızca gate varmış
+  izlenimi verirdi (ölçüldü: koşul altındayken de `<script src=".../Analytics...js">` basılıyordu).
+  Kapalıyken maliyet zaten yok sayılır: `track()` sağlayıcı global'i olmadan hemen dönüyor ve
+  `src/lib/analytics.ts` chunk'ı iletişim formu tarafından nasılsa yükleniyor.
+*/}
+<script>
+  const { initAnalytics } = await import('../lib/analytics');
+  initAnalytics();
+</script>

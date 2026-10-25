@@ -1,0 +1,13 @@
+{
+  "title": "Weekly rhythm",
+  "description": "The same thing happens on the same day every week. Add it to your calendar once.",
+  "columns": { "day": "Day", "time": "Time (TRT)", "what": "What", "where": "Where" },
+  "items": [
+    { "day": "Monday", "time": "09:00", "what": "Koina Weekly newsletter", "where": "Email", "live": false },
+    { "day": "Tuesday", "time": "21:00", "what": "Code Meetup: live coding with one team", "where": "YouTube, Twitch", "live": true },
+    { "day": "Wednesday", "time": "20:00", "what": "Pairing hour, open to anyone who's stuck", "where": "Discord", "live": false },
+    { "day": "Thursday", "time": "21:00", "what": "Open Review: real PRs reviewed live", "where": "YouTube, Twitch", "live": true },
+    { "day": "Friday", "time": "18:00", "what": "Demo Friday, 3rd week of the month", "where": "Discord stage", "live": true },
+    { "day": "Saturday", "time": "11:00", "what": "Koina Workshop, 1st week of the month", "where": "YouTube", "live": true }
+  ]
+}

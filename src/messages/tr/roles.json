@@ -1,0 +1,11 @@
+{
+  "title": "Üç rol, tek repo",
+  "description": "Her projede bir usta, üç ila beş katılımcı ve çoğu zaman bir fikir sahibi var. Kim ne veriyor, ne alıyor, açıkça yazıyoruz.",
+  "giveLabel": "Verdiğin",
+  "getLabel": "Aldığın",
+  "items": [
+    { "key": "learner", "name": "Katılımcı", "who": "Öğrenci, bootcamp mezunu, kariyer değiştiren; 0–2 yıl deneyim.", "give": "Haftada 5–8 saat üretim, en az bir PR ya da review.", "get": ["Gerçek bir projede commit geçmişi", "Her PR'a usta review'u", "Demo Günü kaydı ve referans"] },
+    { "key": "mentor", "name": "Usta", "who": "5+ yıl deneyimli geliştirici.", "give": "Haftada 2–3 saat: 45 dk senkron, en az 3 PR review.", "get": ["Doğrulanabilir mentorluk kaydı", "LinkedIn ve yayınlarda görünürlük", "İyi insanları erken tanımak"] },
+    { "key": "founder", "name": "Fikir sahibi", "who": "Girişimci, ürün insanı, aklında problem olan herkes.", "give": "Net bir problem tanımı ve haftalık ürün senkronu.", "get": ["Açık kaynak bir MVP", "Birlikte çalışılmış bir ekip", "Üstüne ürün kurma özgürlüğü"] }
+  ]
+}

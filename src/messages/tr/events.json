@@ -1,0 +1,18 @@
+{
+  "title": "Etkinlikler ve canlı yayınlar",
+  "description": "Koina'da iş açıkta yapılır. Yayınlarda gerçek projeleri, gerçek PR'ları ve gerçek hataları görürsün.",
+  "formatsTitle": "Yayın formatları",
+  "formats": [
+    { "name": "Kodla Buluşma", "length": "90 dk", "text": "Bir ekip ustasıyla birlikte bir issue'yu canlı kapatıyor. Sohbetten gelen sorular yayının parçası." },
+    { "name": "Açık Review", "length": "60 dk", "text": "Bir usta, topluluk projelerinden gerçek PR'ları canlı inceliyor. Review kültürünü öğrenmenin en hızlı yolu." },
+    { "name": "Koina Atölye", "length": "120 dk", "text": "Ayda bir tematik eğitim: test yazmak, yapay zekâyla güvenli kod, CI/CD." },
+    { "name": "Usta AMA", "length": "45 dk", "text": "Sektörden kıdemli bir isimle kariyer, işe alım ve deneyim üzerine açık soru-cevap." },
+    { "name": "Demo Günü", "length": "150 dk", "text": "Sezon sonunda her ekip v0.1'ini canlı gösteriyor." }
+  ],
+  "follow": "Yayın başladığında haber almak için",
+  "links": [
+    { "label": "YouTube", "href": "https://youtube.com/@koinadev" },
+    { "label": "Twitch", "href": "https://twitch.tv/koinadev" },
+    { "label": "Discord", "href": "https://discord.gg/koinadev" }
+  ]
+}

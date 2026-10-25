@@ -1,0 +1,12 @@
+{
+  "title": "Bir sezon, altı hafta",
+  "description": "Her sezon aynı ritimle akar. Sonunda her proje bir sürüm, her ekip bir demo çıkarır.",
+  "steps": [
+    { "week": "Hafta 0", "name": "Eşleşme", "text": "Projeler seçilir, ekipler kurulur, kickoff yayını." },
+    { "week": "Hafta 1", "name": "Keşif", "text": "Problem tanımı, mimari karar kaydı, repo iskeleti." },
+    { "week": "Hafta 2", "name": "Temel", "text": "CI, test altyapısı ve ilk dikey dilim." },
+    { "week": "Hafta 3–4", "name": "İnşa", "text": "Özellikler, ara demo yayını, yoğun review." },
+    { "week": "Hafta 5", "name": "Cila", "text": "Dokümantasyon, güvenlik kontrolü, sürüm adayı." },
+    { "week": "Hafta 6", "name": "Demo Günü", "text": "v0.1 sürümü, canlı demo, retro ve portföy kartları." }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "include": [".astro/types.d.ts", "src/**/*", "scripts/**/*", "features.manifest.ts"],
+  "exclude": ["dist", "node_modules"],
+  "compilerOptions": {
+    // `@/*` alias'ı SAYFALAR için var. i18n çıkarıldığında `src/pages/tr/**` bir seviye yukarı,
+    // `src/pages/`e taşınıyor (features.manifest.ts → moves); göreli importlar o taşımada
+    // sessizce kırılırdı. Alias derinlikten bağımsız olduğu için sayfalar taşınabilir kalıyor.
+    // Komponentler/lib göreli import kullanmaya devam ediyor — onlar taşınmıyor.
+    "baseUrl": ".",
+    "paths": { "@/*": ["src/*"] }
+  }
+}

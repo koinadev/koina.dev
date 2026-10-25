@@ -1,0 +1,45 @@
+---
+import Section from '../ui/Section.astro';
+import Container from '../ui/Container.astro';
+import Button from '../ui/Button.astro';
+import { getMessages } from '../../messages';
+import { siteConfig } from '../../config/site.config';
+import type { Locale } from '../../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const { newsletter } = getMessages(locale);
+---
+
+<Section class="!py-14">
+  <Container class="max-w-2xl text-center">
+    <div data-reveal>
+      <h2 class="text-2xl font-bold">{newsletter.title}</h2>
+      <p class="mt-2 text-gray-600 dark:text-gray-400">{newsletter.description}</p>
+      <!--
+        `data-astro-reload`: ClientRouter POST formlarını yakalayıp kendi fetch'ini yapıyor —
+        sağlayıcı bağlanmamış olsa bile mevcut sayfaya gerçek bir POST atardı.
+        Etiket sr-only: placeholder erişilebilir ad DEĞİLDİR (odaklanınca kaybolur, WCAG 1.3.1/3.3.2).
+      -->
+      <form
+        method="post"
+        action={siteConfig.newsletter.action || '#'}
+        data-astro-reload
+        class="mx-auto mt-6 flex max-w-md gap-3"
+      >
+        <label class="sr-only" for="newsletter-email">{newsletter.emailLabel}</label>
+        <input
+          id="newsletter-email"
+          type="email"
+          name="email"
+          required
+          placeholder={newsletter.placeholder}
+          class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-900"
+        />
+        <Button type="submit" analytics={{ event: 'newsletter_submit' }}>{newsletter.subscribe}</Button>
+      </form>
+    </div>
+  </Container>
+</Section>

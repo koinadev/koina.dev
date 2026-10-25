@@ -1,0 +1,27 @@
+{
+  "eyebrow": "Testimonials",
+  "title": "What people are saying",
+  "items": [
+    {
+      "quote": "We shipped our campaign page in two days. Lighthouse 100, happy team.",
+      "name": "Ayşe Yılmaz",
+      "role": "Marketing Director, Acme"
+    },
+    {
+      "quote": "The feature removal system is genius — we dropped everything unused with one command.",
+      "name": "Mehmet Kaya",
+      "role": "CTO, Globex"
+    },
+    {
+      "quote": "Multilingual setup required zero extra work, it just came out of the box.",
+      "name": "Elif Demir",
+      "role": "Product Manager, Initech"
+    },
+    {
+      "quote": "Animations brought the site to life without sacrificing performance.",
+      "name": "Can Öztürk",
+      "role": "Founder, Stark Labs"
+    }
+  ],
+  "slider": { "prev": "Previous", "next": "Next" }
+}

@@ -1,0 +1,30 @@
+{
+  "eyebrow": "FAQ",
+  "title": "Frequently asked questions",
+  "items": [
+    {
+      "question": "Does it cost anything?",
+      "answer": "No. Membership is always free. Costs are covered by season sponsors and individual supporters, and spending is reported openly."
+    },
+    {
+      "question": "How much do I need to know to join as a participant?",
+      "answer": "If you can use Git and write a small program in at least one language, you're ready. Every project has issues for every level, and there's an open pairing hour on Wednesday evenings when you get stuck."
+    },
+    {
+      "question": "How much time does mentoring take?",
+      "answer": "Two to three hours a week for six weeks: a 45-minute team sync and at least three PR reviews. Every mentor who takes their team to Demo Day gets a verified mentorship record on their profile."
+    },
+    {
+      "question": "Can I use AI tools?",
+      "answer": "Yes. One rule: say so in the PR description and be able to explain the code you send. Sending code you don't understand is not allowed; using tools is."
+    },
+    {
+      "question": "Who owns the projects?",
+      "answer": "The code stays public and the repo lives in the Koina organization; the idea owner can't make it private. The idea owner picks one of three licenses: permissive (MIT/Apache), copyleft (AGPL: anyone running it as a service must publish their changes) or SaaS-protected (FSL: no competing SaaS for two years, then it becomes Apache). Whatever the license, your commit history and demo stay in your portfolio."
+    },
+    {
+      "question": "Can I join from outside Türkiye?",
+      "answer": "Yes. The working language is Turkish, but docs and code are in English. Syncs run in the evening, Türkiye time."
+    }
+  ]
+}

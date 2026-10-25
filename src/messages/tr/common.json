@@ -1,0 +1,37 @@
+{
+  "site": {
+    "title": "Koina — Aynı repoda buluşalım",
+    "description": "Deneyimli geliştiricilerle yeni başlayanları açık kaynak projelerde buluşturan topluluk. 6 haftalık sezonlar, gerçek review, canlı yayınlar.",
+    "shortDescription": "Açık kaynak topluluğu",
+    "tagline": "Aynı repoda buluşalım."
+  },
+  "nav": {
+    "menu": "Menü",
+    "close": "Kapat",
+    "mainMenu": "Ana menü",
+    "footerMenu": "Alt menü",
+    "switchLocale": "Türkçe'ye geç",
+    "skipToContent": "İçeriğe geç"
+  },
+  "theme": {
+    "toggle": "Temayı değiştir"
+  },
+  "footer": {
+    "rights": "Tüm hakları saklıdır.",
+    "source": "Kaynak kodu (AGPL-3.0)"
+  },
+  "redirect": {
+    "title": "Yönlendiriliyorsunuz",
+    "text": "Diliniz algılanıyor, birkaç saniye içinde yönlendirileceksiniz."
+  },
+  "notFound": {
+    "title": "Sayfa bulunamadı",
+    "back": "Ana sayfaya dön"
+  },
+  "consent": {
+    "text": "Siteyi nasıl kullandığını anlamak için çerezsiz, anonim ölçüm yapıyoruz.",
+    "accept": "Kabul et",
+    "decline": "Reddet",
+    "privacy": "Gizlilik"
+  }
+}

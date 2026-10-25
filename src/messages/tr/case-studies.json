@@ -1,0 +1,9 @@
+{
+  "eyebrow": "Fikir havuzu",
+  "title": "Sezon 1 için oylanan fikirlerden bazıları",
+  "items": [
+    { "title": "Açık kaynak iş ilanı ayrıştırıcı", "summary": "Türkçe ilanlardan yetkinlik, maaş aralığı ve uzaktan çalışma bilgisini çıkaran küçük bir servis ve veri seti.", "metric": "v0.1", "metricLabel": "hedef: 6 hafta", "tags": ["Python", "NLP", "Veri"] },
+    { "title": "PR review asistanı", "summary": "Bir PR'ı ekip kurallarına göre ön incelemeden geçiren GitHub Action. Usta yorumlarından öğrenilen kurallarla.", "metric": "v0.1", "metricLabel": "hedef: 6 hafta", "tags": ["TypeScript", "GitHub Actions", "LLM"] },
+    { "title": "Topluluk etkinlik takvimi", "summary": "Türkiye'deki yazılım etkinliklerini tek takvimde toplayan, ICS ve RSS veren açık bir dizin.", "metric": "v0.1", "metricLabel": "hedef: 6 hafta", "tags": ["Astro", "Scraping", "Açık veri"] }
+  ]
+}

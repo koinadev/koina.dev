@@ -1,0 +1,14 @@
+{
+  "eyebrow": "Contact",
+  "title": "Write to us",
+  "description": "Sponsorship, press, a joint event or anything else. We reply within 48 hours.",
+  "form": {
+    "name": "Your name",
+    "email": "Email",
+    "message": "Your message",
+    "submit": "Send",
+    "sending": "Sending...",
+    "success": "Your message reached us. We'll reply within 48 hours.",
+    "error": "The message couldn't be sent. Check your connection and try again, or write to merhaba@koina.dev."
+  }
+}

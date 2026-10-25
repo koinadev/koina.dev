@@ -1,0 +1,38 @@
+---
+import Section from '../ui/Section.astro';
+import Container from '../ui/Container.astro';
+import Reveal from '../ui/Reveal.astro';
+import { getMessages } from '../../messages';
+import type { Locale } from '../../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const { stats } = getMessages(locale);
+---
+
+<!--
+  DİKKAT: HTML `dl` içerik modeli `dt`'nin `dd`'den ÖNCE gelmesini şart koşar. Görsel olarak büyük
+  sayının üstte durması `flex-col-reverse` ile sağlanır — DOM sırası spec'e uygun kalır.
+-->
+<Section class="border-y border-gray-300 !py-12 dark:border-gray-800">
+  <Container>
+    <dl class="grid grid-cols-2 gap-8 lg:grid-cols-4">
+      {
+        stats.items.map((item) => (
+          <Reveal class="flex flex-col-reverse gap-2">
+            <dt class="text-sm text-gray-600 dark:text-gray-400">{item.label}</dt>
+            <dd
+              class="font-display text-5xl font-extrabold tracking-[-0.04em] tabular-nums"
+              data-counter={String(item.value)}
+              data-counter-suffix={item.suffix}
+            >
+              {item.value}{item.suffix}
+            </dd>
+          </Reveal>
+        ))
+      }
+    </dl>
+  </Container>
+</Section>

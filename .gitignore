@@ -1,0 +1,27 @@
+# Bu dosya iki iş yapıyor: git ignore + create-cli sihirbazının üretilen projeye kopyalamayacağı
+# yolların kaynağı. Buradan bir satır silmek o dosyanın üretilen projelere sızmasına izin verir.
+node_modules/
+.worktrees/
+dist/
+.astro/
+.wrangler/
+.DS_Store
+.env
+.env.*
+!.env.example
+# Wrangler'ın yerel secret dosyası. `.env` ile aynı sınıf: burada olmasaydı hem git'e
+# sessizce girerdi hem de sihirbaz tarafından üretilen her projeye kopyalanırdı.
+.dev.vars
+.dev.vars.*
+
+# Yerel geliştirme araçları (depoya girmemeli) — skills hariç: onlar repo'nun parçası,
+# commit edilebilir olmalı.
+.claude/*
+!.claude/skills/
+
+# Çıkarma matrisinin geçici kopyaları (scripts/test-removal.ts).
+# Kök ALTINDA duruyorlar çünkü node_modules hardlink'le çoğaltılıyor ve hardlink
+# dosya sistemi sınırını geçemez — /tmp çoğu makinede ayrı bir birim.
+.removal-tmp/
+
+.playwright-mcp/

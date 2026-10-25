@@ -1,0 +1,37 @@
+{
+  "site": {
+    "title": "Koina — Meet in the same repo",
+    "description": "A community that brings experienced developers and newcomers together on open source projects. Six-week seasons, real reviews, live streams.",
+    "shortDescription": "Open source community",
+    "tagline": "Meet in the same repo."
+  },
+  "nav": {
+    "menu": "Menu",
+    "close": "Close",
+    "mainMenu": "Main menu",
+    "footerMenu": "Footer menu",
+    "switchLocale": "Switch to English",
+    "skipToContent": "Skip to content"
+  },
+  "theme": {
+    "toggle": "Toggle theme"
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "source": "Source code (AGPL-3.0)"
+  },
+  "redirect": {
+    "title": "Redirecting",
+    "text": "Detecting your language, you will be redirected in a moment."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "back": "Back to home"
+  },
+  "consent": {
+    "text": "We use cookieless, anonymous analytics to understand how the site is used.",
+    "accept": "Accept",
+    "decline": "Decline",
+    "privacy": "Privacy"
+  }
+}

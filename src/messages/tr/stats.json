@@ -1,0 +1,8 @@
+{
+  "items": [
+    { "value": 4, "suffix": "", "label": "proje, Sezon 1'de" },
+    { "value": 6, "suffix": " hafta", "label": "bir sezonun süresi" },
+    { "value": 2, "suffix": " saat", "label": "ustanın haftalık taahhüdü" },
+    { "value": 0, "suffix": " ₺", "label": "üyelik ücreti, her zaman" }
+  ]
+}

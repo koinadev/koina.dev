@@ -1,0 +1,90 @@
+# Build hook: blog yazısı eklenince/değişince dışarıdan tetiklenir, artımlı build alır ve yalnızca
+# build koştuysa Cloudflare Workers'a dağıtır. Ayrıntı: docs/incremental-build.md.
+#
+# Tetikleme (workflow dosyası VARSAYILAN DALDA olmalı, `repository_dispatch` yalnızca orada çalışır):
+#   curl -X POST -H "Authorization: Bearer $GITHUB_TOKEN" -H "Accept: application/vnd.github+json" \
+#     https://api.github.com/repos/<sahip>/<repo>/dispatches \
+#     -d '{"event_type":"build-hook"}'      # her koşulda build için: "build-hook-force"
+# Token: o repoda `contents: write` yetkili fine-grained PAT (ya da GitHub App token'ı).
+#
+# release.yml'den farkı: o etiketli SÜRÜM için tip/test/format denetler ve her zaman dağıtır; bu iş
+# akışı içerik için, denetim yapmaz (CI zaten main'de koşuyor) ve değişiklik yoksa dağıtmaz.
+name: Build Hook
+
+on:
+  repository_dispatch:
+    types: [build-hook, build-hook-force]
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Karşılaştırmayı atla, her koşulda build et ve dağıt'
+        type: boolean
+        default: false
+
+# Sıraya girer, iptal ETMEZ: yarıda kesilen deploy yayını tutarsız bırakabilir. GitHub bir grupta
+# en fazla BİR bekleyen koşu tutar, yenisi geldiğinde eskisini iptal eder — doğru davranış bu,
+# çünkü bekleyen koşu checkout'u kendi başladığında alır ve aradaki tüm yazıları zaten görür.
+concurrency:
+  group: build-hook
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+# RUNNER_LINUX: repo/org düzeyinde `vars.RUNNER_LINUX` tanımlıysa self-hosted runner kullanılır.
+# Tanımsızsa GitHub-hosted ubuntu-latest'e düşer.
+jobs:
+  build:
+    runs-on: ${{ vars.RUNNER_LINUX || 'ubuntu-latest' }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      # bun sürümü bilerek sabit; gerekçe ci.yml'de. package.json `packageManager` ile aynı olmalı.
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+
+      - run: bun install --frozen-lockfile
+
+      # Önbellek ve son-build kaydı `node_modules/.astro/` altında (Astro'nun cacheDir'i). Kurulumdan
+      # SONRA geri yüklenir. Anahtar her koşuda benzersiz: actions/cache aynı anahtarı değiştirmez,
+      # `restore-keys` en son kaydedileni getirir.
+      - name: Önbelleği geri yükle
+        id: cache
+        uses: actions/cache/restore@v4
+        with:
+          path: node_modules/.astro
+          key: build-hook-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: build-hook-${{ runner.os }}-
+
+      # `--no-dist-check`: runner'da `dist/` her koşuda sıfırdan başlar. Kayıt "en son YAYINLANAN
+      # çıktı"dır (aşağıda yalnızca dağıtım başarılıysa kaydedilir), dolayısıyla girdiler aynıysa
+      # yayındaki site zaten günceldir.
+      # `--force`: elle tetiklemede `force` seçeneği ya da `build-hook-force` olayı. İkisi de güvenli
+      # biçimde komut satırına girer (boolean girdi / `types` ile kısıtlı olay adı); serbest metin
+      # taşıyan `client_payload` bilerek kullanılmıyor.
+      - name: Artımlı build
+        id: build
+        run: >-
+          bun run build:incremental -- --no-dist-check
+          ${{ (inputs.force || github.event.action == 'build-hook-force') && '--force' || '' }}
+
+      - name: Cloudflare Workers'a dağıt
+        if: steps.build.outputs.built == 'true'
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      # YALNIZCA dağıtım başarılıysa kaydedilir. Build geçip deploy düşerse kayıt saklanmaz; bir
+      # sonraki tetik aynı girdiyi yeniden build edip yeniden dağıtır, "yayında" sanılan ama
+      # yayında olmayan bir durum oluşmaz.
+      - name: Önbelleği kaydet
+        if: steps.build.outputs.built == 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: node_modules/.astro
+          key: build-hook-${{ runner.os }}-${{ github.run_id }}

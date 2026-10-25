@@ -1,0 +1,50 @@
+---
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'secondary' | 'ghost';
+  size?: 'md' | 'lg';
+  class?: string;
+  type?: 'button' | 'submit';
+  /* @feature:analytics */
+  /**
+   * Tıklama olayı. `event` olayın ADI, kalan anahtarlar olay BAĞLAMI olur:
+   * `analytics={{ event: 'pricing_cta', plan: 'pro' }}`.
+   *
+   * Tek nesne (iki ayrı prop değil) olmasının sebebi çıkarma motoru: `analytics` çıkarıldığında
+   * çağrı yerleri `analytics={{ ... }}` deseniyle süpürülüyor (bkz. features.manifest.ts).
+   * Bu yüzden değer TEK SATIRLIK bir nesne DEĞİŞMEZİ olmalı — değişkene alınırsa desen eşleşmez.
+   */
+  analytics?: { event: string } & Record<string, string>;
+  /* @/feature:analytics */
+}
+const { href, variant = 'primary', size = 'md', class: className = '', type = 'button' } = Astro.props;
+/* @feature:analytics */
+// `{ event: 'x', plan: 'pro' }` → `data-analytics-event="x" data-analytics-plan="pro"`.
+// `src/lib/analytics.ts` bunları `dataset` üzerinden geri okur; oradaki dönüşümün TERSİ budur.
+const analyticsAttrs = Object.fromEntries(
+  Object.entries(Astro.props.analytics ?? {}).map(([key, value]) => [`data-analytics-${key}`, value]),
+);
+/* @/feature:analytics */
+const base =
+  'inline-flex items-center justify-center gap-2 rounded-lg font-semibold whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600';
+const variants = {
+  primary: 'bg-brand-600 text-white hover:bg-brand-700',
+  secondary:
+    'bg-gray-100 text-gray-900 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700',
+  ghost: 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800',
+};
+const sizes = { md: 'px-4 py-2 text-sm', lg: 'px-6 py-3 text-base' };
+const classes = [base, variants[variant], sizes[size], className];
+---
+
+{
+  href ? (
+    <a {href} class:list={classes} {...analyticsAttrs}>
+      <slot />
+    </a>
+  ) : (
+    <button {type} class:list={classes} {...analyticsAttrs}>
+      <slot />
+    </button>
+  )
+}

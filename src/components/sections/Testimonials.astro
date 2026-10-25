@@ -1,0 +1,81 @@
+---
+import Section from '../ui/Section.astro';
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import Card from '../ui/Card.astro';
+import { getMessages } from '../../messages';
+import type { Locale } from '../../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const { testimonials } = getMessages(locale);
+---
+
+<Section id="testimonials" class="bg-gray-50 dark:bg-gray-900/40">
+  <Container>
+    <SectionHeading eyebrow={testimonials.eyebrow} title={testimonials.title} />
+    <div class="relative" data-reveal>
+      <!-- Kaydırma kabı klavyeyle erişilebilir olmalı: scrollbar gizli olduğu için tabindex olmadan
+           klavye kullanıcısı yorumları gezemez. -->
+      <div
+        data-slider
+        tabindex="0"
+        role="group"
+        aria-label={testimonials.title}
+        class="flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4 [scrollbar-width:none] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+      >
+        {
+          testimonials.items.map((item) => (
+            <Card class="w-[85%] shrink-0 snap-center sm:w-[45%] lg:w-[31%]">
+              <p class="text-gray-700 dark:text-gray-300">“{item.quote}”</p>
+              <footer class="mt-6">
+                <p class="font-semibold">{item.name}</p>
+                <p class="text-sm text-gray-600 dark:text-gray-400">{item.role}</p>
+              </footer>
+            </Card>
+          ))
+        }
+      </div>
+      <div class="mt-4 flex justify-center gap-3">
+        <button
+          type="button"
+          data-slide-prev
+          aria-label={testimonials.slider.prev}
+          class="rounded-full border border-gray-300 p-2 hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 dark:border-gray-700 dark:hover:bg-gray-800"
+        >
+          <svg
+            class="size-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+            aria-hidden="true"
+            ><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"></path></svg
+          >
+        </button>
+        <button
+          type="button"
+          data-slide-next
+          aria-label={testimonials.slider.next}
+          class="rounded-full border border-gray-300 p-2 hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 dark:border-gray-700 dark:hover:bg-gray-800"
+        >
+          <svg
+            class="size-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+            aria-hidden="true"
+            ><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"></path></svg
+          >
+        </button>
+      </div>
+    </div>
+  </Container>
+</Section>
+<script>
+  const { initTestimonials } = await import('../../lib/testimonials');
+  initTestimonials();
+</script>

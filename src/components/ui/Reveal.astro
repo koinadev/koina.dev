@@ -1,0 +1,14 @@
+---
+// `data-reveal` + isteğe bağlı `data-reveal-delay` için ortak sarmalayıcı (Features, Pricing,
+// CaseStudies, Team, Stats aynı kalıbı tekrarlıyordu).
+interface Props {
+  /** Gecikme süresi (saniye). Belirtilirse `data-reveal-delay` özniteliği basılır. */
+  delay?: number;
+  class?: string;
+}
+const { delay, class: className = '' } = Astro.props;
+---
+
+<div data-reveal data-reveal-delay={delay !== undefined ? String(delay) : undefined} class={className}>
+  <slot />
+</div>

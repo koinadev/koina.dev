@@ -1,0 +1,77 @@
+---
+import JsonLd from '../seo/JsonLd.astro';
+import { siteConfig, organizationJsonLd } from '../../config/site.config';
+import { routePath, blogPostPath } from '../../i18n/routes';
+import { getLocaleMeta, type Locale } from '../../i18n/utils';
+
+/**
+ * Blog yazısının yapılandırılmış verisi: `BlogPosting` + `BreadcrumbList`.
+ *
+ * TEK BİLEŞEN olmasının sebebi hreflang dersiyle aynı: bu blok TR ve EN yazı sayfalarında birebir
+ * tekrar ederdi ve iki kopyadan biri kaçınılmaz olarak geride kalırdı. Sayfalar yalnızca veriyi
+ * verir, şema burada tek yerde durur.
+ */
+interface Props {
+  locale: Locale;
+  slug: string;
+  title: string;
+  description: string;
+  date: Date;
+  updated?: Date;
+  author?: string;
+  /** Sayfanın OG görselinin site köküne göreli yolu (`/og/blog-tr-hosgeldiniz.png`). */
+  image: string;
+  /** Blog kökünün o dildeki adı — kırıntı yolunun ikinci basamağı. */
+  blogTitle: string;
+}
+const { locale, slug, title, description, date, updated, author, image, blogTitle } = Astro.props;
+
+const site = Astro.site ?? new URL(siteConfig.url);
+const url = new URL(blogPostPath(slug, locale), site).href;
+---
+
+<JsonLd
+  data={{
+    '@context': 'https://schema.org',
+    // `Article` yerine `BlogPosting`: aynı ailenin daha dar türü, blog yazısı için doğru sinyal.
+    '@type': 'BlogPosting',
+    headline: title,
+    description,
+    datePublished: date.toISOString(),
+    // `dateModified` yalnızca gerçekten güncellendiyse yazılır; `datePublished` ile aynı değeri
+    // yazmak her yazıya sahte bir tazelik sinyali eklerdi.
+    ...(updated ? { dateModified: updated.toISOString() } : {}),
+    // Yazar alanı ATLANAMAZ (Search Console "author eksik" uyarısı verir). Frontmatter'da isim
+    // yoksa yayıncı kurumun kendisi yazardır — bu da geçerli bir Article yazarıdır.
+    author: author ? { '@type': 'Person', name: author } : organizationJsonLd(),
+    publisher: organizationJsonLd(),
+    // OG görseli kullanılıyor: kapak opsiyonel, OG her yazı için üretilir ve 1200px genişliğiyle
+    // Google'ın büyük-görsel eşiğini geçer.
+    image: new URL(image, site).href,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+    inLanguage: getLocaleMeta(locale).htmlLang,
+  }}
+/>
+<JsonLd
+  data={{
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: siteConfig.name,
+        item: new URL(routePath('home', locale), site).href,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: blogTitle,
+        item: new URL(routePath('blog', locale), site).href,
+      },
+      // SON basamak `item` TAŞIMAZ: kırıntı yolunun sonu zaten bulunulan sayfadır, kendine link
+      // veren bir ListItem Google tarafından hata olarak işaretlenir.
+      { '@type': 'ListItem', position: 3, name: title },
+    ],
+  }}
+/>

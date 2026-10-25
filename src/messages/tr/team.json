@@ -1,0 +1,10 @@
+{
+  "eyebrow": "Ekip",
+  "title": "Arkasındaki insanlar",
+  "members": [
+    { "name": "Deniz Arslan", "role": "Kurucu & CEO", "initials": "DA" },
+    { "name": "Zeynep Çelik", "role": "Tasarım Lideri", "initials": "ZÇ" },
+    { "name": "Emre Şahin", "role": "Baş Mühendis", "initials": "EŞ" },
+    { "name": "Selin Koç", "role": "Büyüme", "initials": "SK" }
+  ]
+}

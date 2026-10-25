@@ -1,0 +1,13 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ContactForm from '@/components/sections/ContactForm.astro';
+import { getMessages } from '@/messages';
+import { alternatesFor } from '@/i18n/routes';
+
+const { contact } = getMessages('en');
+const alternates = alternatesFor('contact');
+---
+
+<BaseLayout title={contact.title} description={contact.description} locale="en" {alternates} route="contact">
+  <ContactForm locale="en" headingLevel="h1" />
+</BaseLayout>

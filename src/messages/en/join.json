@@ -1,0 +1,13 @@
+{
+  "title": "Apply for Season 1",
+  "description": "Applications are open until December 20, 2026. Teams are announced on January 2, kickoff is January 4.",
+  "steps": [
+    { "name": "Join Discord", "text": "Get to know the community and introduce yourself in #introductions. Watching one stream before you apply helps." },
+    { "name": "Fill in the form", "text": "Tell us your role, your experience, how many hours a week you can give and your GitHub profile." },
+    { "name": "Short call", "text": "A 20-minute intro for mentors; a group intro for participants." },
+    { "name": "Matching", "text": "On January 2 your team and project are announced and your project channel opens." }
+  ],
+  "formTitle": "Application form",
+  "formHint": "In the message, include: the role you're applying for (Participant, Mentor or Idea owner), your experience in short, hours per week and your GitHub profile.",
+  "discord": { "label": "Join Discord", "href": "https://discord.gg/koinadev" }
+}

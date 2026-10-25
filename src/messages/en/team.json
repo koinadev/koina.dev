@@ -1,0 +1,10 @@
+{
+  "eyebrow": "Team",
+  "title": "The people behind it",
+  "members": [
+    { "name": "Deniz Arslan", "role": "Founder & CEO", "initials": "DA" },
+    { "name": "Zeynep Çelik", "role": "Design Lead", "initials": "ZÇ" },
+    { "name": "Emre Şahin", "role": "Lead Engineer", "initials": "EŞ" },
+    { "name": "Selin Koç", "role": "Growth", "initials": "SK" }
+  ]
+}

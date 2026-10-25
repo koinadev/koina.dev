@@ -1,0 +1,153 @@
+---
+import Container from '../ui/Container.astro';
+import Button from '../ui/Button.astro';
+import ThemeToggle from '../ui/ThemeToggle.astro'; /* @feature:dark-mode */
+import { getMessages } from '../../messages';
+import { siteConfig } from '../../config/site.config';
+import { useTranslations, type Locale } from '../../i18n/utils';
+import { isActiveNav, navHref, routePath, type Alternates, type RouteKey } from '../../i18n/routes';
+
+interface Props {
+  locale: Locale;
+  // Sayfanın tüm dillerdeki karşılıkları. Dil değiştirici bunu kullanır; URL'i geriye doğru
+  // parse etmek lokalize slug'larda ve blog yazılarında ZATEN imkânsız olurdu.
+  alternates?: Alternates;
+  // Şu an açık olan sayfanın route anahtarı; aktif link işaretlemesi bunu kullanır.
+  route?: RouteKey;
+}
+const { locale, route } = Astro.props;
+const { nav } = getMessages(locale);
+const t = useTranslations(locale);
+const homeHref = routePath('home', locale);
+/* @feature:i18n */
+// Bu satırlar i18n marker bloğu içinde olmalı: dışarıda kalırsa i18n çıkarıldığında `'en'`
+// geçerli bir `Locale` olmadığı için tip hatası verir.
+const otherLocale: Locale = locale === 'tr' ? 'en' : 'tr';
+const tOther = useTranslations(otherLocale);
+// `alternates` marker bloğunun içinde okunuyor — dışarıda destructure edilseydi i18n
+// çıkarıldığında okuyanı kalmaz, ts(6133) uyarısı üretirdi (doğrulandı).
+// `alternates` verilmemişse (404 gibi) diğer dilin ana sayfasına düşülür, 404'e değil.
+const switchHref = Astro.props.alternates?.[otherLocale] ?? routePath('home', otherLocale);
+/* @/feature:i18n */
+---
+
+<header
+  transition:animate="none"
+  class="sticky top-0 z-50 border-b border-gray-200/70 bg-background/85 backdrop-blur-md dark:border-gray-800/60"
+>
+  <Container class="flex h-16 items-center justify-between">
+    <a
+      href={homeHref}
+      aria-current={route === 'home' ? 'page' : undefined}
+      class="flex items-center gap-2.5"
+    >
+      <img src={siteConfig.logo} alt="" class="size-7" />
+      <span class="font-display text-2xl leading-none font-extrabold tracking-[-0.04em]">{siteConfig.name.toLowerCase()}</span>
+    </a>
+    <nav class="hidden items-center gap-6 md:flex" aria-label={t('nav.mainMenu')}>
+      {
+        nav.links.map((link) => (
+          <a
+            href={navHref(link, locale)}
+            aria-current={isActiveNav(link, route) ? 'page' : undefined}
+            class:list={[
+              'relative text-sm font-medium transition-colors',
+              'after:absolute after:inset-x-0 after:-bottom-1.5 after:h-0.5 after:rounded-full after:bg-brand-600 after:opacity-0',
+              isActiveNav(link, route)
+                ? 'text-gray-900 after:opacity-100 dark:text-white'
+                : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white',
+            ]}
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+    <div class="flex items-center gap-2">
+      <!-- @feature:i18n -->
+      <a
+        href={switchHref}
+        data-locale-switch={otherLocale}
+        class="rounded-lg p-2 text-sm font-semibold text-gray-600 uppercase hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+        aria-label={tOther('nav.switchLocale')}>{otherLocale}</a
+      >
+      <!-- @/feature:i18n -->
+      <!-- @feature:dark-mode -->
+      <ThemeToggle {locale} />
+      <!-- @/feature:dark-mode -->
+      <div class="hidden md:block">
+        <Button href={navHref(nav.cta, locale)} analytics={{ event: 'header_cta', place: 'desktop' }}>
+          {nav.cta.label}
+        </Button>
+      </div>
+      <button
+        type="button"
+        data-menu-toggle
+        data-menu-labels={JSON.stringify({ open: t('nav.menu'), close: t('nav.close') })}
+        aria-label={t('nav.menu')}
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        class="rounded-lg p-2 hover:bg-gray-100 md:hidden dark:hover:bg-gray-800"
+      >
+        <svg
+          class="size-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"></path>
+        </svg>
+      </button>
+    </div>
+  </Container>
+  <!--
+    Mobil panel de `nav` landmark'ı + `aria-label` taşır (masaüstü etiketinden farklı, aksi
+    halde iki landmark ayırt edilemez). `id` düğmedeki `aria-controls` ile eşleşir.
+  -->
+  <nav
+    id="mobile-menu"
+    data-mobile-menu
+    hidden
+    aria-label={t('nav.menu')}
+    class="border-t border-gray-200 md:hidden dark:border-gray-800"
+  >
+    <Container class="flex flex-col gap-1 py-4">
+      {
+        nav.links.map((link) => (
+          <a
+            href={navHref(link, locale)}
+            aria-current={isActiveNav(link, route) ? 'page' : undefined}
+            class:list={[
+              'rounded-lg px-3 py-2 font-medium hover:bg-gray-100 dark:hover:bg-gray-800',
+              isActiveNav(link, route) && 'bg-gray-100 dark:bg-gray-800',
+            ]}
+          >
+            {link.label}
+          </a>
+        ))
+      }
+      <Button
+        href={navHref(nav.cta, locale)}
+        class="mt-2"
+        analytics={{ event: 'header_cta', place: 'mobile' }}
+      >
+        {nav.cta.label}
+      </Button>
+    </Container>
+  </nav>
+</header>
+<script>
+  const { initMobileMenu } = await import('../../lib/mobile-menu');
+  initMobileMenu();
+</script>
+<!-- @feature:i18n -->
+<script>
+  const { initLocaleSwitch } = await import('../../lib/locale-switch');
+  initLocaleSwitch();
+</script>
+<!-- @/feature:i18n -->

@@ -1,0 +1,48 @@
+---
+// Gezinme ilerleme çubuğu: prefetch geçişleri çoğunlukla anlık yapar ama yavaş bağlantıda tıklama
+// ile yeni sayfa arasında sessiz bir boşluk oluşur. Hiçbir özelliğe bağlı değil, marker taşımaz.
+// `aria-hidden`: gezinme duyurusunu Astro'nun kendi route announcer'ı zaten yapıyor.
+---
+
+<div data-nav-progress aria-hidden="true"></div>
+
+<style>
+  [data-nav-progress] {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline: 0;
+    z-index: 100;
+    height: 2px;
+    background: var(--color-brand-600);
+    transform: scaleX(0);
+    transform-origin: left center;
+    opacity: 0;
+    pointer-events: none;
+    /* Yavaşlayan eğri: hızlı başlar, %90'a yaklaşırken sürünür; sonu bilinmediği için hiç %100'e
+       varmaz — sayfa geldiğinde çubuk zaten yeni sayfaya yerini bırakır. */
+    transition:
+      transform 6s cubic-bezier(0, 0.7, 0.2, 1),
+      opacity 150ms ease-out;
+  }
+
+  [data-nav-progress][data-active] {
+    transform: scaleX(0.9);
+    opacity: 1;
+  }
+
+  /* Süsleme değil geri bildirim: reduced-motion altında da görünür kalmalı, yalnızca hareket
+     kaldırılır — çubuk anında tam genişlikte belirir. */
+  @media (prefers-reduced-motion: reduce) {
+    [data-nav-progress] {
+      transition: none;
+    }
+    [data-nav-progress][data-active] {
+      transform: scaleX(1);
+    }
+  }
+</style>
+
+<script>
+  const { initNavProgress } = await import('../../lib/nav-progress');
+  initNavProgress();
+</script>

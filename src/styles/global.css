@@ -1,0 +1,218 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/bricolage-grotesque';
+@import '@fontsource-variable/instrument-sans';
+
+/* @feature:blog */
+@plugin '@tailwindcss/typography';
+/* @/feature:blog */
+
+/* @feature:dark-mode */
+@custom-variant dark (&:where(.dark, .dark *));
+/* @/feature:dark-mode */
+
+/* Tasarım paleti korunuyor — shadcn/tweakcn tarzı SEMANTIK token katmanı EKLENİYOR.
+   Şablonun ana paleti brand-* ve gray-* üzerinde yaşıyor; semantic token'lar bunlara
+   eşleniyor. Bileşenler `bg-white`, `text-gray-900` gibi ham sınıfları olduğu gibi
+   kullanabilir — `gray-*` Tailwind v4'ün kendi paletinden geliyor ve `@theme` ile çakışmıyor;
+   semantic token katmanı yalnızca "bu sınıfların YERİNE geçebilecek bir kısayol" olarak
+   duruyor (özellikle `bg-background` / `text-foreground` / `bg-muted` / `text-muted-foreground`).
+   `--color-X: var(--X)` biçimi `@theme inline` ile çalışır; değer `:root` ve `.dark` arasında
+   değişir ve utility sınıfı `bg-X` / `text-X` otomatik türetilir. */
+@theme inline {
+  --font-sans: 'Instrument Sans Variable', system-ui, sans-serif;
+  --font-display: 'Bricolage Grotesque Variable', 'Instrument Sans Variable', system-ui, sans-serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Marka renkleri korunuyor — şablonun ana paleti */
+  --color-brand-50: oklch(97% 0.025 158);
+  --color-brand-100: oklch(93.5% 0.045 158);
+  --color-brand-200: oklch(87% 0.075 158);
+  --color-brand-300: oklch(79% 0.1 158);
+  --color-brand-400: oklch(69% 0.12 158);
+  --color-brand-500: oklch(60% 0.12 158);
+  --color-brand-600: oklch(52.5% 0.11 158);
+  --color-brand-700: oklch(45% 0.095 158);
+  --color-brand-800: oklch(37% 0.075 160);
+  --color-brand-900: oklch(29% 0.055 162);
+  --color-brand-950: oklch(21% 0.04 165);
+
+  /* Koina: Tailwind'in gri skalası çam tonlu nötrlerle değişiyor — template bileşenleri
+     `gray-*` kullandığı için tüm arayüz tek hamlede marka tonuna geçer. */
+  --color-gray-50: oklch(97.6% 0.006 160);
+  --color-gray-100: oklch(95% 0.009 160);
+  --color-gray-200: oklch(90% 0.013 160);
+  --color-gray-300: oklch(83% 0.016 160);
+  --color-gray-400: oklch(68% 0.02 160);
+  --color-gray-500: oklch(55% 0.022 160);
+  --color-gray-600: oklch(45% 0.026 162);
+  --color-gray-700: oklch(37% 0.028 162);
+  --color-gray-800: oklch(28% 0.03 164);
+  --color-gray-900: oklch(23.5% 0.03 165);
+  --color-gray-950: oklch(20.5% 0.026 165);
+
+  /* Polen: Usta rengi, "canlı" göstergesi. Üzerinde yalnızca çam metin. */
+  --color-pollen-300: oklch(87% 0.11 82);
+  --color-pollen-400: oklch(81.5% 0.145 78);
+  --color-pollen-500: oklch(76% 0.15 72);
+  --color-pine: #173229;
+  --color-sprout: #9ed9a8;
+
+  --animate-marquee: marquee 30s linear infinite;
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+:root {
+  --background: #f2f5f1;
+  --foreground: #173229;
+
+  --card: oklch(100% 0 0);
+  --card-foreground: oklch(21% 0.006 285);
+
+  --popover: oklch(100% 0 0);
+  --popover-foreground: oklch(21% 0.006 285);
+
+  --primary: #2f7a55;
+  --primary-foreground: oklch(100% 0 0);
+
+  --secondary: oklch(96% 0.005 285);
+  --secondary-foreground: oklch(21% 0.006 285);
+
+  --muted: oklch(98% 0.005 285);
+  --muted-foreground: oklch(45% 0.01 285);
+
+  --accent: oklch(96% 0.005 285);
+  --accent-foreground: oklch(21% 0.006 285);
+
+  --destructive: oklch(60% 0.22 27);
+  --destructive-foreground: oklch(100% 0 0);
+
+  --border: oklch(91% 0.005 285);
+  --input: oklch(87% 0.006 285);
+  --ring: #2f7a55;
+}
+
+.dark {
+  --background: #0e1d18;
+  --foreground: #e6eee8;
+
+  --card: oklch(14% 0.01 285);
+  --card-foreground: oklch(96% 0.005 285);
+
+  --popover: oklch(14% 0.01 285);
+  --popover-foreground: oklch(96% 0.005 285);
+
+  --primary: #4fb37e;
+  --primary-foreground: oklch(100% 0 0);
+
+  --secondary: oklch(27% 0.006 285);
+  --secondary-foreground: oklch(96% 0.005 285);
+
+  --muted: oklch(20% 0.006 285);
+  --muted-foreground: oklch(65% 0.01 285);
+
+  --accent: oklch(27% 0.006 285);
+  --accent-foreground: oklch(96% 0.005 285);
+
+  --destructive: oklch(45% 0.2 27);
+  --destructive-foreground: oklch(96% 0.005 285);
+
+  --border: oklch(27% 0.006 285);
+  --input: oklch(27% 0.006 285);
+  --ring: #2f7a55;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+  }
+  /* Bricolage'ın optik boyut ekseni büyük başlıkta sıkı, küçükte açık harf biçimini kendisi seçer. */
+  .font-display {
+    font-optical-sizing: auto;
+  }
+  :focus-visible {
+    outline-color: var(--color-brand-600);
+  }
+}
+
+/* Sayfa geçişi (bkz. src/lib/transitions.ts). `@layer` ve `@theme` DIŞINDA: view transition
+   pseudo-element'leri belge kökünde yaşıyor ve keyframe'i global kapsamda arıyor.
+   Eski sayfa yerinde ve opak bekler; yeni sayfa üstüne solarak, 12px yükselerek oturur. */
+@keyframes nafruPageHold {
+  from,
+  to {
+    opacity: 1;
+  }
+}
+@keyframes nafruPageIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+/* Tarayıcı varsayılanı `plus-lighter`: opak eski katmanın üstüne yarı saydam yeni katman
+   TOPLANARAK boyanır ve geçiş ortasında sayfa parlar. Normal karışımda yeni katman örter. */
+::view-transition-old(*),
+::view-transition-new(*) {
+  mix-blend-mode: normal;
+}
+
+/* DİKKAT: bu blok BİLEREK katman DIŞINDA. `scroll-behavior: smooth` @layer base içinde ve
+   katmansız stiller katmanlı olanları özgüllükten BAĞIMSIZ olarak yener. Bu kuralı @layer base
+   içine taşırsanız sessizce etkisiz kalır ve reduced-motion tercihi kırılır. */
+@media (prefers-reduced-motion: reduce) {
+  /* Yumuşak kaydırma da bir harekettir. Astro'nun view transition CSS'i kendi animasyonlarını
+     bu medya sorgusunda zaten kapatıyor, ama `scroll-behavior` ona dahil değil: hash linkine
+     tıklandığında sayfa 1400px boyunca kayarak gitmek yerine anında konumlanmalı.
+     (src/lib/animations.ts aynı standardı GSAP tarafında uyguluyor.) */
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* GSAP'in scroll-reveal'leri (src/lib/animations.ts) DOM'a görünür basılıyor ve yalnızca
+   `astro:page-load`ta JS çalışınca gizleniyor: ilk boyamada bir an görünüp hemen gizlenip
+   tekrar açılıyorlardı — hem ilk yüklemede hem her sayfa geçişinde göz kırpması (flicker).
+   `.js-anim` <html>'e boyamadan ÖNCE satır-içi script'le eklenir (BaseLayout.astro) ve her
+   geçişte `astro:before-swap` ile gelen belgeye de aktarılır, böylece gizleme JS animasyonundan
+   önce devreye girer ve GSAP kendi "from" durumunu (autoAlpha:0) üstüne yazar — çakışma olmaz.
+   `visibility` kullanılıyor, `opacity` değil: GSAP `from()` "to" değerini çağrı anındaki mevcut
+   opacity'den okuyor, CSS o değeri 0'a sabitlerse animasyon hedefsiz (0'dan 0'a) kalırdı. */
+.js-anim [data-reveal],
+.js-anim [data-split-title] {
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* animations.ts reduced-motion altında initReveals/initSplitTitles'ı hiç çalıştırmıyor —
+     bu durumda içerik JS'ten hiç görünür kılınmaz, bu yüzden CSS'te geri açılması gerekiyor. */
+  .js-anim [data-reveal],
+  .js-anim [data-split-title] {
+    visibility: visible;
+  }
+}

@@ -1,0 +1,46 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Section from '@/components/ui/Section.astro';
+import Container from '@/components/ui/Container.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import { getMessages } from '@/messages';
+import { siteConfig } from '@/config/site.config';
+import { alternatesFor } from '@/i18n/routes';
+
+const { privacy } = getMessages('en');
+const alternates = alternatesFor('privacy');
+const contactEmail = siteConfig.contactEmail;
+---
+
+<BaseLayout title={privacy.title} description={privacy.description} locale="en" {alternates} route="privacy">
+  <Section>
+    <Container class="max-w-3xl">
+      <SectionHeading
+        as="h1"
+        eyebrow={privacy.eyebrow}
+        title={privacy.title}
+        description={privacy.description}
+      />
+      <p
+        class="mt-8 rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900 dark:border-amber-700/60 dark:bg-amber-950/40 dark:text-amber-200"
+      >
+        {privacy.notice}
+      </p>
+      <div class="mt-10 flex flex-col gap-8">
+        {
+          privacy.sections.map((section) => (
+            <div>
+              <h2 class="text-xl font-semibold">{section.heading}</h2>
+              <p class="mt-2 text-gray-600 dark:text-gray-400">{section.body}</p>
+            </div>
+          ))
+        }
+      </div>
+      <p class="mt-10 text-gray-600 dark:text-gray-400">
+        <a href={`mailto:${contactEmail}`} class="text-brand-600 underline hover:text-brand-700"
+          >{contactEmail}</a
+        >
+      </p>
+    </Container>
+  </Section>
+</BaseLayout>

@@ -1,0 +1,57 @@
+---
+import { useTranslations, type Locale } from '../i18n/utils';
+import { routePath } from '../i18n/routes';
+import { siteConfig } from '../config/site.config';
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+// Sağlayıcı yapılandırılmamışsa banner HİÇ render edilmez: ortada onay istenecek bir izleme
+// yokken "çerez kullanıyoruz" demek hem gereksiz bir tıklama hem yanlış beyandır. (Tema ve dil
+// tercihi `localStorage`'da tutulur; bunlar işlevsel depolamadır, onay kapsamında değildir.)
+const enabled = siteConfig.analytics.provider !== 'none';
+---
+
+{
+  enabled && (
+    /*
+      `hidden` SUNUCUDAN gelir ve JS onu kaldırır (bkz. consent-banner.ts). Ters kurgu —
+      görünür başlayıp JS ile gizlemek — kararını çoktan vermiş ziyaretçide her yüklemede bir
+      kare boyunca banner çakmasına yol açardı.
+    */
+    <div
+      data-consent-banner
+      hidden
+      aria-live="polite"
+      class="fixed inset-x-4 bottom-4 z-50 mx-auto flex max-w-xl flex-col items-center gap-3 rounded-2xl border border-gray-200 bg-white p-4 shadow-xl sm:flex-row dark:border-gray-800 dark:bg-gray-900"
+    >
+      <p class="flex-1 text-sm text-gray-600 dark:text-gray-400">
+        {t('consent.text')}{' '}
+        <a href={routePath('privacy', locale)} class="underline hover:text-gray-900 dark:hover:text-white">
+          {t('consent.privacy')}
+        </a>
+      </p>
+      <div class="flex gap-2">
+        <button
+          type="button"
+          data-consent="granted"
+          class="rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-700"
+        >
+          {t('consent.accept')}
+        </button>
+        <button
+          type="button"
+          data-consent="denied"
+          class="rounded-lg px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+        >
+          {t('consent.decline')}
+        </button>
+      </div>
+    </div>
+  )
+}
+<script>
+  const { initConsentBanner } = await import('../lib/consent-banner');
+  initConsentBanner();
+</script>

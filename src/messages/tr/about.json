@@ -1,0 +1,9 @@
+{
+  "eyebrow": "Manifesto",
+  "title": "Yapay zekâ kodu ucuzlattı. Yargıyı ucuzlatmadı.",
+  "paragraphs": [
+    "Bugün yolun başındaki biri bir modelle birkaç saatte çalışan bir uygulama çıkarabiliyor. Ama mimari, test, güvenlik ve bakım hakkında ona geri bildirim verecek kimse yok; junior pozisyonları azaldı, ilk gerçek deneyimin kazanıldığı yer daraldı.",
+    "Deneyimli geliştiricinin sorunu başka: portföyünde nasıl düşündüğünü, nasıl ekip büyüttüğünü gösteremiyor. CV'deki “mentorluk yaptım” satırının kanıtı yok.",
+    "Koina'da ikisi aynı repoda çalışır. Kod açık, review'lar açık, demolar kayıtlı. Altı haftanın sonunda herkesin elinde doğrulanabilir bir iş ve birlikte üretmiş olduğu insanlar olur. Klasik network kartvizitle kurulur; bizimki commit geçmişiyle."
+  ]
+}

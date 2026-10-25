@@ -1,0 +1,108 @@
+# Şablonun tüm dış yapılandırma değerleri için tek doğruluk kaynağı. `sync-wrangler-env.ts`
+# build öncesi `PUBLIC_*` anahtarlarını buradan `.env`'e yazar. Gerçek sırlar (CLOUDFLARE_API_TOKEN
+# vb.) buraya değil GitHub Actions secrets'a girer.
+#
+# Cloudflare WORKERS STATIC ASSETS projesi — Pages DEĞİL. Statik asset istekleri Workers'ta da
+# Pages'teki gibi ÜCRETSİZ ve sınırsızdır ("Requests to static assets are free and unlimited",
+# developers.cloudflare.com/workers/platform/pricing), o yüzden Pages'te kalmanın maliyet
+# gerekçesi yok; Workers'ın üstüne gerçek observability, Durable Objects ve Cron Triggers geliyor.
+# Şablon buradan üretilen HER SİTENİN başlangıç noktası olduğu için bu dosya Pages'te kalsaydı
+# her yeni site yine Pages projesi olarak doğardı.
+#
+# NEDEN TOML: ortam değişkeni gibi düz anahtar/değer yapılandırması için en sade biçim; yorum
+# taşır, JSON'daki sondaki virgül/tırnak tuzaklarına açık değildir. `sync-wrangler-env.ts` dosyayı
+# `smol-toml` ile okur.
+
+# ŞABLON ADI — türetilen her sitede DEĞİŞTİRİLMELİ. Pages'te proje adı deploy komutunda
+# verildiği için buradaki değer atıldı; Workers'ta `name` deploy hedefinin ta kendisidir,
+# iki repo aynı adı taşırsa biri diğerinin Worker'ını ezer.
+#
+# Ad `nafru-template` İDİ ve DEĞİŞTİRİLDİ: edumoodup şablondan türerken bu adı devralmış ve
+# Cloudflare'deki canlı projesi gerçekten `nafru-template` adını taşıyor. Workers'a geçişle
+# birlikte ikisi aynı deploy hedefine yazacaktı — en son etiketlenen sürüm diğerinin
+# Worker'ını eziyordu. Canlı projeyle eşleşen ad edumoodup'ta KALDI; çakışmayı şablon
+# tarafında çözmek doğru olan, çünkü şablonun kendi deploy'u yalnızca bir duman testi.
+name = "koina-site"
+compatibility_date = "2024-09-23"
+
+# `main` YOK: şablonda çalışan hiçbir kod yok, yalnız statik asset sunulur — dolayısıyla
+# `binding` (yalnız `main` varken anlamlı) ve `run_worker_first` de yok. Kökteki (`/`) dil
+# seçimini şablonda `src/pages/index.astro` içindeki istemci JS'i yapar. Türetilen siteler
+# bunu sunucu tarafına taşımak için `src/worker.ts` + `run_worker_first = ["/"]` ekliyor
+# (bkz. context, furkancolak, nafru, nafru-scout, edumoodup).
+[assets]
+directory = "./dist"
+
+# `astro.config.mjs` `trailingSlash` BELİRTMİYOR (Astro varsayılanı `'ignore'`) ve çıktı
+# `build.format: 'directory'` — yani `dist/yol/index.html`. `auto-trailing-slash` Pages'in
+# BUGÜNKÜ davranışının aynısıdır: dizin index'leri sondaki slash'la sunulur, `/yol` isteği
+# `/yol/`a 308'lenir. Migrasyon davranış değiştirmesin diye AÇIKÇA yazıldı; `drop-` ya da
+# `force-` seçmek kanonik URL'leri ve mevcut yönlendirme zincirini değiştirirdi.
+html_handling = "auto-trailing-slash"
+
+# Pages eşleşmeyen yolda `dist/404.html`i 404 ile sunuyordu; Workers'ta bu davranış AÇIKÇA
+# istenmek zorunda (öntanımlı `none` boş bir 404 döndürür). Sayfayı `src/pages/404.astro`
+# üretiyor.
+not_found_handling = "404-page"
+
+[vars]
+PUBLIC_SITE_NAME = "Koina"
+# RFC 2606 placeholder — boş bırakılamaz (build ve JSON-LD/sitemap/kanonik URL buna bağlı).
+# Deploy öncesi gerçek alan adınızla değiştirin.
+PUBLIC_SITE_URL = "https://koina.dev"
+PUBLIC_SITE_LOGO = "/logo.svg"
+# Koina: kullanıcı adları plan/03-kanallar-ve-mimari.md'deki `@koinadev` standardına göre.
+# Gerçek hesap adresleri farklıysa burada düzeltin; boş bırakılan hesap footer'da görünmez.
+PUBLIC_SOCIAL_X = "https://x.com/koinadev"
+PUBLIC_SOCIAL_GITHUB = "https://github.com/koinadev"
+PUBLIC_SOCIAL_LINKEDIN = "https://www.linkedin.com/company/koinadev"
+PUBLIC_SOCIAL_INSTAGRAM = "https://www.instagram.com/koinadev"
+PUBLIC_SOCIAL_YOUTUBE = "https://www.youtube.com/@koinadev"
+PUBLIC_SOCIAL_DISCORD = "https://discord.gg/koinadev"
+PUBLIC_CONTACT_EMAIL = "merhaba@koina.dev"
+
+# Arama motoru MÜLK DOĞRULAMASI (bkz. docs/seo-checklist.md). Search Console / Bing Webmaster'ın
+# verdiği HTML etiketinin yalnızca `content` DEĞERİ yazılır, etiketin tamamı değil. Boş bırakılırsa
+# etiket hiç render edilmez — alan adını DNS ile doğrulamayı seçtiyseniz burası boş kalır.
+PUBLIC_SEO_VERIFICATION_GOOGLE = ""
+PUBLIC_SEO_VERIFICATION_BING = ""
+
+# Form sağlayıcısı: "custom" | "formspark" | "web3forms". Varsayılan kendi çok kiracılı
+# Cloudflare Worker'ımızdır. Provider adaptörü payload ve başarı yanıtını doğru sözleşmeye çevirir.
+PUBLIC_FORMS_PROVIDER = "custom"
+# custom: kendi form Worker'ınızın `https://<worker>/v1/forms/<siteId>/contact` adresi.
+# formspark: `https://submit-form.com/<form-id>`
+# web3forms seçildiğinde bu alan kullanılmaz; resmi endpoint otomatik atanır.
+# Koina: form sağlayıcısı henüz bağlanmadı (bkz. kök README → "Yayına almadan önce"). Boşken
+# başvuru ve iletişim formları gönderim yapamaz.
+PUBLIC_FORMS_ENDPOINT = ""
+# Yalnızca Web3Forms. Public access key'dir; yine de yalnız web3forms payload'ına eklenir.
+PUBLIC_FORMS_ACCESS_KEY = ""
+# Cloudflare'in "her zaman geçer" TEST anahtarı — şablon bilerek gerçek widget taşımaz.
+# Gateway'e bağlanan Nafru siteleri bunu tek yönetilen "Nafru Apps" widget'ının public
+# sitekey'i `0x4AAAAAADgRDxwGd7fe2Kc-` ile değiştirir; Worker tek bir TURNSTILE_SECRET_KEY
+# ile doğruladığı için başka bir widget'ın token'ı TURNSTILE_FAILED döner. Sitenin host'u
+# da o widget'ın köklerine eklenmiş olmalıdır.
+# Formspark seçilirse bunun yerine kendi site+secret çiftinizi üretip secret'ı Formspark
+# "Spam Protection → Turnstile" alanına yapıştırın.
+PUBLIC_TURNSTILE_SITE_KEY = "1x00000000000000000000AA"
+# Gateway tenant registry'sindeki form `action` alanıyla BİREBİR aynı olmalı;
+# farklı action taşıyan token'lar reddedilir.
+PUBLIC_TURNSTILE_ACTION = "contact"
+
+# Blog içeriğinin çekileceği opsiyonel JSON endpoint'i. BOŞ BIRAKIN: şablonun varsayılanı
+# repo içi markdown'dır ve bu değer boşken tek bir fetch bile atılmaz. Doldurulursa uzak yazılar
+# YEREL yazıların üzerine YAZMADAN eklenir; kaynak erişilemezse build uyarı verip yerelle devam eder.
+PUBLIC_BLOG_REMOTE_ENDPOINT = ""
+
+# Analytics sağlayıcısı: "plausible" | "ga4" | boş (kapalı). Kapalıyken ne script yüklenir ne de
+# olay dinleyicisi bağlanır. Sayfa görüntülemeyi sağlayıcının kendi script'i sayar; düğme/form/dış
+# bağlantı olaylarını `src/lib/analytics.ts` gönderir (bkz. docs/analytics.md).
+PUBLIC_ANALYTICS_PROVIDER = ""
+# Yalnızca "plausible" için: Site Settings → General → Site Installation ekranındaki snippet'te
+# bulunan TAM `https://plausible.io/js/pa-….js` URL'i. Domain adı DEĞİL, script URL'inin tamamı.
+PUBLIC_ANALYTICS_PLAUSIBLE_SCRIPT_URL = ""
+# Yalnızca "ga4" için: `G-` ile başlayan ölçüm kimliği.
+PUBLIC_ANALYTICS_GA4_ID = ""
+
+PUBLIC_NEWSLETTER_ACTION = ""

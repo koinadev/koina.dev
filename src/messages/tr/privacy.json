@@ -1,0 +1,20 @@
+{
+  "eyebrow": "Yasal",
+  "title": "Gizlilik Politikası",
+  "description": "Kişisel verilerinizi nasıl işlediğimizi açıklayan şablon metni.",
+  "notice": "Bu sayfa bir ŞABLON yer tutucusudur. Yayına almadan önce kendi gizlilik politikanızla değiştirin.",
+  "sections": [
+    {
+      "heading": "Topladığımız veriler",
+      "body": "İletişim formunu doldurduğunuzda adınızı, e-posta adresinizi ve mesajınızı alırız. Bu veriler yalnızca talebinize yanıt vermek için kullanılır."
+    },
+    {
+      "heading": "Çerezler",
+      "body": "Zorunlu olmayan çerezler yalnızca açık onayınızdan sonra yüklenir. Onayınızı tarayıcınızın site verilerini temizleyerek geri alabilirsiniz."
+    },
+    {
+      "heading": "Haklarınız",
+      "body": "Verilerinize erişme, düzeltme ve silinmesini talep etme hakkınız vardır. Talebiniz için aşağıdaki adresten bize ulaşabilirsiniz."
+    }
+  ]
+}

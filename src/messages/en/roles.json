@@ -1,0 +1,11 @@
+{
+  "title": "Three roles, one repo",
+  "description": "Every project has one mentor, three to five participants and often an idea owner. We spell out what each gives and gets.",
+  "giveLabel": "You give",
+  "getLabel": "You get",
+  "items": [
+    { "key": "learner", "name": "Participant", "who": "Students, bootcamp grads, career changers; 0–2 years of experience.", "give": "5–8 hours of work a week, at least one PR or review.", "get": ["Commit history on a real project", "A mentor review on every PR", "A Demo Day recording and a reference"] },
+    { "key": "mentor", "name": "Mentor", "who": "Developers with 5+ years of experience.", "give": "2–3 hours a week: a 45-minute sync and at least 3 PR reviews.", "get": ["A verifiable mentorship record", "Visibility on LinkedIn and in our streams", "Meeting great people early"] },
+    { "key": "founder", "name": "Idea owner", "who": "Founders, product people, anyone with a problem worth solving.", "give": "A clear problem statement and a weekly product sync.", "get": ["An open source MVP", "A team you've actually worked with", "Freedom to build a product on top"] }
+  ]
+}

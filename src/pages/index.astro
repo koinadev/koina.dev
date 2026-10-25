@@ -1,0 +1,80 @@
+---
+// Kök `/` — dil algılayan statik yönlendirme sayfası. BaseLayout bilerek kullanılmıyor: bu
+// sayfa bir durak, tek işi ziyaretçiyi doğru dil köküne atmak. Statik build olduğu için
+// yönlendirme istemcide yapılıyor. i18n çıkarıldığında bu dosya silinir (features.manifest.ts).
+import { defaultLocale, locales, useTranslations } from '@/i18n/utils';
+import { routePath } from '@/i18n/routes';
+import { siteConfig } from '@/config/site.config';
+
+const t = useTranslations(defaultLocale);
+const targets = Object.fromEntries(locales.map((locale) => [locale, routePath('home', locale)]));
+const fallback = routePath('home', defaultLocale);
+const site = Astro.site ?? siteConfig.url;
+// Yönlendirme verisi `<html>` üzerinde `data-*` ile taşınıyor: `define:vars` denendi, `is:inline`
+// script'te tanımsız ad bırakıp `astro check` ts(2570) raporluyordu.
+---
+
+<html lang={defaultLocale} data-locale-targets={JSON.stringify(targets)} data-locale-fallback={fallback}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{t('redirect.title')} — {siteConfig.name}</title>
+    {
+      locales.map((locale) => (
+        <link rel="alternate" hreflang={locale} href={new URL(routePath('home', locale), site)} />
+      ))
+    }
+    <link rel="alternate" hreflang="x-default" href={new URL(fallback, site)} />
+    <script is:inline>
+      // Öncelik: (1) ziyaretçinin açık tercihi (Header kaydeder), (2) tarayıcı dil listesi,
+      // (3) varsayılan dil. `location.replace` bilerek: `assign` geçmişe yazar, "geri" tuşu
+      // sonsuz döngüye girerdi.
+      var root = document.documentElement;
+      var targets = JSON.parse(root.dataset.localeTargets || '{}');
+      var fallback = root.dataset.localeFallback || '/';
+      var stored = null;
+      try {
+        stored = localStorage.getItem('locale');
+      } catch (error) {
+        // Depolama engelliyse (gizli mod, katı çerez politikası) sessizce tarayıcı diline düş.
+      }
+      var target = stored && targets[stored];
+      if (!target) {
+        var langs =
+          navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language];
+        for (var i = 0; i < langs.length; i += 1) {
+          // `tr-TR` → `tr`; bölgesel varyantlar aynı dile düşer.
+          var code = String(langs[i] || '')
+            .toLowerCase()
+            .split('-')[0];
+          if (targets[code]) {
+            target = targets[code];
+            break;
+          }
+        }
+      }
+      location.replace(target || fallback);
+    </script>
+    <noscript>
+      <meta http-equiv="refresh" content={`0;url=${fallback}`} />
+    </noscript>
+  </head>
+  <body
+    style="margin:0;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;padding:1.5rem;text-align:center;font-family:system-ui,sans-serif;color:#111827"
+  >
+    <!-- Tailwind/global.css bilerek yok: sayfa saniyenin onda birinde terk edilir, render'ı
+         bloklayan bir stylesheet net kayıptır. -->
+    <h1 style="font-size:1rem;font-weight:600;margin:0">{t('redirect.title')}</h1>
+    <p>{t('redirect.text')}</p>
+    <!-- JS ve meta refresh ikisi de engelliyse elle seçim: her etiket kendi dilinde. -->
+    <nav style="display:flex;gap:1rem">
+      {
+        locales.map((locale) => (
+          <a href={routePath('home', locale)}>{useTranslations(locale)('nav.switchLocale')}</a>
+        ))
+      }
+    </nav>
+  </body>
+</html>

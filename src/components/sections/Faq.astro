@@ -1,0 +1,53 @@
+---
+import Section from '../ui/Section.astro';
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import JsonLd from '../seo/JsonLd.astro';
+import { getMessages } from '../../messages';
+import type { Locale } from '../../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const { faq } = getMessages(locale);
+---
+
+<Section id="faq">
+  <Container>
+    <SectionHeading eyebrow={faq.eyebrow} title={faq.title} align="left" />
+    <div class="max-w-3xl space-y-3" data-reveal>
+      {
+        faq.items.map((item) => (
+          <details class="group rounded-xl border border-gray-200 dark:border-gray-800">
+            <summary class="flex cursor-pointer items-center justify-between gap-4 px-5 py-4 font-medium [&::-webkit-details-marker]:hidden">
+              {item.question}
+              <svg
+                class="size-5 shrink-0 transition-transform group-open:rotate-180"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="2"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+              </svg>
+            </summary>
+            <p class="px-5 pb-4 text-gray-600 dark:text-gray-400">{item.answer}</p>
+          </details>
+        ))
+      }
+    </div>
+  </Container>
+</Section>
+<JsonLd
+  data={{
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.items.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: { '@type': 'Answer', text: item.answer },
+    })),
+  }}
+/>

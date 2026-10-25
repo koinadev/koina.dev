@@ -1,0 +1,59 @@
+---
+import Section from '../ui/Section.astro';
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import { getMessages } from '../../messages';
+import type { Locale } from '../../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const { roles } = getMessages(locale);
+const anchor = locale === 'tr' ? 'nasil' : 'how';
+
+// Rol rengi marka sisteminden: katılımcı yosun, usta polen, fikir sahibi çam.
+const tone: Record<string, string> = {
+  learner: 'bg-brand-600',
+  mentor: 'bg-pollen-400',
+  founder: 'bg-pine dark:bg-gray-300',
+};
+---
+
+<Section id={anchor}>
+  <Container>
+    <SectionHeading title={roles.title} description={roles.description} align="left" />
+    <div class="grid border-t border-gray-300 lg:grid-cols-3 dark:border-gray-800">
+      {
+        roles.items.map((role) => (
+          <article class="border-b border-gray-300 py-8 lg:border-b-0 lg:border-l lg:px-8 lg:first:border-l-0 lg:first:pl-0 dark:border-gray-800">
+            <div class="flex items-center gap-3">
+              <span class:list={['size-4 rounded-[22%]', tone[role.key]]} aria-hidden="true" />
+              <h3 class="font-display text-2xl font-bold tracking-tight">{role.name}</h3>
+            </div>
+            <p class="mt-3 text-gray-600 dark:text-gray-400">{role.who}</p>
+            <dl class="mt-6 space-y-5">
+              <div>
+                <dt class="text-sm font-semibold text-gray-500">{roles.giveLabel}</dt>
+                <dd class="mt-1">{role.give}</dd>
+              </div>
+              <div>
+                <dt class="text-sm font-semibold text-gray-500">{roles.getLabel}</dt>
+                <dd class="mt-1">
+                  <ul class="space-y-1.5">
+                    {role.get.map((g) => (
+                      <li class="flex gap-2">
+                        <span class:list={['mt-2 size-2 shrink-0 rounded-[22%]', tone[role.key]]} aria-hidden="true" />
+                        {g}
+                      </li>
+                    ))}
+                  </ul>
+                </dd>
+              </div>
+            </dl>
+          </article>
+        ))
+      }
+    </div>
+  </Container>
+</Section>

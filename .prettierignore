@@ -1,0 +1,32 @@
+# `.prettierrc.json` doesn't accept comments, so config rationale lives here instead.
+# `*.md`: `embeddedLanguageFormatting: "off"` — prettier "fixing" embedded code inside
+# docs/ examples corrupts the marker syntax they're showing literally.
+
+# Üretilen / indirilen çıktılar
+node_modules/
+dist/
+.astro/
+.wrangler/
+package-lock.json
+
+# Çıkarma matrisinin geçici proje kopyaları (scripts/test-removal.ts)
+.removal-tmp/
+
+# Sihirbazın kendi bağımlılık ağacı ve kilidi
+create-cli/node_modules/
+create-cli/package-lock.json
+
+# Yerel geliştirme araçları ve iç SDD çalışma alanı (git tarafından da izlenmiyor)
+.claude/
+.superpowers/
+
+# --- Marker sözleşmesi gereği formatlanmayanlar -------------------------------------------------
+
+# Satır marker'ı (`// @feature:ad`) tek bir kod satırının sonunda durur; prettier tek satırlık
+# nesneleri çok satıra açınca marker kapanış satırında kalır ve çıkarma sözdizimini bozar.
+src/messages/en/features.ts
+src/messages/tr/features.ts
+
+# prettier-plugin-astro, {cond && (...)} içine yerleştirilmiş <script> gövdesini JSX sanıp
+# ayrıştırma hatası veriyor; dosya geçerli Astro, sorun yalnızca formatlayıcıda.
+src/components/Analytics.astro

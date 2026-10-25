@@ -1,0 +1,56 @@
+# create-cli'nın kendi doğrulaması ayrı bir iş akışında (template-checks.yml), çünkü üretilen
+# projelerde scripts/create-cli/ yok — bu dosya referans etseydi CI orada hep kırmızı dönerdi.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Aynı dal için üst üste gelen çalışmaları iptal et; matris birkaç dakika sürer.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+# RUNNER_LINUX: repo/org düzeyinde `vars.RUNNER_LINUX` tanımlıysa self-hosted runner kullanılır
+# (büyük matrisler için 2-3× hız). Tanımsızsa GitHub-hosted ubuntu-latest'e düşer.
+jobs:
+  ci:
+    runs-on: ${{ vars.RUNNER_LINUX || 'ubuntu-latest' }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      # bun sürümü bilerek sabit. `latest` her yeni bun sürümünde self-hosted runner'da
+      # yeniden indirme tetikler; o sırada başka bir iş ikiliyi çalıştırıyorsa setup-bun
+      # üzerine yazamaz ve adım `ETXTBSY: text file is busy` ile düşer. Sabit sürüm
+      # runner önbelleğinden gelir, ikiliye hiç yazılmaz. `concurrency` grupları depo
+      # kapsamlı olduğu için farklı depoların işlerini sıraya sokamaz, çare değildir.
+      # package.json'daki `packageManager` alanıyla aynı tutulmalı.
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+
+      # `--frozen-lockfile`: kilitli sürümlerden sapma varsa CI kırmızı döner.
+      - run: bun install --frozen-lockfile
+
+      - name: Tip denetimi (astro check)
+        run: bun run check
+
+      # `bun test` (boşluklu) bun'un kendi runner'ıdır, vitest'in `vi.*` global'lerini tanımaz.
+      - name: Testler (vitest)
+        run: bun run test
+
+      - name: Format denetimi (prettier)
+        run: bun run format:check
+
+      - name: Build
+        run: bun run build
+
+      # 10 özelliğin 1023 alt kümesinden 14'ü sınanıyor (tek tek + 3 etkileşim kombinasyonu +
+      # hepsi birden) — yeşil CI "sınanan kombinasyonlar sağlam" demek, "hepsi" değil.
+      - name: Çıkarma matrisi
+        run: bun run test:removal

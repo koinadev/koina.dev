@@ -1,0 +1,44 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Section from '@/components/ui/Section.astro';
+import Container from '@/components/ui/Container.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import Button from '@/components/ui/Button.astro';
+import Rhythm from '@/components/sections/Rhythm.astro';
+import { getMessages } from '@/messages';
+import { alternatesFor } from '@/i18n/routes';
+
+const { events } = getMessages('en');
+const alternates = alternatesFor('events');
+---
+
+<BaseLayout title={events.title} description={events.description} locale="en" {alternates} route="events">
+  <Section class="!pb-0">
+    <Container>
+      <SectionHeading as="h1" title={events.title} description={events.description} align="left" />
+      <div class="flex flex-wrap items-center gap-3">
+        <span class="text-gray-600 dark:text-gray-400">{events.follow}</span>
+        {events.links.map((l) => <Button href={l.href} variant="secondary">{l.label}</Button>)}
+      </div>
+    </Container>
+  </Section>
+  <Rhythm locale="en" />
+  <Section class="!pt-0">
+    <Container>
+      <h2 class="font-display mb-8 text-3xl font-bold tracking-[-0.03em]">{events.formatsTitle}</h2>
+      <dl class="grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          events.formats.map((f) => (
+            <div class="border-t-2 border-pollen-400 pt-4">
+              <dt class="flex items-baseline justify-between gap-4">
+                <span class="font-display text-xl font-bold tracking-tight">{f.name}</span>
+                <span class="text-sm text-gray-500 tabular-nums">{f.length}</span>
+              </dt>
+              <dd class="mt-2 text-gray-600 dark:text-gray-400">{f.text}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </Container>
+  </Section>
+</BaseLayout>

@@ -1,0 +1,140 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import '../styles/global.css';
+import { blogFeedTitle, organizationJsonLd } from '../config/site.config';
+import MetaTags from '../components/seo/MetaTags.astro';
+import JsonLd from '../components/seo/JsonLd.astro';
+import Header from '../components/sections/Header.astro';
+import Footer from '../components/sections/Footer.astro';
+import Analytics from '../components/Analytics.astro'; /* @feature:analytics */
+import ConsentBanner from '../components/ConsentBanner.astro'; /* @feature:analytics */
+import NavProgress from '../components/ui/NavProgress.astro';
+import { pageTransition } from '../lib/transitions';
+import { useTranslations, getLocaleMeta, type Locale } from '../i18n/utils';
+import type { Alternates, RouteKey } from '../i18n/routes';
+import { routePath } from '../i18n/routes'; // @feature:blog
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  // Locale zorunlu: sayfa kendi dilini biliyor olmalı (TypeScript "atlanırsa 'tr' olsun"
+  // kolaycılığına düşmesin diye).
+  locale: Locale;
+  noindex?: boolean;
+  // Sayfanın tüm dillerdeki karşılıkları; her sayfa kendisi hesaplar, layout yalnızca taşır.
+  alternates?: Alternates;
+  // Route anahtarı. Header/Footer aktif linki BUNUNLA işaretler, pathname karşılaştırılmaz
+  // (bkz. isActiveNav, src/i18n/routes.ts).
+  route?: RouteKey;
+  // OG içerik türü ve yazı tarihleri; yalnızca blog yazı sayfası doldurur (bkz. MetaTags).
+  type?: 'website' | 'article';
+  publishedTime?: string;
+  modifiedTime?: string;
+}
+const { title, description, image, locale, noindex, alternates, route, type, publishedTime, modifiedTime } =
+  Astro.props;
+const t = useTranslations(locale);
+const meta = getLocaleMeta(locale);
+/* @feature:blog */
+// `routePath('home', locale)` i18n varken `/tr/`, çıkarıldığında `/` döner — sabit yazılsaydı
+// i18n çıkarıldığında `<head>`de var olmayan bir beslemeye link kalırdı.
+const rssHref = `${routePath('home', locale)}rss.xml`;
+/* @/feature:blog */
+
+// Geçiş `<html>` üzerinde tanımlı (bkz. src/lib/transitions.ts): `<main>` adlandırılırsa tarayıcı
+// onu eski kaydırma konumundan yenisine taşır ve sayfa her gezinmede yukarı kayar. Üst bilgi kendi
+// kapsamını taşır (`transition:animate="none"`) ve yerinde sabit durur. `transition:persist` bilerek
+// kullanılmıyor: korunan DOM düğümü eski sayfanın durumunu saklar (aktif nav linki, dil
+// değiştirici href'i bayat kalırdı — ölçüldü).
+---
+
+<html lang={meta.htmlLang} dir={meta.dir} transition:animate={pageTransition}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <MetaTags
+      {title}
+      {description}
+      {image}
+      {locale}
+      {noindex}
+      {alternates}
+      {type}
+      {publishedTime}
+      {modifiedTime}
+    />
+    <JsonLd
+      data={{
+        '@context': 'https://schema.org',
+        ...organizationJsonLd(),
+      }}
+    />
+    <!-- @feature:blog -->
+    <!-- Besleme keşfi: okuyucu eklentileri ve tarayıcı bu satırı arar. -->
+    <link rel="alternate" type="application/rss+xml" title={blogFeedTitle} href={rssHref} />
+    <!-- @/feature:blog -->
+    <!-- @feature:dark-mode -->
+    <script is:inline>
+      // `astro:after-swap` yerine `astro:before-swap` kullanılıyor: ClientRouter geçişte
+      // `<html>` özniteliklerini gelen belgeninkiyle değiştiriyor (dedupe edilmiş satır-içi
+      // script'ler her sayfada yeniden çalışmıyor). `dark`/`js-anim` sınıfları swap SONRASI
+      // eklenirse aradaki karede sınıfsız bir kare oluşur — koyu temada beyaz, animasyonlarda
+      // görünür-öğe karesi çakar. Gelen belge swap'tan ÖNCE düzeltilirse bu kare hiç oluşmaz.
+      const applyTheme = (doc) => {
+        const stored = localStorage.getItem('theme');
+        const dark = stored ? stored === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+        doc.documentElement.classList.toggle('dark', dark);
+      };
+      document.documentElement.classList.add('js-anim');
+      applyTheme(document);
+      document.addEventListener('astro:before-swap', (event) => {
+        event.newDocument.documentElement.classList.add('js-anim');
+        applyTheme(event.newDocument);
+      });
+    </script>
+    <!-- @/feature:dark-mode -->
+    <ClientRouter />
+    <!-- @feature:analytics -->
+    <Analytics />
+    <!-- @/feature:analytics -->
+  </head>
+  <body class="flex min-h-screen flex-col">
+    <!--
+      Skip link (WCAG 2.4.1): body'nin ilk odaklanabilir elemanı olmalı, `<ClientRouter />` her
+      swap'ta odağı body'ye sıfırlıyor. Gizleme transform ile, `sr-only`/`focus:not-sr-only` ile
+      DEĞİL — ikisi aynı özgüllükte çakışır, Tailwind'in üretim sırasına bağlı kalırdı. `<main>`
+      `tabindex="-1"` taşır: odaklanabilir olmayan hedefe atlarken tarayıcı kaydırır ama odağı
+      taşımaz.
+    -->
+    <a
+      href="#main"
+      class="fixed top-0 left-0 z-[60] -translate-y-full rounded-br-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white focus:translate-y-0"
+      >{t('nav.skipToContent')}</a
+    >
+    <NavProgress />
+    <Header {locale} {alternates} {route} />
+    <main id="main" tabindex="-1" class="flex-1">
+      <slot />
+    </main>
+    <Footer {locale} {route} />
+    <!-- @feature:analytics -->
+    <ConsentBanner {locale} />
+    <!-- @/feature:analytics -->
+    <script>
+      // Dinamik import: GSAP (~80KB) ayrı bir chunk'a düşer, ana bundle'a gömülmez.
+      // `[data-reveal]`/`[data-split-title]` `.js-anim` sınıfı sayesinde CSS'te baştan gizli
+      // (bkz. global.css) — import başarısız olursa (örn. deploy sonrası bayat chunk hash'i)
+      // `js-anim` kaldırılır, içerik kalıcı görünmez kalmak yerine normal (animasyonsuz) haline döner.
+      document.addEventListener('astro:page-load', async () => {
+        try {
+          const { initAnimations } = await import('../lib/animations');
+          initAnimations();
+        } catch {
+          document.documentElement.classList.remove('js-anim');
+        }
+      });
+    </script>
+  </body>
+</html>

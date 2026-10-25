@@ -1,0 +1,14 @@
+{
+  "eyebrow": "İletişim",
+  "title": "Bize yaz",
+  "description": "Sponsorluk, basın, ortak etkinlik ya da aklındaki başka bir şey için. 48 saat içinde döneriz.",
+  "form": {
+    "name": "Adın",
+    "email": "E-posta",
+    "message": "Mesajın",
+    "submit": "Gönder",
+    "sending": "Gönderiliyor...",
+    "success": "Mesajın bize ulaştı. 48 saat içinde döneceğiz.",
+    "error": "Mesaj gönderilemedi. Bağlantını kontrol edip tekrar dene ya da merhaba@koina.dev adresine yaz."
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "title": "Events and live streams",
+  "description": "At Koina the work happens in the open. On stream you see real projects, real PRs and real mistakes.",
+  "formatsTitle": "Stream formats",
+  "formats": [
+    { "name": "Code Meetup", "length": "90 min", "text": "A team and its mentor close an issue live. Questions from chat are part of the show." },
+    { "name": "Open Review", "length": "60 min", "text": "A mentor reviews real PRs from community projects live. The fastest way to learn review culture." },
+    { "name": "Koina Workshop", "length": "120 min", "text": "A monthly themed session: writing tests, safe code with AI, CI/CD." },
+    { "name": "Mentor AMA", "length": "45 min", "text": "Open Q&A on careers, hiring and experience with a senior industry guest." },
+    { "name": "Demo Day", "length": "150 min", "text": "At the end of each season every team demos its v0.1 live." }
+  ],
+  "follow": "To hear when a stream starts",
+  "links": [
+    { "label": "YouTube", "href": "https://youtube.com/@koinadev" },
+    { "label": "Twitch", "href": "https://twitch.tv/koinadev" },
+    { "label": "Discord", "href": "https://discord.gg/koinadev" }
+  ]
+}

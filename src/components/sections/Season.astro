@@ -1,0 +1,36 @@
+---
+import Section from '../ui/Section.astro';
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import { getMessages } from '../../messages';
+import type { Locale } from '../../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const { season } = getMessages(locale);
+const last = season.steps.length - 1;
+---
+
+<!-- Gerçek bir sıra (hafta 0 → 6), bu yüzden sıralı liste ve hafta etiketleri bilgi taşıyor. -->
+<Section class="bg-pine text-[#e6eee8] dark:bg-gray-900">
+  <Container>
+    <div class="[&_p]:!text-[#e6eee8]/75">
+      <SectionHeading title={season.title} description={season.description} align="left" />
+    </div>
+    <ol class="grid gap-px overflow-hidden rounded-[14px] bg-white/10 sm:grid-cols-2 lg:grid-cols-6">
+      {
+        season.steps.map((step, i) => (
+          <li class="flex flex-col gap-2 bg-pine p-5 dark:bg-gray-900">
+            <span class:list={['text-sm font-semibold', i === last ? 'text-pollen-400' : 'text-sprout']}>
+              {step.week}
+            </span>
+            <span class="font-display text-xl font-bold tracking-tight">{step.name}</span>
+            <span class="text-sm leading-relaxed text-[#e6eee8]/75">{step.text}</span>
+          </li>
+        ))
+      }
+    </ol>
+  </Container>
+</Section>

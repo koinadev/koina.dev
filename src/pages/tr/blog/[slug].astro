@@ -1,0 +1,88 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import BlogCover from '@/components/blog/Cover.astro';
+import Section from '@/components/ui/Section.astro';
+import PostJsonLd from '@/components/blog/PostJsonLd.astro';
+import { formatDate, readingTime } from '@/lib/utils';
+import { getMessages } from '@/messages';
+import { blogPostPath, type Alternates, blogSlugFromId } from '@/i18n/routes';
+import { routePath } from '@/i18n/routes'; // @feature:i18n
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => data.locale === 'tr');
+  return posts.map((post) => ({ params: { slug: blogSlugFromId(post.id, 'tr') }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const { blog } = getMessages('tr');
+const slug = blogSlugFromId(post.id, 'tr');
+// OG görselinin yolu İKİ tüketiciye gidiyor (`<meta og:image>` ve BlogPosting.image);
+// tek değişken, iki yerde ayrı ayrı türetilmesin.
+const ogImage = `/og/blog-${post.id.replaceAll('/', '-')}.png`;
+/* @feature:i18n */
+// Diller arası eşleme SLUG'a göre YAPILAMAZ (slug'lar lokalize). Ortak `translationKey`
+// üzerinden eşleşiyoruz; karşılığı olmayan bir yazıda dil değiştirici o dilin blog
+// INDEX'ine düşer — asla 404'e değil.
+const enPost = (await getCollection('blog', ({ data }) => data.locale === 'en')).find(
+  (entry) => entry.data.translationKey === post.data.translationKey,
+);
+const enHref = enPost ? blogPostPath(blogSlugFromId(enPost.id, 'en'), 'en') : routePath('blog', 'en');
+/* @/feature:i18n */
+const alternates: Alternates = {
+  tr: blogPostPath(slug, 'tr'),
+  en: enHref, // @feature:i18n
+};
+---
+
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  locale="tr"
+  image={ogImage}
+  {alternates}
+  route="blog"
+  type="article"
+  publishedTime={post.data.date.toISOString()}
+  modifiedTime={post.data.updated?.toISOString()}
+>
+  <Section>
+    <Container class="max-w-3xl">
+      <p class="text-sm text-gray-600 dark:text-gray-400">
+        <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date, 'tr')}</time>{' '}
+        · {readingTime(post.body ?? '')}
+        {blog.minRead}
+      </p>
+      {
+        post.data.cover && (
+          <BlogCover
+            cover={post.data.cover}
+            alt={post.data.coverAlt ?? post.data.title}
+            width={1024}
+            loading="eager"
+            class="mt-6 w-full rounded-xl"
+          />
+        )
+      }
+      <h1 class="mt-2 mb-8 text-4xl font-bold">{post.data.title}</h1>
+      <article
+        class="prose prose-gray max-w-none dark:prose-invert prose-headings:font-semibold prose-a:text-brand-600"
+      >
+        <Content />
+      </article>
+    </Container>
+  </Section>
+  <PostJsonLd
+    locale="tr"
+    {slug}
+    title={post.data.title}
+    description={post.data.description}
+    date={post.data.date}
+    updated={post.data.updated}
+    author={post.data.author}
+    image={ogImage}
+    blogTitle={blog.title}
+  />
+</BaseLayout>

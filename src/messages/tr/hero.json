@@ -1,0 +1,9 @@
+{
+  "eyebrow": "Sezon 1: 4 Ocak 2027",
+  "title": "Aynı repoda buluşalım.",
+  "description": "Koina, deneyimli geliştiricilerle yolun başındakileri açık kaynak projelerde buluşturan topluluk. Altı haftada birlikte bir proje çıkarırsın: katılımcı gerçek review alır, usta mentorluğunu kanıtlar, ikisi de birlikte çalıştığı insanları tanır.",
+  "primaryCta": { "label": "Sezon 1'e başvur", "href": "/tr/katil/" },
+  "secondaryCta": { "label": "Nasıl çalışır?", "href": "#nasil" },
+  "legend": { "learner": "Katılımcı katkısı", "mentor": "Usta review'u", "caption": "Bir sezonun katkı ızgarası: iki taraf aynı projede, aynı haftalarda." },
+  "image": { "src": "/og-default.png", "alt": "" }
+}

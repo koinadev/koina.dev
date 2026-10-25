@@ -1,0 +1,20 @@
+{
+  "eyebrow": "Legal",
+  "title": "Privacy Policy",
+  "description": "Template copy explaining how we handle your personal data.",
+  "notice": "This page is a TEMPLATE placeholder. Replace it with your own privacy policy before going live.",
+  "sections": [
+    {
+      "heading": "Data we collect",
+      "body": "When you submit the contact form we receive your name, email address and message. We use them only to answer your request."
+    },
+    {
+      "heading": "Cookies",
+      "body": "Non-essential cookies are loaded only after your explicit consent. You can withdraw it by clearing this site's data in your browser."
+    },
+    {
+      "heading": "Your rights",
+      "body": "You may request access to, correction of, or deletion of your data. Reach us at the address below for any such request."
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+---
+// Sayfa sonu çağrısı: sarı blok, el çizimi kıvrım, en fazla iki buton.
+import Container from '../ui/Container.astro';
+import ActionLink from './ActionLink.astro';
+import type { InfoPage } from '../../messages/types';
+import type { Locale } from '../../i18n/utils';
+
+interface Props {
+  cta: NonNullable<InfoPage['cta']>;
+  locale: Locale;
+}
+const { cta, locale } = Astro.props;
+---
+
+<section class="py-16 sm:py-20">
+  <Container>
+    <div
+      class="relative overflow-hidden rounded-[36px] bg-primary px-6 py-14 text-center text-on-primary sm:px-12 sm:py-16"
+    >
+      <svg
+        class="pointer-events-none absolute -right-10 -bottom-12 h-44 w-[55%]"
+        viewBox="0 0 600 200"
+        aria-hidden="true"
+      >
+        <path
+          d="M-20 170C90 70 210 40 290 110s210 80 330-40"
+          fill="none"
+          stroke="var(--k-squiggle)"
+          stroke-width="22"
+          stroke-linecap="round"></path>
+      </svg>
+      <h2 class="font-display relative mx-auto max-w-2xl text-3xl leading-[1.08] text-balance sm:text-5xl">
+        {cta.title}
+      </h2>
+      <p class="relative mx-auto mt-4 max-w-xl text-lg opacity-85">{cta.text}</p>
+      <div class="relative mt-8 flex flex-wrap justify-center gap-3">
+        <ActionLink action={cta.primary} {locale} button class="!bg-foreground !text-background" />
+        {
+          cta.secondary && (
+            <ActionLink
+              action={cta.secondary}
+              {locale}
+              button
+              variant="secondary"
+              class="!border-foreground"
+            />
+          )
+        }
+      </div>
+    </div>
+  </Container>
+</section>

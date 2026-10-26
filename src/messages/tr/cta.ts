@@ -1,8 +1,11 @@
 // Marker'lı: JSON olamaz — `forms` çıkarılınca buton da silinir.
 export const cta = {
-  title: 'Sezon 1 başvuruları açık',
-  description: 'Katılımcı, usta ya da fikir sahibi olarak başvur. Eşleşmeler 2 Ocak 2027’de duyurulur.',
+  title: 'Aramıza katılmak ücretsiz.',
+  note: 'iki dakika, söz!',
+  description:
+    'Kayıt ol, Discord’a gel, bir emojiyle kendini tanıt. İmece usulü büyüyen topluluğun bir parçası ol.',
   /* @feature:forms */
-  button: { label: 'Başvuru sayfasına git', href: '/tr/katil/' },
+  button: { label: 'Ücretsiz kayıt ol', href: '/tr/kayit' },
   /* @/feature:forms */
+  secondary: { label: 'Bağlantılarımız', href: '/tr/baglantilar' },
 };

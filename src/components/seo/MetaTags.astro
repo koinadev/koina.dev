@@ -38,10 +38,10 @@ const { locale, alternates: alternatesRaw } = Astro.props;
 const alternates = alternatesRaw as Alternates | undefined;
 /* @/feature:i18n */
 const site = Astro.site ?? siteConfig.url;
-// Ölçüldü: `build.format: 'directory'` + `trailingSlash: 'ignore'` yüzünden prerender edilen
-// her sayfanın `Astro.url.pathname`'i sondaki slash'i taşır — kanonik, sitemap ve hreflang
-// aynı biçimde olmalı.
-const canonical = new URL(Astro.url.pathname, site);
+// `build.format: 'file'` altında prerender edilen sayfanın `Astro.url.pathname`'i yazılan dosyanın
+// adını taşır (`/tr/kayit.html`, ölçüldü). Servis edilen adres uzantısız (`/tr/kayit`); kanonik,
+// sitemap ve hreflang aynı biçimde olmalı.
+const canonical = new URL(Astro.url.pathname.replace(/\.html$/, ''), site);
 // Kanonik yalnızca indekslenen sayfalara yazılır: 404 dosyası `404.html` ama `Astro.url.pathname`
 // `/404/` der, kanonik olmadan noindex ile çelişmez (ölçüldü).
 /* @feature:i18n */

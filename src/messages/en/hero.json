@@ -1,9 +1,59 @@
 {
-  "eyebrow": "Season 1: January 4, 2027",
-  "title": "Meet in the same repo.",
-  "description": "Koina brings experienced developers and people early in their careers together on open source projects. In six weeks you ship a project together: participants get real reviews, mentors prove their mentorship, and both meet the people they actually built with.",
-  "primaryCta": { "label": "Apply for Season 1", "href": "/en/join/" },
-  "secondaryCta": { "label": "How it works", "href": "#how" },
-  "legend": { "learner": "Participant commits", "mentor": "Mentor reviews", "caption": "One season's contribution grid: both sides in the same project, in the same weeks." },
-  "image": { "src": "/og-default.png", "alt": "" }
+  "eyebrow": "Free and imece style",
+  "title": "A community that grows ideas together.",
+  "description": "Koina is a free community where experienced developers and people early in their careers work side by side on open source. Nobody pays anybody; everyone shares what they know and we grow together.",
+  "primaryCta": {
+    "label": "Join for free",
+    "href": "/en/signup"
+  },
+  "secondaryCta": {
+    "label": "Our links",
+    "href": "/en/links"
+  },
+  "live": {
+    "fallback": "Code Meetup and Open Review",
+    "next": "Next stream",
+    "now": "Live now",
+    "in": "from now",
+    "days": "d",
+    "hours": "h",
+    "minutes": "min",
+    "weekdays": [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "streams": [
+      {
+        "weekday": 2,
+        "name": "Code Meetup"
+      },
+      {
+        "weekday": 4,
+        "name": "Open Review"
+      }
+    ],
+    "fallbackDay": "Tue and Thu 21:00 TRT"
+  },
+  "status": {
+    "liveLabel": "Next stream",
+    "closeLabel": "Applications close",
+    "closeDate": "December 20, 2026",
+    "closeAt": "2026-12-20T20:59:00Z",
+    "kickoffLabel": "Season 1 kickoff",
+    "kickoffDate": "January 4, 2027",
+    "kickoffAt": "2027-01-04T17:00:00Z",
+    "daysLeft": "days left"
+  },
+  "titleParts": [
+    "A community that grows ideas ",
+    "together.",
+    ""
+  ],
+  "note": "We’re live Tuesdays and Thursdays at 21:00!",
+  "imageAlt": "Five people working together around a laptop in a workspace with a colorful wall"
 }

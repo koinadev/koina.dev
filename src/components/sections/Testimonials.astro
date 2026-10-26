@@ -13,7 +13,7 @@ const { locale } = Astro.props;
 const { testimonials } = getMessages(locale);
 ---
 
-<Section id="testimonials" class="bg-gray-50 dark:bg-gray-900/40">
+<Section id="testimonials" class="bg-gray-50">
   <Container>
     <SectionHeading eyebrow={testimonials.eyebrow} title={testimonials.title} />
     <div class="relative" data-reveal>
@@ -29,10 +29,10 @@ const { testimonials } = getMessages(locale);
         {
           testimonials.items.map((item) => (
             <Card class="w-[85%] shrink-0 snap-center sm:w-[45%] lg:w-[31%]">
-              <p class="text-gray-700 dark:text-gray-300">“{item.quote}”</p>
+              <p class="text-gray-700">“{item.quote}”</p>
               <footer class="mt-6">
                 <p class="font-semibold">{item.name}</p>
-                <p class="text-sm text-gray-600 dark:text-gray-400">{item.role}</p>
+                <p class="text-sm text-gray-600">{item.role}</p>
               </footer>
             </Card>
           ))
@@ -43,7 +43,7 @@ const { testimonials } = getMessages(locale);
           type="button"
           data-slide-prev
           aria-label={testimonials.slider.prev}
-          class="rounded-full border border-gray-300 p-2 hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 dark:border-gray-700 dark:hover:bg-gray-800"
+          class="rounded-full border border-gray-300 p-2 hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
         >
           <svg
             class="size-4"
@@ -59,7 +59,7 @@ const { testimonials } = getMessages(locale);
           type="button"
           data-slide-next
           aria-label={testimonials.slider.next}
-          class="rounded-full border border-gray-300 p-2 hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 dark:border-gray-700 dark:hover:bg-gray-800"
+          class="rounded-full border border-gray-300 p-2 hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
         >
           <svg
             class="size-4"

@@ -1,10 +1,14 @@
 {
-  "eyebrow": "FAQ",
+  "eyebrow": "good questions",
   "title": "Frequently asked questions",
   "items": [
     {
       "question": "Does it cost anything?",
-      "answer": "No. Membership is always free. Costs are covered by season sponsors and individual supporters, and spending is reported openly."
+      "answer": "No. Joining Koina is completely free and will stay that way. The community works imece style: everyone shares what they know and their time; server and event costs are covered openly by sponsors and volunteer support."
+    },
+    {
+      "question": "Can I just watch?",
+      "answer": "Of course. Watching streams, hanging out on Discord and reading the newsletter are all ways to take part. Nobody pushes you to code; you take a small step when you feel ready."
     },
     {
       "question": "How much do I need to know to join as a participant?",
@@ -17,14 +21,6 @@
     {
       "question": "Can I use AI tools?",
       "answer": "Yes. One rule: say so in the PR description and be able to explain the code you send. Sending code you don't understand is not allowed; using tools is."
-    },
-    {
-      "question": "Who owns the projects?",
-      "answer": "The code stays public and the repo lives in the Koina organization; the idea owner can't make it private. The idea owner picks one of three licenses: permissive (MIT/Apache), copyleft (AGPL: anyone running it as a service must publish their changes) or SaaS-protected (FSL: no competing SaaS for two years, then it becomes Apache). Whatever the license, your commit history and demo stay in your portfolio."
-    },
-    {
-      "question": "Can I join from outside Türkiye?",
-      "answer": "Yes. The working language is Turkish, but docs and code are in English. Syncs run in the evening, Türkiye time."
     }
   ]
 }

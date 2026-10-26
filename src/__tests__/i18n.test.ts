@@ -10,13 +10,13 @@ describe('i18n utils', () => {
   });
   it('t() varsayılan dilde çeviri ve fallback', () => {
     const t = useTranslations('tr');
-    expect(t('theme.toggle')).toBe('Temayı değiştir');
+    expect(t('nav.links')).toBe('Bağlantılar');
     expect(t('olmayan.anahtar')).toBe('olmayan.anahtar');
   });
   /* @feature:i18n */
   it('t() ikincil dilde çeviri ve fallback', () => {
     const t = useTranslations('en');
-    expect(t('theme.toggle')).toBe('Toggle theme');
+    expect(t('nav.links')).toBe('Links');
     expect(t('olmayan.anahtar')).toBe('olmayan.anahtar');
   });
   /* @/feature:i18n */

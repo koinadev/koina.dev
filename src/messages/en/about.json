@@ -1,9 +1,0 @@
-{
-  "eyebrow": "Manifesto",
-  "title": "AI made code cheap. It didn't make judgment cheap.",
-  "paragraphs": [
-    "Someone just starting out can now ship a working app with a model in a few hours. But nobody gives them feedback on architecture, testing, security or maintenance; junior roles have shrunk, and so has the place where real first experience used to happen.",
-    "Experienced developers have a different problem: their portfolio can't show how they think or how they grow a team. The line “mentored juniors” on a CV has no evidence behind it.",
-    "At Koina both work in the same repo. The code is open, the reviews are open, the demos are recorded. After six weeks everyone has verifiable work and people they actually built something with. Classic networking runs on business cards; ours runs on commit history."
-  ]
-}

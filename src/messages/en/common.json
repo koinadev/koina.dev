@@ -1,9 +1,9 @@
 {
   "site": {
-    "title": "Koina — Meet in the same repo",
-    "description": "A community that brings experienced developers and newcomers together on open source projects. Six-week seasons, real reviews, live streams.",
+    "title": "Koina — A free, imece-style open source community",
+    "description": "Koina is a free community bringing experienced developers and newcomers together on open source projects. Imece-style support, 6-week seasons, live streams.",
     "shortDescription": "Open source community",
-    "tagline": "Meet in the same repo."
+    "tagline": "Free and imece style. Meet in the same repo."
   },
   "nav": {
     "menu": "Menu",
@@ -11,14 +11,20 @@
     "mainMenu": "Main menu",
     "footerMenu": "Footer menu",
     "switchLocale": "Switch to English",
-    "skipToContent": "Skip to content"
-  },
-  "theme": {
-    "toggle": "Toggle theme"
+    "skipToContent": "Skip to content",
+    "links": "Links",
+    "free": "free, always!"
   },
   "footer": {
     "rights": "All rights reserved.",
-    "source": "Source code (AGPL-3.0)"
+    "source": "Source code (AGPL-3.0)",
+    "free": "Joining Koina is free. Everyone shares what they know and we grow imece style.",
+    "groups": {
+      "community": "Community",
+      "join": "Join",
+      "support": "Support",
+      "follow": "Follow"
+    }
   },
   "redirect": {
     "title": "Redirecting",

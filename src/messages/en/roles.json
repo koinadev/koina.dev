@@ -1,11 +1,49 @@
 {
   "title": "Three roles, one repo",
-  "description": "Every project has one mentor, three to five participants and often an idea owner. We spell out what each gives and gets.",
-  "giveLabel": "You give",
+  "description": "Level doesn’t matter. We wrote down what you can bring and what you get; you decide how much you take part.",
+  "giveLabel": "You bring",
   "getLabel": "You get",
   "items": [
-    { "key": "learner", "name": "Participant", "who": "Students, bootcamp grads, career changers; 0–2 years of experience.", "give": "5–8 hours of work a week, at least one PR or review.", "get": ["Commit history on a real project", "A mentor review on every PR", "A Demo Day recording and a reference"] },
-    { "key": "mentor", "name": "Mentor", "who": "Developers with 5+ years of experience.", "give": "2–3 hours a week: a 45-minute sync and at least 3 PR reviews.", "get": ["A verifiable mentorship record", "Visibility on LinkedIn and in our streams", "Meeting great people early"] },
-    { "key": "founder", "name": "Idea owner", "who": "Founders, product people, anyone with a problem worth solving.", "give": "A clear problem statement and a weekly product sync.", "get": ["An open source MVP", "A team you've actually worked with", "Freedom to build a product on top"] }
-  ]
+    {
+      "key": "learner",
+      "name": "Participant",
+      "who": "Students, bootcamp grads, career changers; 0–2 years of experience.",
+      "give": "Your curiosity and whatever time you can spare each week.",
+      "get": [
+        "Commit history on a real project",
+        "A mentor review on every PR",
+        "A Demo Day recording and a reference"
+      ],
+      "photoAlt": "Four people looking at a laptop screen together",
+      "route": "learners"
+    },
+    {
+      "key": "mentor",
+      "name": "Mentor",
+      "who": "Developers with 5+ years of experience.",
+      "give": "2–3 hours a week: a short sync and a few PR reviews.",
+      "get": [
+        "A verifiable mentorship record",
+        "Visibility on LinkedIn and in our streams",
+        "Meeting great people early"
+      ],
+      "photoAlt": "Two people working on code together at a monitor",
+      "route": "mentors"
+    },
+    {
+      "key": "founder",
+      "name": "Idea owner",
+      "who": "Founders, product people, anyone with a problem worth solving.",
+      "give": "A clear problem and a short weekly product chat.",
+      "get": [
+        "An open source MVP",
+        "A team you've actually worked with",
+        "Freedom to build a product on top"
+      ],
+      "photoAlt": "A group working together on laptops at a long table",
+      "route": "founders"
+    }
+  ],
+  "eyebrow": "there’s a place for everyone",
+  "more": "Learn more"
 }

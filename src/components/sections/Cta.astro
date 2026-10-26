@@ -1,9 +1,7 @@
 ---
 import Section from '../ui/Section.astro';
 import Container from '../ui/Container.astro';
-/* @feature:forms */
 import Button from '../ui/Button.astro';
-/* @/feature:forms */
 import { getMessages } from '../../messages';
 import type { Locale } from '../../i18n/utils';
 
@@ -14,24 +12,45 @@ const { locale } = Astro.props;
 const { cta } = getMessages(locale);
 ---
 
-<Section id="cta">
+<Section id="cta" class="!pt-8">
   <Container>
     <div
-      class="grid gap-8 rounded-[22px] bg-pine px-8 py-14 text-[#e6eee8] sm:px-12 lg:grid-cols-[1fr_auto] lg:items-end dark:bg-gray-900"
-      data-reveal
+      class="relative overflow-hidden rounded-[36px] bg-primary px-6 py-16 text-center text-on-primary sm:px-12 sm:py-20"
     >
-      <div>
-        <h2 class="font-display text-4xl leading-[1.02] font-bold tracking-[-0.03em] sm:text-5xl">{cta.title}</h2>
-        <p class="mt-4 max-w-xl text-[#e6eee8]/75">{cta.description}</p>
-      </div>
+      <svg
+        class="pointer-events-none absolute -bottom-20 -left-10 h-44 w-[45%] opacity-90"
+        viewBox="0 0 600 200"
+        aria-hidden="true"
+      >
+        <path
+          d="M-20 160C80 60 200 40 280 110s200 80 340-40"
+          fill="none"
+          stroke="var(--k-squiggle)"
+          stroke-width="22"
+          stroke-linecap="round"></path>
+      </svg>
+      <p class="hand relative rotate-[-3deg] text-3xl">{cta.note}</p>
+      <h2
+        class="font-display relative mx-auto mt-3 max-w-2xl text-4xl leading-[1.05] text-balance sm:text-6xl"
+      >
+        {cta.title}
+      </h2>
+      <p class="relative mx-auto mt-5 max-w-xl text-lg opacity-80">{cta.description}</p>
       <!-- @feature:forms -->
       <Button
         href={cta.button.href}
         size="lg"
-        class="!bg-pollen-400 !text-pine hover:!bg-pollen-300"
+        class="relative mt-9 !bg-foreground !text-background"
         analytics={{ event: 'cta_section' }}>{cta.button.label}</Button
       >
       <!-- @/feature:forms -->
+      <Button
+        href={cta.secondary.href}
+        size="lg"
+        variant="secondary"
+        class="relative mt-3 !border-foreground sm:mt-9 sm:ml-2"
+        analytics={{ event: 'cta_section', cta: 'links' }}>{cta.secondary.label}</Button
+      >
     </div>
   </Container>
 </Section>

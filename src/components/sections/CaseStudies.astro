@@ -2,9 +2,7 @@
 import Section from '../ui/Section.astro';
 import Container from '../ui/Container.astro';
 import SectionHeading from '../ui/SectionHeading.astro';
-import Card from '../ui/Card.astro';
 import Badge from '../ui/Badge.astro';
-import Reveal from '../ui/Reveal.astro';
 import { getMessages } from '../../messages';
 import type { Locale } from '../../i18n/utils';
 
@@ -15,25 +13,24 @@ const { locale } = Astro.props;
 const { caseStudies } = getMessages(locale);
 ---
 
-<Section id="case-studies">
+<Section id="case-studies" class="bg-surface">
   <Container>
-    <SectionHeading eyebrow={caseStudies.eyebrow} title={caseStudies.title} align="left" />
+    <SectionHeading eyebrow={caseStudies.eyebrow} title={caseStudies.title} />
     <div class="grid gap-6 lg:grid-cols-3">
       {
-        caseStudies.items.map((item, i) => (
-          <Reveal delay={i * 0.1}>
-            <Card class="flex h-full flex-col">
-              <p class="text-4xl font-bold text-brand-600 dark:text-brand-400">{item.metric}</p>
-              <p class="text-sm text-gray-600 dark:text-gray-400">{item.metricLabel}</p>
-              <h3 class="mt-4 font-semibold">{item.title}</h3>
-              <p class="mt-2 flex-1 text-sm text-gray-600 dark:text-gray-400">{item.summary}</p>
-              <div class="mt-4 flex flex-wrap gap-2">
-                {item.tags.map((tag) => (
-                  <Badge>{tag}</Badge>
-                ))}
-              </div>
-            </Card>
-          </Reveal>
+        caseStudies.items.map((item) => (
+          <article class="flex flex-col rounded-[28px] bg-background p-7">
+            <p class="label">
+              {item.metric}, {item.metricLabel}
+            </p>
+            <h3 class="font-display mt-3 text-2xl">{item.title}</h3>
+            <p class="mt-3 flex-1 leading-relaxed text-muted-foreground">{item.summary}</p>
+            <div class="mt-6 flex flex-wrap gap-2">
+              {item.tags.map((tag) => (
+                <Badge>{tag}</Badge>
+              ))}
+            </div>
+          </article>
         ))
       }
     </div>

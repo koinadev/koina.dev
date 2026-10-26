@@ -29,13 +29,73 @@ export const routes = {
     tr: '/gizlilik',
     en: '/privacy', // @feature:i18n
   },
-  join: {
-    tr: '/katil',
-    en: '/join', // @feature:i18n
+  signup: {
+    tr: '/kayit',
+    en: '/signup', // @feature:i18n
+  },
+  links: {
+    tr: '/baglantilar',
+    en: '/links', // @feature:i18n
+  },
+  about: {
+    tr: '/hakkimizda',
+    en: '/about', // @feature:i18n
+  },
+  why: {
+    tr: '/neden-kurulduk',
+    en: '/why-we-exist', // @feature:i18n
+  },
+  manifesto: {
+    tr: '/manifesto',
+    en: '/manifesto', // @feature:i18n
+  },
+  imece: {
+    tr: '/imece',
+    en: '/imece', // @feature:i18n
+  },
+  howItWorks: {
+    tr: '/nasil-calisir',
+    en: '/how-it-works', // @feature:i18n
+  },
+  learners: {
+    tr: '/yeni-baslayanlar-icin',
+    en: '/for-beginners', // @feature:i18n
+  },
+  mentors: {
+    tr: '/ustalar-icin',
+    en: '/for-mentors', // @feature:i18n
+  },
+  founders: {
+    tr: '/fikir-sahipleri-icin',
+    en: '/for-founders', // @feature:i18n
+  },
+  projects: {
+    tr: '/projeler',
+    en: '/projects', // @feature:i18n
   },
   events: {
     tr: '/etkinlikler',
     en: '/events', // @feature:i18n
+  },
+  streams: {
+    tr: '/canli-yayinlar',
+    en: '/live', // @feature:i18n
+  },
+  sponsor: {
+    tr: '/sponsorluk',
+    en: '/sponsorship', // @feature:i18n
+  },
+  faq: {
+    tr: '/sss',
+    en: '/faq', // @feature:i18n
+  },
+  conduct: {
+    tr: '/davranis-kurallari',
+    en: '/code-of-conduct', // @feature:i18n
+  },
+  licensing: {
+    tr: '/lisans',
+    en: '/licensing', // @feature:i18n
   },
 };
 
@@ -51,16 +111,16 @@ export interface NavLink {
   hash?: string;
 }
 
-// Sondaki slash ölçüldü, keyfi değil: `build.format: 'directory'` + `trailingSlash: 'ignore'`
-// prerender'da `Astro.url.pathname` sondaki slash'i taşır; kanonik URL, sitemap, hreflang aynı
-// biçimi kullanmalı yoksa kanonik kendi hreflang'inden farklı olur.
-/** `/tr/`, `/tr/iletisim/`, `/en/contact/` — daima sondaki slash ile. */
+// Sondaki slash YOK: `build.format: 'file'` + `trailingSlash: 'never'` (astro.config.mjs).
+// Kanonik URL, sitemap ve hreflang aynı biçimi kullanmalı yoksa kanonik kendi hreflang'inden
+// farklı olur.
+/** `/tr`, `/tr/iletisim`, `/en/contact` — sondaki slash olmadan; yalnız kök `/`. */
 export function routePath(key: RouteKey, locale: Locale): string {
   // Dil ön eki ayrı satırda ve marker'lı: i18n çıkarıldığında ön ek de gitmeli, şablon içine
   // gömülseydi çıkarma sonrası tüm iç linkler var olmayan `/tr/...` yollarını gösterirdi.
   let path: string = routes[key][locale];
   path = `/${locale}${path}`; // @feature:i18n
-  return `${path}/`;
+  return path || '/';
 }
 
 /* @feature:blog */
@@ -78,9 +138,9 @@ export function blogSlugFromId(id: string, locale: Locale): string {
   return id.startsWith(prefix) ? id.slice(prefix.length) : id;
 }
 
-/** Blog yazısı yolu: `/tr/blog/<slug>/`. */
+/** Blog yazısı yolu: `/tr/blog/<slug>`. */
 export function blogPostPath(slug: string, locale: Locale): string {
-  return `${routePath('blog', locale)}${slug}/`;
+  return `${routePath('blog', locale)}/${slug}`;
 }
 /* @/feature:blog */
 
@@ -92,7 +152,7 @@ export function alternatesFor(key: RouteKey): Alternates {
 }
 
 /**
- * Hash linklerini o dilin ana sayfasına bağlar: `/tr/iletisim/` sayfasındayken çıplak `#features`
+ * Hash linklerini o dilin ana sayfasına bağlar: `/tr/iletisim` sayfasındayken çıplak `#features`
  * hiçbir yere gitmez, hedef bölüm ana sayfada. Hash olmayan değerler olduğu gibi döner.
  */
 export function localizedHref(hrefOrHash: string, locale: Locale): string {

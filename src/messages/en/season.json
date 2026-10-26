@@ -2,11 +2,36 @@
   "title": "One season, six weeks",
   "description": "Every season runs on the same rhythm. At the end every project ships a release and every team gives a demo.",
   "steps": [
-    { "week": "Week 0", "name": "Matching", "text": "Projects are picked, teams are formed, kickoff stream." },
-    { "week": "Week 1", "name": "Discovery", "text": "Problem statement, architecture decision record, repo skeleton." },
-    { "week": "Week 2", "name": "Foundation", "text": "CI, test setup and the first vertical slice." },
-    { "week": "Weeks 3–4", "name": "Build", "text": "Features, mid-season demo stream, lots of review." },
-    { "week": "Week 5", "name": "Polish", "text": "Docs, security check, release candidate." },
-    { "week": "Week 6", "name": "Demo Day", "text": "v0.1 release, live demo, retro and portfolio cards." }
-  ]
+    {
+      "week": "Week 0",
+      "name": "Matching",
+      "text": "Projects are picked, teams are formed, kickoff stream."
+    },
+    {
+      "week": "Week 1",
+      "name": "Discovery",
+      "text": "Problem statement, architecture decision record, repo skeleton."
+    },
+    {
+      "week": "Week 2",
+      "name": "Foundation",
+      "text": "CI, test setup and the first vertical slice."
+    },
+    {
+      "week": "Weeks 3–4",
+      "name": "Build",
+      "text": "Features, mid-season demo stream, lots of review."
+    },
+    {
+      "week": "Week 5",
+      "name": "Polish",
+      "text": "Docs, security check, release candidate."
+    },
+    {
+      "week": "Week 6",
+      "name": "Demo Day",
+      "text": "v0.1 release, live demo, retro and portfolio cards."
+    }
+  ],
+  "eyebrow": "six weeks, one rhythm"
 }

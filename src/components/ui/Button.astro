@@ -26,14 +26,15 @@ const analyticsAttrs = Object.fromEntries(
 );
 /* @/feature:analytics */
 const base =
-  'inline-flex items-center justify-center gap-2 rounded-lg font-semibold whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600';
+  'inline-flex items-center justify-center gap-2 rounded-full font-medium whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground';
 const variants = {
-  primary: 'bg-brand-600 text-white hover:bg-brand-700',
+  primary:
+    'bg-primary text-on-primary hover:brightness-[1.04] hover:shadow-[0_6px_20px_-8px_var(--k-accent)]',
   secondary:
-    'bg-gray-100 text-gray-900 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700',
-  ghost: 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800',
+    'border-2 border-foreground bg-transparent text-foreground hover:bg-foreground hover:text-background',
+  ghost: 'text-muted-foreground hover:text-foreground',
 };
-const sizes = { md: 'px-4 py-2 text-sm', lg: 'px-6 py-3 text-base' };
+const sizes = { md: 'h-10 px-5 text-sm', lg: 'h-12 px-6 text-base' };
 const classes = [base, variants[variant], sizes[size], className];
 ---
 

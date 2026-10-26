@@ -1,0 +1,38 @@
+---
+// Hugeicons (ücretsiz set, MIT). İkon verisi `[etiket, öznitelikler][]` dizisi; build sırasında
+// SVG'ye çevrilir, tarayıcıya JS gitmez. Ad, paketin dışa aktardığı adla aynı: `UserGroupIcon`.
+import * as icons from '@hugeicons/core-free-icons';
+import type { IconName } from '../../lib/icons';
+
+interface Props {
+  name: IconName;
+  class?: string;
+  // Varsayılan dekoratif; anlam taşıyan tek başına ikonlarda etiket ver.
+  label?: string;
+  strokeWidth?: number;
+}
+const { name, class: className = 'size-5', label, strokeWidth = 1.6 } = Astro.props;
+const nodes = icons[name] as unknown as [string, Record<string, string>][];
+const kebab = (key: string) => key.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`);
+const attrs = (a: Record<string, string>) =>
+  Object.entries(a)
+    .filter(([k]) => k !== 'key')
+    .map(([k, v]) => [kebab(k), k === 'strokeWidth' ? String(strokeWidth) : v] as const);
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  class={className}
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : 'true'}
+>
+  {
+    nodes.map(([tag, a]) => {
+      const Tag = tag;
+      return <Tag {...Object.fromEntries(attrs(a))} />;
+    })
+  }
+</svg>

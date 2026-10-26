@@ -50,7 +50,7 @@ const alternates: Alternates = {
 >
   <Section>
     <Container class="max-w-3xl">
-      <p class="text-sm text-gray-600 dark:text-gray-400">
+      <p class="text-sm text-gray-600">
         <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date, 'tr')}</time>{' '}
         · {readingTime(post.body ?? '')}
         {blog.minRead}
@@ -67,9 +67,7 @@ const alternates: Alternates = {
         )
       }
       <h1 class="mt-2 mb-8 text-4xl font-bold">{post.data.title}</h1>
-      <article
-        class="prose prose-gray max-w-none dark:prose-invert prose-headings:font-semibold prose-a:text-brand-600"
-      >
+      <article class="prose prose-gray max-w-none prose-headings:font-semibold prose-a:text-brand-600">
         <Content />
       </article>
     </Container>

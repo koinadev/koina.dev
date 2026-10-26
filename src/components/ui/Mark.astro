@@ -1,0 +1,40 @@
+---
+// Koina işareti: uzun bir hap (K'nın gövdesi) ve üç nokta (bir araya gelen insanlar). Renkler
+// palettes.css değişkenlerinden; geometri src/lib/mark.ts ile aynı.
+import { MARK_SHAPES } from '../../lib/mark';
+
+interface Props {
+  class?: string;
+  title?: string;
+}
+const { class: className = '', title } = Astro.props;
+const { stem, joint, top, bottom } = MARK_SHAPES;
+---
+
+<svg
+  class:list={['koina-mark', className]}
+  viewBox="0 0 96 96"
+  role={title ? 'img' : undefined}
+  aria-label={title}
+  aria-hidden={title ? undefined : 'true'}
+>
+  <rect class="stem" {...stem}></rect>
+  <circle class="joint" {...joint}></circle>
+  <circle class="top" {...top}></circle>
+  <circle class="bottom" {...bottom}></circle>
+</svg>
+
+<style>
+  .koina-mark .stem {
+    fill: var(--k-fg);
+  }
+  .koina-mark .joint {
+    fill: var(--k-primary-text);
+  }
+  .koina-mark .top {
+    fill: var(--k-accent);
+  }
+  .koina-mark .bottom {
+    fill: var(--k-primary);
+  }
+</style>

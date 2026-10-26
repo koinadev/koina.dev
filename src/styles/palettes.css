@@ -1,0 +1,41 @@
+/* Koina görsel dili: "imece sofrası". Açık kâğıt zemin, lacivert mürekkep, ayçiçeği sarısı
+   hap butonlar; el çizimi notlarda pembe halka ve nane yeşili kıvrım. Neşeli ama sakin: renkli
+   öğeler küçük, zemin ve metin her zaman sade. Site yalnızca açık temada yayınlanır.
+
+   `global.css` bu `--k-*` değişkenlerini Tailwind ölçeklerine bağlar; renkleri yalnızca burada
+   değiştir. Kontrast: metin #1B1F3B/#FBFAF7 15.6; ikincil #50567A/#FBFAF7 6.9; sarı buton
+   üzerinde metin #1B1F3B/#FFD23F 11.9; link mavisi #3341C4/#FBFAF7 7.4. */
+
+@import '@fontsource-variable/dm-sans';
+@import '@fontsource-variable/caveat';
+@import '@fontsource-variable/jetbrains-mono';
+
+:root {
+  --k-paper: #fbfaf7;
+  --k-ink: #11142a;
+  --k-font-display: 'DM Sans Variable', system-ui, sans-serif;
+  --k-font-body: 'DM Sans Variable', system-ui, sans-serif;
+  --k-font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+  --k-font-hand: 'Caveat Variable', 'Comic Sans MS', cursive;
+  --k-display-weight: 700;
+  --k-display-tracking: -0.03em;
+  --k-cell-radius: 6px;
+  --k-cell-radius-svg: 7;
+
+  --k-bg: #fbfaf7;
+  --k-surface: #ffffff;
+  --k-fg: #1b1f3b;
+  --k-muted: #50567a;
+  --k-primary: #ffd23f;
+  --k-primary-text: #3341c4;
+  --k-on-primary: #1b1f3b;
+  --k-accent: #ff7aa2;
+  --k-live: #e5484d;
+  --k-tint: #eceeff;
+  --k-on-tint: #1b1f3b;
+  --k-ink-surface: #1b1f3b;
+  --k-on-ink: #fbfaf7;
+  --k-line: #e7e5ee;
+  --k-squiggle: #9fe3c0;
+  --k-ring: #ff7aa2;
+}

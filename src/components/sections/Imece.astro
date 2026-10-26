@@ -1,0 +1,41 @@
+---
+// İmece fikri: fotoğraf + kısa hikâye + bilgi sayfasına bağlantı.
+import { Image } from 'astro:assets';
+import Section from '../ui/Section.astro';
+import Container from '../ui/Container.astro';
+import ActionLink from '../page/ActionLink.astro';
+import { photos } from '../../lib/photos';
+import { getMessages } from '../../messages';
+import type { Locale } from '../../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const { imece } = getMessages(locale).home;
+const [lead, ...rest] = imece.paragraphs;
+---
+
+<Section id="imece">
+  <Container class="grid items-center gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
+    <div class="relative mx-2 sm:mx-0">
+      <span
+        class="absolute -inset-2 -z-10 rotate-[2deg] rounded-[30px] bg-squiggle sm:-inset-3 sm:rotate-[3deg] sm:rounded-[34px]"
+        aria-hidden="true"></span>
+      <Image
+        src={photos.hands}
+        alt={imece.photoAlt}
+        widths={[480, 800, 1100]}
+        sizes="(min-width: 1024px) 520px, 100vw"
+        class="aspect-[4/5] w-full rounded-[28px] object-cover"
+      />
+    </div>
+    <div>
+      <p class="hand -rotate-2 text-2xl text-primary-text">{imece.note}</p>
+      <h2 class="font-display mt-3 text-4xl leading-[1.08] text-balance sm:text-5xl">{imece.title}</h2>
+      <p class="mt-7 text-xl leading-relaxed">{lead}</p>
+      {rest.map((p) => <p class="mt-5 text-lg leading-relaxed text-muted-foreground">{p}</p>)}
+      <ActionLink action={imece.link} {locale} class="mt-8 text-lg" />
+    </div>
+  </Container>
+</Section>

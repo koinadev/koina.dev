@@ -1,13 +1,56 @@
 {
   "title": "Haftalık ritim",
   "description": "Her hafta aynı gün aynı şey olur. Takvimine bir kere ekle, kaçırma.",
-  "columns": { "day": "Gün", "time": "Saat", "what": "Ne", "where": "Nerede" },
+  "columns": {
+    "day": "Gün",
+    "time": "Saat",
+    "what": "Ne",
+    "where": "Nerede"
+  },
   "items": [
-    { "day": "Pazartesi", "time": "09:00", "what": "Koina Haftası bülteni", "where": "E-posta", "live": false },
-    { "day": "Salı", "time": "21:00", "what": "Kodla Buluşma: bir ekiple canlı kodlama", "where": "YouTube, Twitch", "live": true },
-    { "day": "Çarşamba", "time": "20:00", "what": "Eşli çalışma saati, takılan herkese açık", "where": "Discord", "live": false },
-    { "day": "Perşembe", "time": "21:00", "what": "Açık Review: gerçek PR'lar canlı inceleniyor", "where": "YouTube, Twitch", "live": true },
-    { "day": "Cuma", "time": "18:00", "what": "Demo Cuma, ayın 3. haftası", "where": "Discord sahnesi", "live": true },
-    { "day": "Cumartesi", "time": "11:00", "what": "Koina Atölye, ayın 1. haftası", "where": "YouTube", "live": true }
-  ]
+    {
+      "day": "Pazartesi",
+      "time": "09:00",
+      "what": "Koina Haftası bülteni",
+      "where": "E-posta",
+      "live": false
+    },
+    {
+      "day": "Salı",
+      "time": "21:00",
+      "what": "Kodla Buluşma: bir ekiple canlı kodlama",
+      "where": "YouTube, Twitch",
+      "live": true
+    },
+    {
+      "day": "Çarşamba",
+      "time": "20:00",
+      "what": "Eşli çalışma saati, takılan herkese açık",
+      "where": "Discord",
+      "live": false
+    },
+    {
+      "day": "Perşembe",
+      "time": "21:00",
+      "what": "Açık Review: gerçek PR'lar canlı inceleniyor",
+      "where": "YouTube, Twitch",
+      "live": true
+    },
+    {
+      "day": "Cuma",
+      "time": "18:00",
+      "what": "Demo Cuma, ayın 3. haftası",
+      "where": "Discord sahnesi",
+      "live": true
+    },
+    {
+      "day": "Cumartesi",
+      "time": "11:00",
+      "what": "Koina Atölye, ayın 1. haftası",
+      "where": "YouTube",
+      "live": true
+    }
+  ],
+  "eyebrow": "takvimine ekle",
+  "photoAlt": "Kulaklıklarla mikrofon başında yayın kaydeden iki kişi"
 }

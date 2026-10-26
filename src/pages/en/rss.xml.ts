@@ -15,6 +15,8 @@ export const GET: APIRoute = async (context) => {
     description: blog.rssDescription,
     // `context.site` sitenin köküdür (dil algılama stub'ı) — kanalın gerçek `<link>`i blog kökü.
     site: new URL(routePath('blog', 'en'), context.site ?? siteConfig.url).href,
+    // Paket varsayılanı adreslerin sonuna `/` ekler; site adresleri slash'sız (astro.config.mjs).
+    trailingSlash: false,
     items: posts.map((post) => ({
       title: post.data.title,
       description: post.data.description,

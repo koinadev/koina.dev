@@ -1,78 +1,69 @@
 ---
+import { Image } from 'astro:assets';
 import Section from '../ui/Section.astro';
 import Container from '../ui/Container.astro';
 import SectionHeading from '../ui/SectionHeading.astro';
+import stream from '../../assets/photos/stream.jpg';
 import { getMessages } from '../../messages';
 import type { Locale } from '../../i18n/utils';
 
 interface Props {
   locale: Locale;
   headingLevel?: 'h1' | 'h2';
+  // Etkinlikler sayfası fotoğrafsız, tam genişlik liste ister.
+  photo?: boolean;
 }
-const { locale, headingLevel = 'h2' } = Astro.props;
+const { locale, headingLevel = 'h2', photo = true } = Astro.props;
 const { rhythm } = getMessages(locale);
 const liveLabel = locale === 'tr' ? 'Canlı yayın' : 'Live stream';
 ---
 
 <Section id={locale === 'tr' ? 'ritim' : 'rhythm'}>
   <Container>
-    <SectionHeading title={rhythm.title} description={rhythm.description} align="left" as={headingLevel} />
-    <!-- Telefonda tablo yerine yığılmış liste: dört sütun 390px'e sığmıyor. -->
-    <ul class="divide-y divide-gray-200 border-y border-gray-300 sm:hidden dark:divide-gray-800 dark:border-gray-800">
+    <SectionHeading
+      eyebrow={rhythm.eyebrow}
+      title={rhythm.title}
+      description={rhythm.description}
+      as={headingLevel}
+    />
+    <div class:list={['grid items-start gap-8', photo && 'lg:grid-cols-[1fr_1.25fr]']}>
       {
-        rhythm.items.map((item) => (
-          <li class="py-4">
-            <p class="flex items-baseline justify-between gap-4">
-              <span class="font-display text-lg font-bold tracking-tight">{item.day}</span>
-              <span class="tabular-nums">{item.time}</span>
-            </p>
-            <p class="mt-1 flex items-center gap-2">
-              {item.live && (
-                <span class="size-2.5 shrink-0 rounded-[22%] bg-pollen-400" title={liveLabel}>
-                  <span class="sr-only">{liveLabel}: </span>
-                </span>
-              )}
-              {item.what}
-            </p>
-            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">{item.where}</p>
-          </li>
-        ))
+        photo && (
+          <Image
+            src={stream}
+            alt={rhythm.photoAlt}
+            widths={[480, 800, 1000]}
+            sizes="(min-width: 1024px) 460px, 100vw"
+            class="aspect-[4/3] w-full rounded-[28px] object-cover lg:aspect-[4/5]"
+          />
+        )
       }
-    </ul>
-    <div class="hidden sm:block">
-      <table class="w-full border-collapse text-left">
-        <thead>
-          <tr class="border-b border-gray-300 text-sm text-gray-500 dark:border-gray-800">
-            <th scope="col" class="py-3 pr-4 font-semibold">{rhythm.columns.day}</th>
-            <th scope="col" class="py-3 pr-4 font-semibold">{rhythm.columns.time}</th>
-            <th scope="col" class="py-3 pr-4 font-semibold">{rhythm.columns.what}</th>
-            <th scope="col" class="py-3 font-semibold">{rhythm.columns.where}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            rhythm.items.map((item) => (
-              <tr class="border-b border-gray-200 dark:border-gray-800">
-                <th scope="row" class="font-display py-4 pr-4 text-lg font-bold tracking-tight">
-                  {item.day}
-                </th>
-                <td class="py-4 pr-4 tabular-nums">{item.time}</td>
-                <td class="py-4 pr-4">
-                  <span class="inline-flex items-center gap-2">
-                    {item.live && (
-                      <span class="size-2.5 rounded-[22%] bg-pollen-400" title={liveLabel}>
-                        <span class="sr-only">{liveLabel}: </span>
-                      </span>
-                    )}
-                    {item.what}
-                  </span>
-                </td>
-                <td class="py-4 text-gray-600 dark:text-gray-400">{item.where}</td>
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
+      <ul class="rounded-[28px] bg-surface p-2 shadow-[0_1px_0_var(--k-line)]">
+        {
+          rhythm.items.map((item, i) => (
+            <li
+              class:list={[
+                'grid grid-cols-[6.5rem_1fr] gap-x-4 gap-y-1 px-5 py-4 sm:grid-cols-[7.5rem_4rem_1fr]',
+                i > 0 && 'border-t border-line',
+              ]}
+            >
+              <span class="font-display text-lg">{item.day}</span>
+              <span class="font-mono text-sm text-muted-foreground sm:pt-1">{item.time}</span>
+              <span class="col-span-2 sm:col-span-1">
+                <span class="flex items-center gap-2">
+                  {item.live && (
+                    <span class="size-2 shrink-0 rounded-full bg-live" title={liveLabel}>
+                      <span class="sr-only">{liveLabel}: </span>
+                    </span>
+                  )}
+                  {item.what}
+                </span>
+                <span class="text-sm text-muted-foreground">{item.where}</span>
+              </span>
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </Container>
 </Section>

@@ -3,6 +3,8 @@ import Section from '../ui/Section.astro';
 import Container from '../ui/Container.astro';
 import SectionHeading from '../ui/SectionHeading.astro';
 import JsonLd from '../seo/JsonLd.astro';
+import Icon from '../ui/Icon.astro';
+import ActionLink from '../page/ActionLink.astro';
 import { getMessages } from '../../messages';
 import type { Locale } from '../../i18n/utils';
 
@@ -10,34 +12,35 @@ interface Props {
   locale: Locale;
 }
 const { locale } = Astro.props;
-const { faq } = getMessages(locale);
+const { faq, home } = getMessages(locale);
 ---
 
 <Section id="faq">
-  <Container>
-    <SectionHeading eyebrow={faq.eyebrow} title={faq.title} align="left" />
-    <div class="max-w-3xl space-y-3" data-reveal>
+  <Container class="max-w-3xl">
+    <SectionHeading eyebrow={faq.eyebrow} title={faq.title} />
+    <div class="space-y-3">
       {
         faq.items.map((item) => (
-          <details class="group rounded-xl border border-gray-200 dark:border-gray-800">
-            <summary class="flex cursor-pointer items-center justify-between gap-4 px-5 py-4 font-medium [&::-webkit-details-marker]:hidden">
+          <details class="group rounded-3xl bg-surface px-6 shadow-[0_1px_0_var(--k-line)]">
+            <summary class="flex cursor-pointer items-center justify-between gap-6 py-5 text-[17px] font-semibold [&::-webkit-details-marker]:hidden">
               {item.question}
-              <svg
-                class="size-5 shrink-0 transition-transform group-open:rotate-180"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="2"
-                stroke="currentColor"
+              <span
+                class="grid size-8 shrink-0 place-items-center rounded-full bg-primary text-on-primary"
                 aria-hidden="true"
               >
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-              </svg>
+                <Icon
+                  name="Add01Icon"
+                  class="size-4 transition-transform group-open:rotate-45"
+                  strokeWidth={2}
+                />
+              </span>
             </summary>
-            <p class="px-5 pb-4 text-gray-600 dark:text-gray-400">{item.answer}</p>
+            <p class="pb-6 leading-relaxed text-muted-foreground">{item.answer}</p>
           </details>
         ))
       }
     </div>
+    <div class="mt-8 text-center"><ActionLink action={home.faqLink} {locale} /></div>
   </Container>
 </Section>
 <JsonLd

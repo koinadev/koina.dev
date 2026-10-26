@@ -1,0 +1,46 @@
+---
+// "Burası bir topluluk": ücretsiz, imece, açık, eğlenceli. Ana sayfanın ilk mesajı.
+import Section from '../ui/Section.astro';
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import Icon from '../ui/Icon.astro';
+import { getMessages } from '../../messages';
+import type { Locale } from '../../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const { pillars } = getMessages(locale).home;
+---
+
+<Section id="topluluk">
+  <Container>
+    <SectionHeading eyebrow={pillars.note} title={pillars.title} description={pillars.description} />
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        pillars.items.map((item, i) => (
+          <article
+            class:list={[
+              'rounded-[28px] p-7',
+              i === 0 ? 'bg-primary text-on-primary' : 'bg-surface shadow-[0_1px_0_var(--k-line)]',
+            ]}
+          >
+            <span
+              class:list={[
+                'grid size-12 place-items-center rounded-2xl',
+                i === 0 ? 'bg-on-primary/10' : 'bg-tint text-primary-text',
+              ]}
+            >
+              <Icon name={item.icon} class="size-6" />
+            </span>
+            <h3 class="font-display mt-6 text-xl">{item.title}</h3>
+            <p class:list={['mt-2 leading-relaxed', i === 0 ? 'opacity-80' : 'text-muted-foreground']}>
+              {item.text}
+            </p>
+          </article>
+        ))
+      }
+    </div>
+  </Container>
+</Section>

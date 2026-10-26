@@ -1,0 +1,46 @@
+---
+// Diğer sayfalara iç bağlantılar: ziyaretçi için yol, arama motoru için site haritası.
+import Section from '../ui/Section.astro';
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import Icon from '../ui/Icon.astro';
+import { getMessages } from '../../messages';
+import { actionHref } from '../../lib/actions';
+import type { Locale } from '../../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const { explore } = getMessages(locale).home;
+---
+
+<Section>
+  <Container>
+    <SectionHeading eyebrow={explore.note} title={explore.title} />
+    <ul class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        explore.items.map((item) => (
+          <li>
+            <a
+              href={item.link ? actionHref(item.link, locale) : undefined}
+              class="group flex h-full items-center gap-4 rounded-[24px] bg-surface p-5 shadow-[0_1px_0_var(--k-line)] transition-transform hover:-translate-y-0.5"
+            >
+              <span class="grid size-12 shrink-0 place-items-center rounded-2xl bg-tint text-primary-text">
+                <Icon name={item.icon} class="size-6" />
+              </span>
+              <span class="flex-1">
+                <span class="font-display block text-lg">{item.title}</span>
+                <span class="block text-muted-foreground">{item.text}</span>
+              </span>
+              <Icon
+                name="ArrowRight01Icon"
+                class="size-5 text-primary-text transition-transform group-hover:translate-x-0.5"
+              />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </Container>
+</Section>

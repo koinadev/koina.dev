@@ -11,14 +11,27 @@ interface Props {
    * bildirilmezse kullanıcı `INVALID_SUBMISSION` sonrası ayrımsız bir hata mesajı görür.
    */
   minlength?: number;
+  hint?: string;
+  autocomplete?: astroHTML.JSX.InputHTMLAttributes['autocomplete'];
 }
-const { label, name, type = 'text', required = false, textarea = false, minlength } = Astro.props;
+const {
+  label,
+  name,
+  type = 'text',
+  required = false,
+  textarea = false,
+  minlength,
+  hint,
+  autocomplete,
+} = Astro.props;
 const classes =
-  'w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 focus:outline-none dark:border-gray-700 dark:bg-gray-900';
+  'w-full rounded-2xl border border-input bg-surface px-4 py-3 text-base placeholder:text-muted-foreground focus:border-foreground focus:outline-none';
 ---
 
 <label class="block">
-  <span class="mb-1.5 block text-sm font-medium">{label}</span>
+  <span class="mb-1.5 block text-[15px] font-medium"
+    >{label}{hint && <span class="font-normal text-muted-foreground"> ({hint})</span>}</span
+  >
   {
     textarea ? (
       <textarea {name} {required} {minlength} rows="4" class={classes} />
@@ -28,6 +41,7 @@ const classes =
         {name}
         {required}
         {minlength}
+        {autocomplete}
         class={classes}
       />
     )

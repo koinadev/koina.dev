@@ -1,9 +1,9 @@
 {
   "site": {
-    "title": "Koina — Aynı repoda buluşalım",
-    "description": "Deneyimli geliştiricilerle yeni başlayanları açık kaynak projelerde buluşturan topluluk. 6 haftalık sezonlar, gerçek review, canlı yayınlar.",
+    "title": "Koina — Ücretsiz, imece usulü açık kaynak topluluğu",
+    "description": "Koina, deneyimli geliştiricilerle yeni başlayanları açık kaynak projelerde buluşturan ücretsiz bir topluluk. İmece usulü destek, 6 haftalık sezonlar, canlı yayınlar.",
     "shortDescription": "Açık kaynak topluluğu",
-    "tagline": "Aynı repoda buluşalım."
+    "tagline": "Ücretsiz ve imece usulü. Aynı repoda buluşalım."
   },
   "nav": {
     "menu": "Menü",
@@ -11,14 +11,20 @@
     "mainMenu": "Ana menü",
     "footerMenu": "Alt menü",
     "switchLocale": "Türkçe'ye geç",
-    "skipToContent": "İçeriğe geç"
-  },
-  "theme": {
-    "toggle": "Temayı değiştir"
+    "skipToContent": "İçeriğe geç",
+    "links": "Bağlantılar",
+    "free": "ücretsiz, her zaman!"
   },
   "footer": {
     "rights": "Tüm hakları saklıdır.",
-    "source": "Kaynak kodu (AGPL-3.0)"
+    "source": "Kaynak kodu (AGPL-3.0)",
+    "free": "Koina’ya katılım ücretsizdir. Herkes bildiğini paylaşır, imece usulü büyürüz.",
+    "groups": {
+      "community": "Topluluk",
+      "join": "Katıl",
+      "support": "Destek",
+      "follow": "Takip et"
+    }
   },
   "redirect": {
     "title": "Yönlendiriliyorsunuz",

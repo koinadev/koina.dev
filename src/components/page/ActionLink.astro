@@ -1,0 +1,40 @@
+---
+// İçerikteki `Action` (route ya da tam adres) için bağlantı. `button` verilirse hap buton olur.
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+import { actionHref, isExternal } from '../../lib/actions';
+import type { Action } from '../../messages/types';
+import type { Locale } from '../../i18n/utils';
+
+interface Props {
+  action: Action;
+  locale: Locale;
+  button?: boolean;
+  variant?: 'primary' | 'secondary';
+  class?: string;
+}
+const { action, locale, button, variant = 'primary', class: className = '' } = Astro.props;
+const href = actionHref(action, locale);
+const external = isExternal(href);
+---
+
+{
+  button ? (
+    <Button {href} {variant} size="lg" class={className}>
+      {action.label}
+    </Button>
+  ) : (
+    <a
+      {href}
+      rel={external ? 'noopener' : undefined}
+      class:list={['group inline-flex items-center gap-1.5 font-semibold text-primary-text', className]}
+    >
+      {action.label}
+      <Icon
+        name={external ? 'ArrowUpRight01Icon' : 'ArrowRight01Icon'}
+        class="size-4 transition-transform group-hover:translate-x-0.5"
+        strokeWidth={2}
+      />
+    </a>
+  )
+}

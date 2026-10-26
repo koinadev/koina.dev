@@ -1,9 +1,59 @@
 {
-  "eyebrow": "Sezon 1: 4 Ocak 2027",
-  "title": "Aynı repoda buluşalım.",
-  "description": "Koina, deneyimli geliştiricilerle yolun başındakileri açık kaynak projelerde buluşturan topluluk. Altı haftada birlikte bir proje çıkarırsın: katılımcı gerçek review alır, usta mentorluğunu kanıtlar, ikisi de birlikte çalıştığı insanları tanır.",
-  "primaryCta": { "label": "Sezon 1'e başvur", "href": "/tr/katil/" },
-  "secondaryCta": { "label": "Nasıl çalışır?", "href": "#nasil" },
-  "legend": { "learner": "Katılımcı katkısı", "mentor": "Usta review'u", "caption": "Bir sezonun katkı ızgarası: iki taraf aynı projede, aynı haftalarda." },
-  "image": { "src": "/og-default.png", "alt": "" }
+  "eyebrow": "Ücretsiz ve imece usulü",
+  "title": "Fikri imeceyle büyüten bir topluluğuz.",
+  "description": "Koina, deneyimli geliştiricilerle yolun başındakilerin açık kaynakta yan yana çalıştığı ücretsiz bir topluluk. Kimse kimseye ücret ödemez; herkes bildiğini paylaşır, birlikte büyürüz.",
+  "primaryCta": {
+    "label": "Ücretsiz katıl",
+    "href": "/tr/kayit"
+  },
+  "secondaryCta": {
+    "label": "Bağlantılarımız",
+    "href": "/tr/baglantilar"
+  },
+  "live": {
+    "fallback": "Kodla Buluşma ve Açık Review",
+    "next": "Sonraki yayın",
+    "now": "Şu an canlı",
+    "in": "sonra",
+    "days": "gün",
+    "hours": "saat",
+    "minutes": "dk",
+    "weekdays": [
+      "Pazar",
+      "Pazartesi",
+      "Salı",
+      "Çarşamba",
+      "Perşembe",
+      "Cuma",
+      "Cumartesi"
+    ],
+    "streams": [
+      {
+        "weekday": 2,
+        "name": "Kodla Buluşma"
+      },
+      {
+        "weekday": 4,
+        "name": "Açık Review"
+      }
+    ],
+    "fallbackDay": "Salı ve Perşembe 21:00"
+  },
+  "status": {
+    "liveLabel": "Sonraki yayın",
+    "closeLabel": "Başvurular kapanıyor",
+    "closeDate": "20 Aralık 2026",
+    "closeAt": "2026-12-20T20:59:00Z",
+    "kickoffLabel": "Sezon 1 kickoff",
+    "kickoffDate": "4 Ocak 2027",
+    "kickoffAt": "2027-01-04T17:00:00Z",
+    "daysLeft": "gün kaldı"
+  },
+  "titleParts": [
+    "Fikri ",
+    "imeceyle",
+    " büyüten bir topluluğuz."
+  ],
+  "note": "Salı ve Perşembe 21:00’de canlıdayız!",
+  "imageAlt": "Renkli duvarlı bir çalışma alanında bir laptopun etrafında birlikte çalışan beş kişi"
 }

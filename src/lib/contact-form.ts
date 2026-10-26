@@ -7,6 +7,9 @@ import { track } from './analytics'; // @feature:analytics
 // yüklenir (bkz. ContactForm.astro), çizmek/kaldırmak bu modülün işi. Dinleyiciler `document`te —
 // `initContactForm` her sayfa girişinde yeniden çağrılır, elemana referans tutulmaz.
 let widgetId: string | undefined;
+// İletişim ve kayıt sayfaları ikisi de bu modülü başlatır; istemci-taraflı gezinmede ikisi de
+// çalışırsa dinleyiciler iki kez bağlanıp form iki kez gönderilirdi.
+let initialized = false;
 
 const renderTurnstile = () => {
   const el = document.querySelector<HTMLElement>('.cf-turnstile');
@@ -30,6 +33,8 @@ const removeTurnstile = () => {
 
 /** Turnstile'ı çizer/kaldırır ve iletişim formunun gönderim akışını bağlar. */
 export function initContactForm() {
+  if (initialized) return;
+  initialized = true;
   document.addEventListener('astro:before-swap', removeTurnstile);
   document.addEventListener('astro:page-load', renderTurnstile);
   document.addEventListener('nafru:turnstile-ready', renderTurnstile);
@@ -70,8 +75,8 @@ export function initContactForm() {
       const ok = await submitContactForm(form);
       status.hidden = false;
       status.className = ok
-        ? 'rounded-lg bg-green-100 px-4 py-3 text-sm text-green-800 dark:bg-green-900/40 dark:text-green-300'
-        : 'rounded-lg bg-red-100 px-4 py-3 text-sm text-red-800 dark:bg-red-900/40 dark:text-red-300';
+        ? 'rounded-lg bg-green-100 px-4 py-3 text-sm text-green-800'
+        : 'rounded-lg bg-red-100 px-4 py-3 text-sm text-red-800';
       status.textContent = (ok ? labels.success : labels.error) ?? '';
       // Dönüşüm olayı TIKLAMADA değil SONUÇTA atılır: gönder düğmesine basmak Turnstile
       // doğrulaması ya da ağ hatasıyla bitebilir; tıklamayı saymak dönüşüm oranını şişirirdi.
@@ -82,8 +87,7 @@ export function initContactForm() {
       }
     } catch {
       status.hidden = false;
-      status.className =
-        'rounded-lg bg-red-100 px-4 py-3 text-sm text-red-800 dark:bg-red-900/40 dark:text-red-300';
+      status.className = 'rounded-lg bg-red-100 px-4 py-3 text-sm text-red-800';
       status.textContent = labels.error ?? '';
       track('contact_error'); // @feature:analytics
     } finally {

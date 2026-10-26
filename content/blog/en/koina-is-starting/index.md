@@ -38,5 +38,5 @@ stronger evidence than any line on a CV, for participants and mentors alike.
 - **Kickoff:** January 4, 2027
 - **Demo Day:** February 13, 2027
 
-You can [apply](/en/join/) as a participant, a mentor or an idea owner. If you'd like to meet us
+You can [apply](/en/signup) as a participant, a mentor or an idea owner. If you'd like to meet us
 first, come to Discord; we're live every Tuesday and Thursday at 21:00 (TRT).

@@ -1,0 +1,305 @@
+---
+// Bilgi sayfalarının ortak düzeni: başlık alanı, içerik blokları ve sayfa sonu çağrısı.
+// İçerik src/messages/<dil>/pages.ts içinde; şema src/messages/types.ts.
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../ui/Container.astro';
+import Icon from '../ui/Icon.astro';
+import JsonLd from '../seo/JsonLd.astro';
+import PageCta from './PageCta.astro';
+import ActionLink from './ActionLink.astro';
+import { getMessages } from '../../messages';
+import { alternatesFor } from '../../i18n/routes';
+import { photos } from '../../lib/photos';
+import type { InfoPageKey } from '../../messages/tr/pages';
+import type { Locale } from '../../i18n/utils';
+
+interface Props {
+  page: InfoPageKey;
+  locale: Locale;
+}
+const { page: key, locale } = Astro.props;
+const page = getMessages(locale).pages[key];
+const { hero } = page;
+const faqItems = page.blocks.flatMap((b) => (b.type === 'faq' ? b.items : []));
+const card = 'rounded-[28px] bg-surface shadow-[0_1px_0_var(--k-line)]';
+---
+
+<BaseLayout
+  title={page.meta.title}
+  description={page.meta.description}
+  {locale}
+  alternates={alternatesFor(key)}
+  route={key}
+>
+  <section class="pt-14 pb-14 sm:pt-20">
+    <Container class:list={['grid items-center gap-12', hero.photo && 'lg:grid-cols-[1.1fr_1fr]']}>
+      <div class:list={[!hero.photo && 'mx-auto max-w-3xl text-center']}>
+        {hero.note && <p class="hand -rotate-2 text-3xl text-primary-text">{hero.note}</p>}
+        <h1 class="font-display mt-3 text-[clamp(2.4rem,5.5vw,4.25rem)] leading-[1.04] text-balance">
+          {hero.title}
+        </h1>
+        <p
+          class:list={[
+            'mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl',
+            !hero.photo && 'mx-auto',
+          ]}
+        >
+          {hero.lead}
+        </p>
+      </div>
+      {
+        hero.photo && (
+          <div class="relative mx-2 sm:mx-0">
+            <span
+              class="absolute -inset-2 -z-10 rotate-[-2deg] rounded-[30px] bg-tint sm:-inset-3 sm:rotate-[-2.5deg] sm:rounded-[34px]"
+              aria-hidden="true"
+            />
+            <Image
+              src={photos[hero.photo]}
+              alt={hero.photoAlt ?? ''}
+              widths={[480, 800, 1100]}
+              sizes="(min-width: 1024px) 520px, 100vw"
+              loading="eager"
+              class="aspect-[4/3] w-full rounded-[28px] object-cover"
+            />
+          </div>
+        )
+      }
+    </Container>
+  </section>
+
+  {
+    page.blocks.map((block) => (
+      <section class="py-12 sm:py-16">
+        <Container
+          class:list={[
+            (block.type === 'prose' ||
+              block.type === 'faq' ||
+              block.type === 'quote' ||
+              block.type === 'list' ||
+              block.type === 'rows') &&
+              'max-w-4xl',
+          ]}
+        >
+          {'title' in block && block.title && block.type !== 'split' && (
+            <h2 class="font-display text-3xl leading-tight text-balance sm:text-4xl">{block.title}</h2>
+          )}
+          {'intro' in block && block.intro && (
+            <p class="mt-3 max-w-2xl text-lg text-muted-foreground">{block.intro}</p>
+          )}
+
+          {block.type === 'prose' && (
+            <div class:list={['mt-6 grid gap-8', block.aside && 'md:grid-cols-[1fr_auto]']}>
+              <div class="space-y-5 text-lg leading-relaxed">
+                {block.body.map((p) => (
+                  <p>{p}</p>
+                ))}
+              </div>
+              {block.aside && (
+                <p class="hand self-start text-[28px] text-primary-text md:w-44 md:rotate-[4deg]">
+                  {block.aside}
+                </p>
+              )}
+            </div>
+          )}
+
+          {block.type === 'split' && (
+            <div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+              <div class:list={[block.reverse && 'lg:order-2']}>
+                <h2 class="font-display text-3xl leading-tight text-balance sm:text-4xl">{block.title}</h2>
+                <div class="mt-6 space-y-5 text-lg leading-relaxed">
+                  {block.body.map((p) => (
+                    <p>{p}</p>
+                  ))}
+                </div>
+              </div>
+              <Image
+                src={photos[block.photo]}
+                alt={block.photoAlt}
+                widths={[480, 800, 1100]}
+                sizes="(min-width: 1024px) 520px, 100vw"
+                class="aspect-[4/3] w-full rotate-[1.5deg] rounded-[28px] object-cover"
+              />
+            </div>
+          )}
+
+          {block.type === 'cards' && (
+            <div class:list={['mt-8 grid gap-4 sm:grid-cols-2', block.columns !== 2 && 'lg:grid-cols-3']}>
+              {block.items.map((item) => (
+                <article class:list={[card, 'flex flex-col p-7']}>
+                  <span class="grid size-12 place-items-center rounded-2xl bg-tint text-primary-text">
+                    <Icon name={item.icon} class="size-6" />
+                  </span>
+                  <h3 class="font-display mt-5 text-xl">{item.title}</h3>
+                  <p class="mt-2 leading-relaxed text-muted-foreground">{item.text}</p>
+                  {item.link && <ActionLink action={item.link} {locale} class="mt-auto pt-5" />}
+                </article>
+              ))}
+            </div>
+          )}
+
+          {block.type === 'steps' && (
+            <ol class="mt-8 space-y-3">
+              {block.items.map((step, i) => (
+                <li class:list={[card, 'flex gap-5 p-6 sm:p-7']}>
+                  <span class="grid size-10 shrink-0 place-items-center rounded-full bg-primary font-display text-lg text-on-primary">
+                    {i + 1}
+                  </span>
+                  <div>
+                    <h3 class="font-display text-xl">{step.title}</h3>
+                    <p class="mt-1.5 leading-relaxed text-muted-foreground">{step.text}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          )}
+
+          {block.type === 'list' && (
+            <ul class="mt-6 space-y-3 text-lg">
+              {block.items.map((item) => (
+                <li class="flex gap-3">
+                  <Icon
+                    name={block.tone === 'dont' ? 'Cancel01Icon' : 'CheckmarkCircle02Icon'}
+                    class:list={[
+                      'mt-1 size-6 shrink-0',
+                      block.tone === 'dont' ? 'text-live' : 'text-primary-text',
+                    ]}
+                  />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {block.type === 'quote' && (
+            <figure class="relative rounded-[32px] bg-primary px-8 py-12 text-on-primary sm:px-14">
+              <blockquote class="font-display text-2xl leading-snug text-balance sm:text-4xl">
+                “{block.text}”
+              </blockquote>
+              {block.by && <figcaption class="hand mt-5 text-2xl">{block.by}</figcaption>}
+            </figure>
+          )}
+
+          {block.type === 'faq' && (
+            <div class="mt-6 space-y-3">
+              {block.items.map((item) => (
+                <details class:list={[card, 'group px-6']}>
+                  <summary class="flex cursor-pointer items-center justify-between gap-6 py-5 text-[17px] font-semibold [&::-webkit-details-marker]:hidden">
+                    {item.question}
+                    <span class="grid size-8 shrink-0 place-items-center rounded-full bg-primary text-on-primary">
+                      <Icon
+                        name="Add01Icon"
+                        class="size-4 transition-transform group-open:rotate-45"
+                        strokeWidth={2}
+                      />
+                    </span>
+                  </summary>
+                  <p class="pb-6 leading-relaxed text-muted-foreground">{item.answer}</p>
+                </details>
+              ))}
+            </div>
+          )}
+
+          {block.type === 'tiny' && (
+            <ul class="mt-8 grid gap-3 sm:grid-cols-2">
+              {block.items.map((item) => (
+                <li class:list={[card, 'flex items-center gap-4 p-5']}>
+                  <span class="grid size-11 shrink-0 place-items-center rounded-2xl bg-tint text-primary-text">
+                    <Icon name={item.icon} class="size-5" />
+                  </span>
+                  <span class="flex-1 font-medium">{item.title}</span>
+                  <span class="hand shrink-0 text-2xl text-primary-text">{item.time}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {block.type === 'tiers' && (
+            <div class="mt-8 grid gap-4 lg:grid-cols-3">
+              {block.items.map((tier) => (
+                <article class:list={[card, 'flex flex-col p-7', tier.featured && 'ring-2 ring-primary']}>
+                  <h3 class="font-display text-2xl">{tier.name}</h3>
+                  <p class="mt-1 text-muted-foreground">{tier.who}</p>
+                  <ul class="mt-6 space-y-2.5">
+                    {tier.perks.map((perk) => (
+                      <li class="flex gap-2.5">
+                        <Icon name="CheckmarkCircle02Icon" class="mt-0.5 size-5 shrink-0 text-primary-text" />
+                        {perk}
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
+            </div>
+          )}
+
+          {block.type === 'sponsors' && (
+            <div class="mt-8">
+              {block.items.length ? (
+                <ul class="grid gap-4 sm:grid-cols-3">
+                  {block.items.map((s) => (
+                    <li>
+                      <a
+                        href={s.href}
+                        rel="noopener sponsored"
+                        class:list={[card, 'block p-7 text-center font-display text-xl']}
+                      >
+                        {s.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div class="grid gap-4 sm:grid-cols-3">
+                  <div class="flex flex-col items-start justify-center gap-5 rounded-[28px] border-2 border-dashed border-line p-7 sm:col-span-2">
+                    <p class="text-lg">{block.empty}</p>
+                    <ActionLink action={block.emptyAction} {locale} button />
+                  </div>
+                  <div
+                    class="hidden place-items-center rounded-[28px] border-2 border-dashed border-line sm:grid"
+                    aria-hidden="true"
+                  >
+                    <Icon name="HeartHandshakeIcon" class="size-12 text-line" />
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {block.type === 'rows' && (
+            <dl class:list={[card, 'mt-6 divide-y divide-line px-6 sm:px-8']}>
+              {block.items.map((row) => (
+                <div class="grid gap-1 py-4 sm:grid-cols-[14rem_1fr] sm:gap-6">
+                  <dt class="font-semibold">{row.label}</dt>
+                  <dd>
+                    {row.value}
+                    {row.note && <span class="text-muted-foreground"> ({row.note})</span>}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          )}
+        </Container>
+      </section>
+    ))
+  }
+
+  {page.cta && <PageCta cta={page.cta} {locale} />}
+
+  {
+    faqItems.length > 0 && (
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: faqItems.map((item) => ({
+            '@type': 'Question',
+            name: item.question,
+            acceptedAnswer: { '@type': 'Answer', text: item.answer },
+          })),
+        }}
+      />
+    )
+  }
+</BaseLayout>

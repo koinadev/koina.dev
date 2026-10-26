@@ -1,0 +1,192 @@
+---
+// Kayıt sayfası. İletişim formunun gönderim altyapısını kullanır (Turnstile + form sağlayıcı);
+// sağlayıcı yalnızca ad, e-posta ve mesaj kabul ettiği için seçimler gönderimden önce
+// `message` alanında okunur bir özete dönüştürülür.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../ui/Container.astro';
+import Input from '../ui/Input.astro';
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+import { getMessages } from '../../messages';
+import { alternatesFor, routePath } from '../../i18n/routes';
+import { siteConfig } from '../../config/site.config';
+import type { Locale } from '../../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const { signup } = getMessages(locale);
+const { form } = signup;
+const chip =
+  'flex cursor-pointer items-center gap-2.5 rounded-full border border-input bg-surface px-4 py-2.5 text-[15px] transition-colors has-[:checked]:border-foreground has-[:checked]:bg-primary has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-primary-text';
+---
+
+<BaseLayout
+  title={signup.meta.title}
+  description={signup.meta.description}
+  {locale}
+  alternates={alternatesFor('signup')}
+  route="signup"
+>
+  <section class="pt-12 pb-20 sm:pt-16">
+    <Container class="grid gap-12 lg:grid-cols-[1.25fr_1fr] lg:gap-16">
+      <div>
+        <p class="hand -rotate-2 text-3xl text-primary-text">{signup.note}</p>
+        <h1 class="font-display mt-2 text-[clamp(2.5rem,6vw,4rem)] leading-[1.03]">{signup.title}</h1>
+        <p class="mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground">{signup.lead}</p>
+
+        <form
+          data-contact-form
+          data-signup
+          data-provider={siteConfig.forms.provider}
+          data-endpoint={siteConfig.forms.endpoint}
+          data-access-key={siteConfig.forms.accessKey}
+          data-astro-reload
+          data-labels={JSON.stringify({
+            success: form.success,
+            error: form.error,
+            sending: form.sending,
+            submit: form.submit,
+          })}
+          class="mt-10 space-y-7"
+        >
+          <div class="grid gap-5 sm:grid-cols-2">
+            <Input label={form.name} name="name" required minlength={2} autocomplete="nickname" />
+            <Input label={form.email} name="email" type="email" required autocomplete="email" />
+          </div>
+
+          <fieldset>
+            <legend class="text-[15px] font-medium">{form.interestsLabel}</legend>
+            <p class="text-sm text-muted-foreground">{form.interestsHint}</p>
+            <div class="mt-3 flex flex-wrap gap-2.5">
+              {
+                form.interests.map((item) => (
+                  <label class={chip}>
+                    <input type="checkbox" name="interest" value={item.label} class="sr-only" />
+                    <Icon name={item.icon} class="size-5" />
+                    {item.label}
+                  </label>
+                ))
+              }
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend class="text-[15px] font-medium">{form.levelLabel}</legend>
+            <div class="mt-3 flex flex-wrap gap-2.5">
+              {
+                form.levels.map((level, i) => (
+                  <label class={chip}>
+                    <input type="radio" name="level" value={level} checked={i === 0} class="sr-only" />
+                    {level}
+                  </label>
+                ))
+              }
+            </div>
+          </fieldset>
+
+          <Input label={form.github} hint={form.githubHint} name="github" autocomplete="username" />
+
+          <div class="space-y-3">
+            <label class="flex items-start gap-3">
+              <input
+                type="checkbox"
+                name="season"
+                checked
+                class="mt-1 size-5 accent-[var(--k-primary-text)]"
+              />
+              <span>{form.season}</span>
+            </label>
+            <label class="flex items-start gap-3">
+              <input
+                type="checkbox"
+                name="consent"
+                required
+                class="mt-1 size-5 accent-[var(--k-primary-text)]"
+              />
+              <span class="text-muted-foreground">
+                {form.consent}
+                <a href={routePath('privacy', locale)} class="underline hover:text-foreground"
+                  >{form.privacy}</a
+                >
+              </span>
+            </label>
+          </div>
+
+          <!-- Sağlayıcıya giden özet; gönderimden önce dolduruluyor (aşağıdaki script). -->
+          <input type="hidden" name="message" value="" />
+          <input
+            type="text"
+            name="website"
+            value=""
+            tabindex="-1"
+            autocomplete="off"
+            aria-hidden="true"
+            class="hidden"
+          />
+          <div class="cf-turnstile" data-sitekey={siteConfig.turnstileSiteKey} data-action="signup"></div>
+          <Button type="submit" size="lg" class="w-full sm:w-auto sm:px-10">{form.submit}</Button>
+          <p data-form-status hidden role="status" aria-live="polite" class="rounded-lg px-4 py-3 text-sm">
+          </p>
+        </form>
+      </div>
+
+      <aside class="lg:pt-24">
+        <div class="rounded-[32px] bg-surface p-7 shadow-[0_1px_0_var(--k-line)] sm:p-9">
+          <h2 class="font-display text-2xl">{signup.next.title}</h2>
+          <ul class="mt-6 space-y-6">
+            {
+              signup.next.items.map((item) => (
+                <li class="flex gap-4">
+                  <span class="grid size-11 shrink-0 place-items-center rounded-2xl bg-tint text-primary-text">
+                    <Icon name={item.icon} class="size-5" />
+                  </span>
+                  <div>
+                    <p class="font-semibold">{item.title}</p>
+                    <p class="mt-0.5 text-muted-foreground">{item.text}</p>
+                  </div>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+        <p class="mt-6 flex gap-3 rounded-[24px] bg-primary p-5 text-on-primary">
+          <Icon name="GiftIcon" class="mt-0.5 size-6 shrink-0" />
+          {signup.free}
+        </p>
+      </aside>
+    </Container>
+  </section>
+</BaseLayout>
+
+<script
+  is:inline
+  src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+  async
+  defer
+  onload="document.dispatchEvent(new Event('nafru:turnstile-ready'))"
+  onerror="document.dispatchEvent(new Event('nafru:turnstile-error'))"></script>
+<script>
+  // Seçimleri sağlayıcının kabul ettiği tek serbest alana, `message`a özetler. Yakalama
+  // aşamasında çalışır: ortak gönderim dinleyicisi (lib/contact-form) FormData'yı okumadan önce.
+  document.addEventListener(
+    'submit',
+    (e) => {
+      const form = (e.target as HTMLElement)?.closest?.('[data-signup]') as HTMLFormElement | null;
+      if (!form) return;
+      const data = new FormData(form);
+      const lines = [
+        `Kayıt / signup`,
+        `İlgi / interests: ${data.getAll('interest').join(', ') || '-'}`,
+        `Seviye / level: ${data.get('level') ?? '-'}`,
+        `GitHub: ${data.get('github') || '-'}`,
+        `Sezon haberi / season updates: ${data.get('season') ? 'evet / yes' : 'hayır / no'}`,
+      ];
+      form.querySelector<HTMLInputElement>('input[name="message"]')!.value = lines.join('\n');
+    },
+    true,
+  );
+  const { initContactForm } = await import('../../lib/contact-form');
+  initContactForm();
+</script>

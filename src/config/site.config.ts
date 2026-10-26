@@ -35,8 +35,7 @@ export const siteConfig = {
     bing: env.PUBLIC_SEO_VERIFICATION_BING ?? '',
   },
   /* @feature:blog */
-  blog: {
-  },
+  blog: {},
   /* @/feature:blog */
   /* @feature:forms */
   forms: {

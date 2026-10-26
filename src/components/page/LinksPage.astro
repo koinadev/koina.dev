@@ -1,0 +1,91 @@
+---
+// Bağlantılar sayfası: sosyal medya biyografilerindeki tek link buraya gelir. Telefon ekranı
+// için tasarlandı; masaüstünde de aynı dar sütun.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../ui/Container.astro';
+import Icon from '../ui/Icon.astro';
+import Mark from '../ui/Mark.astro';
+import { getMessages } from '../../messages';
+import { alternatesFor } from '../../i18n/routes';
+import { actionHref, isExternal } from '../../lib/actions';
+import type { Locale } from '../../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const { links } = getMessages(locale);
+---
+
+<BaseLayout
+  title={links.meta.title}
+  description={links.meta.description}
+  {locale}
+  alternates={alternatesFor('links')}
+  route="links"
+>
+  <section class="pt-12 pb-20">
+    <Container class="max-w-xl">
+      <div class="text-center">
+        <span
+          class="relative mx-auto grid size-24 place-items-center rounded-full bg-surface shadow-[0_1px_0_var(--k-line)]"
+        >
+          <Mark class="size-12" />
+          <span
+            class="hand absolute -top-3 left-[calc(100%-0.5rem)] w-32 rotate-[8deg] text-left text-2xl text-primary-text"
+            >{links.note}</span
+          >
+        </span>
+        <h1 class="font-display mt-5 text-4xl">{links.title}</h1>
+        <p class="mx-auto mt-3 max-w-sm text-lg text-muted-foreground">{links.bio}</p>
+      </div>
+      {
+        links.groups.map((group) => (
+          <div class="mt-10">
+            <h2 class="hand mb-3 -rotate-1 text-2xl text-primary-text">{group.title}</h2>
+            <ul class="space-y-3">
+              {group.items.map((item) => {
+                const href = actionHref(item, locale);
+                const external = isExternal(href);
+                return (
+                  <li>
+                    <a
+                      {href}
+                      target={external && !href.startsWith('mailto:') ? '_blank' : undefined}
+                      rel={external ? 'noopener' : undefined}
+                      data-analytics-event="links_click"
+                      data-analytics-target={item.label}
+                      class:list={[
+                        'group flex items-center gap-4 rounded-full py-3 pr-5 pl-3 transition-transform hover:-translate-y-0.5',
+                        item.featured
+                          ? 'bg-primary text-on-primary'
+                          : 'bg-surface shadow-[0_1px_0_var(--k-line)]',
+                      ]}
+                    >
+                      <span
+                        class:list={[
+                          'grid size-11 shrink-0 place-items-center rounded-full',
+                          item.featured ? 'bg-on-primary/10' : 'bg-tint text-primary-text',
+                        ]}
+                      >
+                        <Icon name={item.icon} class="size-5" />
+                      </span>
+                      <span class="flex-1">
+                        <span class="block font-semibold">{item.label}</span>
+                        {item.hint && <span class="block text-sm opacity-70">{item.hint}</span>}
+                      </span>
+                      <Icon
+                        name={external ? 'ArrowUpRight01Icon' : 'ArrowRight01Icon'}
+                        class="size-5 opacity-60 transition-transform group-hover:translate-x-0.5"
+                      />
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))
+      }
+    </Container>
+  </section>
+</BaseLayout>

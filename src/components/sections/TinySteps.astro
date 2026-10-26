@@ -1,0 +1,48 @@
+---
+// Yorucu taahhütler yerine küçük, eğlenceli adımlar. Süre etiketi el yazısıyla.
+import Section from '../ui/Section.astro';
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import Icon from '../ui/Icon.astro';
+import { getMessages } from '../../messages';
+import { actionHref, isExternal } from '../../lib/actions';
+import type { Locale } from '../../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const { tiny } = getMessages(locale).home;
+---
+
+<Section class="bg-surface">
+  <Container>
+    <SectionHeading eyebrow={tiny.note} title={tiny.title} description={tiny.description} />
+    <ul class="mx-auto grid max-w-5xl gap-3 md:grid-cols-2">
+      {
+        tiny.items.map((item) => {
+          const href = actionHref(item.link, locale);
+          const external = isExternal(href);
+          return (
+            <li>
+              <a
+                {href}
+                target={external ? '_blank' : undefined}
+                rel={external ? 'noopener' : undefined}
+                data-analytics-event="tiny_step"
+                data-analytics-step={item.title}
+                class="group flex h-full items-center gap-4 rounded-[24px] bg-background p-4 pr-5 transition-transform hover:-translate-y-0.5"
+              >
+                <span class="grid size-12 shrink-0 place-items-center rounded-2xl bg-tint text-primary-text transition-colors group-hover:bg-primary group-hover:text-on-primary">
+                  <Icon name={item.icon} class="size-6" />
+                </span>
+                <span class="flex-1 font-medium">{item.title}</span>
+                <span class="hand shrink-0 -rotate-3 text-2xl text-primary-text">{item.time}</span>
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </Container>
+</Section>

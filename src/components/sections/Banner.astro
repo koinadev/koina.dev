@@ -1,0 +1,27 @@
+---
+// Her sayfanın en üstündeki şerit: Koina'nın ücretsiz ve imece usulü olduğunu hatırlatır.
+import Icon from '../ui/Icon.astro';
+import { getMessages } from '../../messages';
+import { actionHref } from '../../lib/actions';
+import type { Locale } from '../../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const { banner } = getMessages(locale).home;
+---
+
+<p
+  transition:animate="none"
+  class="flex items-center justify-center gap-2 bg-foreground px-4 py-2.5 text-center text-sm text-background"
+>
+  <Icon name="HeartHandshakeIcon" class="hidden size-4 shrink-0 text-primary sm:block" />
+  <span>
+    {banner.text}
+    <a
+      href={actionHref(banner.link, locale)}
+      class="ml-1 font-semibold text-primary underline-offset-4 hover:underline">{banner.link.label}</a
+    >
+  </span>
+</p>

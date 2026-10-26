@@ -33,12 +33,10 @@ compatibility_date = "2024-09-23"
 [assets]
 directory = "./dist"
 
-# `astro.config.mjs` `trailingSlash` BELİRTMİYOR (Astro varsayılanı `'ignore'`) ve çıktı
-# `build.format: 'directory'` — yani `dist/yol/index.html`. `auto-trailing-slash` Pages'in
-# BUGÜNKÜ davranışının aynısıdır: dizin index'leri sondaki slash'la sunulur, `/yol` isteği
-# `/yol/`a 308'lenir. Migrasyon davranış değiştirmesin diye AÇIKÇA yazıldı; `drop-` ya da
-# `force-` seçmek kanonik URL'leri ve mevcut yönlendirme zincirini değiştirirdi.
-html_handling = "auto-trailing-slash"
+# Adresler sondaki slash'sız: `astro.config.mjs` `trailingSlash: 'never'` + `build.format: 'file'`
+# (`dist/tr/kayit.html`). `drop-trailing-slash` `/tr/kayit`i sunar, `/tr/kayit/`i 307 ile
+# slash'sız adrese yönlendirir — kanonik URL'lerle aynı biçim.
+html_handling = "drop-trailing-slash"
 
 # Pages eşleşmeyen yolda `dist/404.html`i 404 ile sunuyordu; Workers'ta bu davranış AÇIKÇA
 # istenmek zorunda (öntanımlı `none` boş bir 404 döndürür). Sayfayı `src/pages/404.astro`

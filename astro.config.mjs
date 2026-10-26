@@ -13,6 +13,13 @@ const env = loadEnv(process.env.NODE_ENV ?? 'production', process.cwd(), '');
 export default defineConfig({
   site: env.PUBLIC_SITE_URL,
   output: 'static',
+  // Adresler sondaki slash'sız (`/tr/kayit`). `format: 'file'` her sayfayı `tr/kayit.html` olarak
+  // yazar; Cloudflare'in `auto-trailing-slash`'i bunu `/tr/kayit`ten sunar ve `/tr/kayit/`i
+  // slash'sız adrese yönlendirir. `trailingSlash: 'never'` dev sunucusunu da aynı biçime zorlar.
+  trailingSlash: 'never',
+  build: { format: 'file' },
+  // Eski başvuru sayfası kayıt sayfasına taşındı; paylaşılmış linkler kırılmasın.
+  redirects: { '/tr/katil': '/tr/kayit', '/en/join': '/en/signup' },
   // `defaultStrategy: 'viewport'`: nav linkleri ilk ekranda göründüğü için hover yerine
   // görünür olunca önceden çekilir (yavaş bağlantıda/offline kendiliğinden devre dışı kalır).
   prefetch: { prefetchAll: true, defaultStrategy: 'viewport' },

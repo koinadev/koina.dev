@@ -1,7 +1,8 @@
 ---
 import Container from '../ui/Container.astro';
+import Mark from '../ui/Mark.astro';
 import Button from '../ui/Button.astro';
-import ThemeToggle from '../ui/ThemeToggle.astro'; /* @feature:dark-mode */
+import Icon from '../ui/Icon.astro';
 import { getMessages } from '../../messages';
 import { siteConfig } from '../../config/site.config';
 import { useTranslations, type Locale } from '../../i18n/utils';
@@ -19,6 +20,11 @@ const { locale, route } = Astro.props;
 const { nav } = getMessages(locale);
 const t = useTranslations(locale);
 const homeHref = routePath('home', locale);
+// Mobil menünün alt listesi: büyük linklerde olmayan diğer tüm sayfalar.
+const mainRoutes = new Set(nav.links.map((l) => l.route));
+const moreLinks = [...nav.footer.community, ...nav.footer.join, ...nav.footer.support].filter(
+  (l) => !mainRoutes.has(l.route) && l.route !== 'links' && l.route !== 'home',
+);
 /* @feature:i18n */
 // Bu satırlar i18n marker bloğu içinde olmalı: dışarıda kalırsa i18n çıkarıldığında `'en'`
 // geçerli bir `Locale` olmadığı için tip hatası verir.
@@ -31,18 +37,11 @@ const switchHref = Astro.props.alternates?.[otherLocale] ?? routePath('home', ot
 /* @/feature:i18n */
 ---
 
-<header
-  transition:animate="none"
-  class="sticky top-0 z-50 border-b border-gray-200/70 bg-background/85 backdrop-blur-md dark:border-gray-800/60"
->
-  <Container class="flex h-16 items-center justify-between">
-    <a
-      href={homeHref}
-      aria-current={route === 'home' ? 'page' : undefined}
-      class="flex items-center gap-2.5"
-    >
-      <img src={siteConfig.logo} alt="" class="size-7" />
-      <span class="font-display text-2xl leading-none font-extrabold tracking-[-0.04em]">{siteConfig.name.toLowerCase()}</span>
+<header transition:animate="none" class="sticky top-0 z-50 bg-background/85 backdrop-blur-md">
+  <Container class="flex h-20 items-center justify-between">
+    <a href={homeHref} aria-current={route === 'home' ? 'page' : undefined} class="flex items-center gap-2.5">
+      <Mark class="size-7" />
+      <span class="font-display text-2xl leading-none">{siteConfig.name.toLowerCase()}</span>
     </a>
     <nav class="hidden items-center gap-6 md:flex" aria-label={t('nav.mainMenu')}>
       {
@@ -51,11 +50,11 @@ const switchHref = Astro.props.alternates?.[otherLocale] ?? routePath('home', ot
             href={navHref(link, locale)}
             aria-current={isActiveNav(link, route) ? 'page' : undefined}
             class:list={[
-              'relative text-sm font-medium transition-colors',
-              'after:absolute after:inset-x-0 after:-bottom-1.5 after:h-0.5 after:rounded-full after:bg-brand-600 after:opacity-0',
+              'relative text-[15px] font-medium transition-colors',
+              'after:absolute after:inset-x-0 after:-bottom-1.5 after:h-0.5 after:rounded-full after:bg-squiggle after:h-1 after:opacity-0',
               isActiveNav(link, route)
-                ? 'text-gray-900 after:opacity-100 dark:text-white'
-                : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white',
+                ? 'text-foreground after:opacity-100'
+                : 'text-foreground/80 hover:text-foreground',
             ]}
           >
             {link.label}
@@ -68,15 +67,16 @@ const switchHref = Astro.props.alternates?.[otherLocale] ?? routePath('home', ot
       <a
         href={switchHref}
         data-locale-switch={otherLocale}
-        class="rounded-lg p-2 text-sm font-semibold text-gray-600 uppercase hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+        class="rounded-full px-2 py-1 font-mono text-xs text-muted-foreground uppercase hover:text-foreground"
         aria-label={tOther('nav.switchLocale')}>{otherLocale}</a
       >
       <!-- @/feature:i18n -->
-      <!-- @feature:dark-mode -->
-      <ThemeToggle {locale} />
-      <!-- @/feature:dark-mode -->
-      <div class="hidden md:block">
-        <Button href={navHref(nav.cta, locale)} analytics={{ event: 'header_cta', place: 'desktop' }}>
+      <div>
+        <Button
+          href={navHref(nav.cta, locale)}
+          class="max-md:h-9 max-md:px-4"
+          analytics={{ event: 'header_cta', place: 'desktop' }}
+        >
           {nav.cta.label}
         </Button>
       </div>
@@ -87,60 +87,84 @@ const switchHref = Astro.props.alternates?.[otherLocale] ?? routePath('home', ot
         aria-label={t('nav.menu')}
         aria-expanded="false"
         aria-controls="mobile-menu"
-        class="rounded-lg p-2 hover:bg-gray-100 md:hidden dark:hover:bg-gray-800"
+        class="rounded-lg p-2 hover:bg-gray-100 md:hidden"
       >
-        <svg
-          class="size-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          aria-hidden="true"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"></path>
-        </svg>
+        <Icon name="Menu01Icon" class="size-6" />
       </button>
     </div>
   </Container>
-  <!--
-    Mobil panel de `nav` landmark'ı + `aria-label` taşır (masaüstü etiketinden farklı, aksi
-    halde iki landmark ayırt edilemez). `id` düğmedeki `aria-controls` ile eşleşir.
-  -->
-  <nav
-    id="mobile-menu"
-    data-mobile-menu
-    hidden
-    aria-label={t('nav.menu')}
-    class="border-t border-gray-200 md:hidden dark:border-gray-800"
-  >
-    <Container class="flex flex-col gap-1 py-4">
+</header>
+<!--
+  Tam ekran mobil menü. `header`ın DIŞINDA: başlıktaki `backdrop-blur` sabit konumlu çocuklar için
+  yeni bir kapsayıcı oluşturur, içeride kalsaydı panel ekranı değil başlığı doldururdu.
+  `nav` landmark'ı + `aria-label` (masaüstü etiketinden farklı); `id` düğmedeki `aria-controls` ile eşleşir.
+-->
+<nav
+  id="mobile-menu"
+  data-mobile-menu
+  hidden
+  transition:animate="none"
+  aria-label={t('nav.menu')}
+  class="fixed inset-0 z-[70] flex flex-col overflow-y-auto bg-background md:hidden"
+>
+  <Container class="flex h-20 shrink-0 items-center justify-between">
+    <a href={homeHref} class="flex items-center gap-2.5">
+      <Mark class="size-7" />
+      <span class="font-display text-2xl leading-none">{siteConfig.name.toLowerCase()}</span>
+    </a>
+    <button
+      type="button"
+      data-menu-close
+      aria-label={t('nav.close')}
+      class="grid size-11 place-items-center rounded-full bg-surface shadow-[0_1px_0_var(--k-line)]"
+    >
+      <Icon name="Cancel01Icon" class="size-6" />
+    </button>
+  </Container>
+  <Container class="flex flex-1 flex-col pt-2 pb-4">
+    <ul class="space-y-1">
       {
-        nav.links.map((link) => (
-          <a
-            href={navHref(link, locale)}
-            aria-current={isActiveNav(link, route) ? 'page' : undefined}
-            class:list={[
-              'rounded-lg px-3 py-2 font-medium hover:bg-gray-100 dark:hover:bg-gray-800',
-              isActiveNav(link, route) && 'bg-gray-100 dark:bg-gray-800',
-            ]}
-          >
-            {link.label}
-          </a>
+        [...nav.links, { label: t('nav.links'), route: 'links' as const }].map((link) => (
+          <li>
+            <a
+              href={navHref(link, locale)}
+              aria-current={isActiveNav(link, route) ? 'page' : undefined}
+              class:list={[
+                'font-display flex items-center justify-between py-2 text-[1.75rem] leading-tight',
+                isActiveNav(link, route) && 'text-primary-text',
+              ]}
+            >
+              {link.label}
+              <Icon name="ArrowRight01Icon" class="size-6 opacity-40" />
+            </a>
+          </li>
         ))
       }
+    </ul>
+    <ul class="mt-8 grid grid-cols-2 gap-x-4 gap-y-3 border-t border-line pt-6 text-[15px]">
+      {
+        moreLinks.map((link) => (
+          <li>
+            <a href={navHref(link, locale)} class="text-muted-foreground hover:text-foreground">
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="sticky bottom-0 mt-auto bg-background pt-8 pb-2">
+      <p class="hand mb-2 -rotate-2 text-center text-2xl text-primary-text">{t('nav.free')}</p>
       <Button
         href={navHref(nav.cta, locale)}
-        class="mt-2"
+        size="lg"
+        class="w-full"
         analytics={{ event: 'header_cta', place: 'mobile' }}
       >
         {nav.cta.label}
       </Button>
-    </Container>
-  </nav>
-</header>
+    </div>
+  </Container>
+</nav>
 <script>
   const { initMobileMenu } = await import('../../lib/mobile-menu');
   initMobileMenu();

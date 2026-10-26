@@ -1,0 +1,39 @@
+---
+// Destekçiler. Henüz destekçi yok: uydurma logo yerine boş yuvalar ve davet gösterilir.
+import Section from '../ui/Section.astro';
+import Container from '../ui/Container.astro';
+import Icon from '../ui/Icon.astro';
+import ActionLink from '../page/ActionLink.astro';
+import { getMessages } from '../../messages';
+import type { Locale } from '../../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const { sponsors } = getMessages(locale).home;
+---
+
+<Section class="!py-16">
+  <Container class="grid items-center gap-10 lg:grid-cols-[1fr_1.4fr]">
+    <div>
+      <p class="hand -rotate-2 text-2xl text-primary-text">{sponsors.note}</p>
+      <h2 class="font-display mt-2 text-3xl sm:text-4xl">{sponsors.title}</h2>
+      <p class="mt-4 text-lg leading-relaxed text-muted-foreground">{sponsors.description}</p>
+      <ActionLink action={sponsors.link} {locale} class="mt-6" />
+    </div>
+    <ul class="grid grid-cols-2 gap-3 sm:grid-cols-3">
+      {
+        Array.from({ length: 6 }, (_, i) => (
+          <li class="grid h-24 place-items-center rounded-[22px] border-2 border-dashed border-line text-muted-foreground">
+            {i === 0 ? (
+              <span class="hand px-3 text-center text-xl text-primary-text">{sponsors.empty}</span>
+            ) : (
+              <Icon name="HeartHandshakeIcon" class="size-7 opacity-30" />
+            )}
+          </li>
+        ))
+      }
+    </ul>
+  </Container>
+</Section>

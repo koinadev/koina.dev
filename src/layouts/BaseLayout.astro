@@ -5,6 +5,7 @@ import { blogFeedTitle, organizationJsonLd } from '../config/site.config';
 import MetaTags from '../components/seo/MetaTags.astro';
 import JsonLd from '../components/seo/JsonLd.astro';
 import Header from '../components/sections/Header.astro';
+import Banner from '../components/sections/Banner.astro';
 import Footer from '../components/sections/Footer.astro';
 import Analytics from '../components/Analytics.astro'; /* @feature:analytics */
 import ConsentBanner from '../components/ConsentBanner.astro'; /* @feature:analytics */
@@ -36,6 +37,7 @@ const { title, description, image, locale, noindex, alternates, route, type, pub
   Astro.props;
 const t = useTranslations(locale);
 const meta = getLocaleMeta(locale);
+
 /* @feature:blog */
 // `routePath('home', locale)` i18n varken `/tr/`, çıkarıldığında `/` döner — sabit yazılsaydı
 // i18n çıkarıldığında `<head>`de var olmayan bir beslemeye link kalırdı.
@@ -75,26 +77,6 @@ const rssHref = `${routePath('home', locale)}rss.xml`;
     <!-- Besleme keşfi: okuyucu eklentileri ve tarayıcı bu satırı arar. -->
     <link rel="alternate" type="application/rss+xml" title={blogFeedTitle} href={rssHref} />
     <!-- @/feature:blog -->
-    <!-- @feature:dark-mode -->
-    <script is:inline>
-      // `astro:after-swap` yerine `astro:before-swap` kullanılıyor: ClientRouter geçişte
-      // `<html>` özniteliklerini gelen belgeninkiyle değiştiriyor (dedupe edilmiş satır-içi
-      // script'ler her sayfada yeniden çalışmıyor). `dark`/`js-anim` sınıfları swap SONRASI
-      // eklenirse aradaki karede sınıfsız bir kare oluşur — koyu temada beyaz, animasyonlarda
-      // görünür-öğe karesi çakar. Gelen belge swap'tan ÖNCE düzeltilirse bu kare hiç oluşmaz.
-      const applyTheme = (doc) => {
-        const stored = localStorage.getItem('theme');
-        const dark = stored ? stored === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
-        doc.documentElement.classList.toggle('dark', dark);
-      };
-      document.documentElement.classList.add('js-anim');
-      applyTheme(document);
-      document.addEventListener('astro:before-swap', (event) => {
-        event.newDocument.documentElement.classList.add('js-anim');
-        applyTheme(event.newDocument);
-      });
-    </script>
-    <!-- @/feature:dark-mode -->
     <ClientRouter />
     <!-- @feature:analytics -->
     <Analytics />
@@ -110,12 +92,15 @@ const rssHref = `${routePath('home', locale)}rss.xml`;
     -->
     <a
       href="#main"
-      class="fixed top-0 left-0 z-[60] -translate-y-full rounded-br-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white focus:translate-y-0"
+      class="fixed top-0 left-0 z-[60] -translate-y-full rounded-br-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-on-primary focus:translate-y-0"
       >{t('nav.skipToContent')}</a
     >
     <NavProgress />
+    <Banner {locale} />
     <Header {locale} {alternates} {route} />
-    <main id="main" tabindex="-1" class="flex-1">
+    <!-- `overflow-x-clip`: fotoğrafların arkasındaki eğik zeminler kenardan taşmasın (body'ye konursa
+         viewport'a yayılır ve kaydırılabilir olur). -->
+    <main id="main" tabindex="-1" class="flex-1 overflow-x-clip">
       <slot />
     </main>
     <Footer {locale} {route} />

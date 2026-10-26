@@ -39,12 +39,12 @@ const alternates = alternatesFor('blog');
                     class="mb-4 aspect-video w-full rounded-lg object-cover"
                   />
                 )}
-                <p class="text-sm text-gray-600 dark:text-gray-400">
+                <p class="text-sm text-gray-600">
                   <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date, 'tr')}</time> ·{' '}
                   {readingTime(post.body ?? '')} {blog.minRead}
                 </p>
                 <h2 class="mt-2 text-xl font-semibold group-hover:text-brand-600">{post.data.title}</h2>
-                <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">{post.data.description}</p>
+                <p class="mt-2 text-sm text-gray-600">{post.data.description}</p>
                 <p class="mt-4 text-sm font-medium text-brand-600">{blog.readMore} →</p>
               </Card>
             </a>

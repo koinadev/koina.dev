@@ -1,3 +1,4 @@
+import { markSvg } from '../../lib/mark';
 import type { APIRoute } from 'astro';
 import satori from 'satori';
 import { Resvg } from '@resvg/resvg-js';
@@ -11,10 +12,13 @@ import { hashParts, openCache, sourceVersion } from '@/lib/build-cache';
 // OG görseli TR içerikten üretildiği için başlık/altyazı TR sözlüğünden çekiliyor.
 const t = useTranslations('tr');
 
-// Fontlar repo içinde (src/assets/og): ağ erişimi gerekmez ve marka fontu kullanılır. Statik
-// örnekler variable fonttan `fonttools varLib.instancer` ile üretildi; satori variable font
-// okuyamaz. Bricolage ve Instrument latin-ext taşır, Türkçe glifler tek dosyada.
-const FONT_FILES = ['src/assets/og/Bricolage-Bold-Display.ttf', 'src/assets/og/InstrumentSans-Medium.ttf'];
+// Marka fontu DM Sans, @fontsource/dm-sans paketinin statik WOFF dosyalarından (satori variable
+// font ve WOFF2 okuyamaz). Türkçe harfler (ş, ğ, ı, İ) latin-ext dosyasında; satori eksik glifi
+// yüklü diğer fontlardan (burada `DM Sans Ext`) alır.
+const FONT_DIR = 'node_modules/@fontsource/dm-sans/files';
+const FONT_FILES = ['latin-700', 'latin-ext-700', 'latin-500', 'latin-ext-500'].map(
+  (f) => `${FONT_DIR}/dm-sans-${f}-normal.woff`,
+);
 
 let fontData: Buffer[] | null = null;
 function loadFonts(): Buffer[] {
@@ -22,14 +26,15 @@ function loadFonts(): Buffer[] {
   return fontData;
 }
 
-// Koina işareti: 3×3 ızgarada K. Sol sütun yosun (katılımcı), kollar polen (usta).
-const MARK = ['m', '', 'p', 'm', 'p', '', 'm', '', 'p'];
-const markCells = MARK.map((c) => ({
-  type: 'div',
+// Koina işareti (bkz. src/lib/mark.ts); satori SVG'yi görsel olarak çizer.
+const markImage = {
+  type: 'img',
   props: {
-    style: { width: 26, height: 26, borderRadius: 6, background: c === 'm' ? '#2F7A55' : c === 'p' ? '#F2B33D' : '#D5DFD8' },
+    src: `data:image/svg+xml;base64,${Buffer.from(markSvg()).toString('base64')}`,
+    width: 84,
+    height: 84,
   },
-}));
+};
 
 export async function getStaticPaths() {
   /* @feature:blog */
@@ -71,7 +76,7 @@ export const GET: APIRoute = async ({ props }) => {
   const cached = ogCache.get(cacheKey);
   if (cached) return new Response(new Uint8Array(cached), { headers: { 'Content-Type': 'image/png' } });
 
-  const [display, body] = loadFonts();
+  const [display, displayExt, body, bodyExt] = loadFonts();
   const svg = await satori(
     {
       type: 'div',
@@ -83,9 +88,10 @@ export const GET: APIRoute = async ({ props }) => {
           flexDirection: 'column',
           justifyContent: 'space-between',
           padding: '72px 80px',
-          background: '#F2F5F1',
-          color: '#173229',
-          fontFamily: 'Instrument',
+          background: '#FBFAF7',
+          color: '#1B1F3B',
+          fontFamily: 'DM Sans',
+          fontWeight: 500,
         },
         children: [
           {
@@ -93,8 +99,20 @@ export const GET: APIRoute = async ({ props }) => {
             props: {
               style: { display: 'flex', alignItems: 'center', gap: 22 },
               children: [
-                { type: 'div', props: { style: { display: 'flex', flexWrap: 'wrap', width: 90, gap: 6 }, children: markCells } },
-                { type: 'div', props: { style: { fontFamily: 'Bricolage', fontSize: 52, letterSpacing: -2 }, children: siteConfig.name.toLowerCase() } },
+                {
+                  type: 'div',
+                  props: {
+                    style: { display: 'flex', width: 90 },
+                    children: [markImage],
+                  },
+                },
+                {
+                  type: 'div',
+                  props: {
+                    style: { fontFamily: 'DM Sans', fontWeight: 700, fontSize: 52, letterSpacing: -2 },
+                    children: siteConfig.name.toLowerCase(),
+                  },
+                },
               ],
             },
           },
@@ -103,8 +121,26 @@ export const GET: APIRoute = async ({ props }) => {
             props: {
               style: { display: 'flex', flexDirection: 'column' },
               children: [
-                { type: 'div', props: { style: { fontFamily: 'Bricolage', fontSize: 66, lineHeight: 1.04, letterSpacing: -2.2 }, children: clamp(title, 80) } },
-                { type: 'div', props: { style: { fontSize: 28, lineHeight: 1.35, marginTop: 24, color: 'rgba(23,50,41,0.75)' }, children: clamp(subtitle, 130) } },
+                {
+                  type: 'div',
+                  props: {
+                    style: {
+                      fontFamily: 'DM Sans',
+                      fontWeight: 700,
+                      fontSize: 66,
+                      lineHeight: 1.04,
+                      letterSpacing: -2.2,
+                    },
+                    children: clamp(title, 80),
+                  },
+                },
+                {
+                  type: 'div',
+                  props: {
+                    style: { fontSize: 28, lineHeight: 1.35, marginTop: 24, color: '#50567A' },
+                    children: clamp(subtitle, 130),
+                  },
+                },
               ],
             },
           },
@@ -117,8 +153,10 @@ export const GET: APIRoute = async ({ props }) => {
       height: ogImageSize.height,
       // fontFamily değerleriyle birebir eşleşmeli.
       fonts: [
-        { name: 'Bricolage', data: display, weight: 700 as const, style: 'normal' as const },
-        { name: 'Instrument', data: body, weight: 500 as const, style: 'normal' as const },
+        { name: 'DM Sans', data: display, weight: 700 as const, style: 'normal' as const },
+        { name: 'DM Sans Ext', data: displayExt, weight: 700 as const, style: 'normal' as const },
+        { name: 'DM Sans', data: body, weight: 500 as const, style: 'normal' as const },
+        { name: 'DM Sans Ext', data: bodyExt, weight: 500 as const, style: 'normal' as const },
       ],
     },
   );

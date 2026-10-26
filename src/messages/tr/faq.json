@@ -1,10 +1,14 @@
 {
-  "eyebrow": "SSS",
+  "eyebrow": "aklına takılanlar",
   "title": "Sık sorulan sorular",
   "items": [
     {
       "question": "Ücretli mi?",
-      "answer": "Hayır. Üyelik her zaman ücretsiz. Giderler sezon sponsorları ve bireysel destekle karşılanır; harcamalar açık raporlanır."
+      "answer": "Hayır. Koina’ya katılım tamamen ücretsiz ve öyle kalacak. Topluluk imece usulü işler: herkes bildiğini ve vaktini paylaşır; sunucu ve etkinlik giderleri sponsorlar ve gönüllü destekle açıkça karşılanır."
+    },
+    {
+      "question": "Sadece izlemek istesem olur mu?",
+      "answer": "Elbette. Yayınları izlemek, Discord’da takılmak, bülteni okumak da katılmaktır. Kimse seni koda zorlamaz; hazır hissettiğinde küçük bir adım atarsın."
     },
     {
       "question": "Katılımcı olmak için ne kadar bilgi gerekiyor?",
@@ -17,14 +21,6 @@
     {
       "question": "Yapay zekâ araçları kullanabilir miyim?",
       "answer": "Evet, serbest. Tek kural: PR açıklamasında belirt ve gönderdiğin kodu açıklayabil. Anlamadığın kodu göndermek yasak, araç kullanmak değil."
-    },
-    {
-      "question": "Projelerin sahibi kim olur?",
-      "answer": "Kod herkese açık kalır ve repo Koina organizasyonunda durur; fikir sahibi kapatamaz. Lisansı fikir sahibi üç seçenekten seçer: serbest (MIT/Apache), paylaşımcı (AGPL: kodu SaaS olarak sunan değişikliklerini açmak zorunda) ya da SaaS korumalı (FSL: iki yıl boyunca rakip SaaS yasak, sonra Apache'ye döner). Hangi lisans olursa olsun commit geçmişin ve demon senin portföyündedir."
-    },
-    {
-      "question": "Türkiye dışından katılabilir miyim?",
-      "answer": "Evet. Çalışma dili Türkçe ama dokümantasyon ve kod İngilizce. Senkron saatleri Türkiye saatine göre akşamları."
     }
   ]
 }

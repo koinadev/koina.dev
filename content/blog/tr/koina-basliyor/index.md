@@ -38,5 +38,5 @@ satırdan daha güçlü bir kanıttır. Hem katılımcı hem usta için.
 - **Kickoff:** 4 Ocak 2027
 - **Demo Günü:** 13 Şubat 2027
 
-Katılımcı, usta ya da fikir sahibi olarak [başvurabilirsin](/tr/katil/). Önce tanışmak istersen
+Katılımcı, usta ya da fikir sahibi olarak [başvurabilirsin](/tr/kayit). Önce tanışmak istersen
 Discord'a gel; her Salı ve Perşembe 21:00'de canlıdayız.

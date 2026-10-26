@@ -1,5 +1,6 @@
 ---
 interface Props {
+  // Başlığın üstündeki el yazısı not (isteğe bağlı). Etiket değil, bir yorum gibi okunmalı.
   eyebrow?: string;
   title: string;
   description?: string;
@@ -11,14 +12,19 @@ interface Props {
 const { eyebrow, title, description, align = 'center', as: Tag = 'h2' } = Astro.props;
 ---
 
-<div class:list={['mb-12 max-w-2xl', align === 'center' ? 'mx-auto text-center' : '']} data-reveal>
+<div class:list={['mb-14 max-w-3xl', align === 'center' ? 'mx-auto text-center' : '']}>
+  {eyebrow && <p class="hand mb-3 -rotate-2 text-2xl text-primary-text">{eyebrow}</p>}
+  <Tag class="font-display text-4xl leading-[1.08] text-balance sm:text-5xl">{title}</Tag>
   {
-    eyebrow && (
-      <p class="mb-3 text-sm font-semibold text-brand-700 dark:text-brand-300">
-        {eyebrow}
+    description && (
+      <p
+        class:list={[
+          'mt-5 text-lg leading-relaxed text-muted-foreground',
+          align === 'center' && 'mx-auto max-w-2xl',
+        ]}
+      >
+        {description}
       </p>
     )
   }
-  <Tag class="font-display text-4xl leading-[1.02] font-bold tracking-[-0.03em] text-balance sm:text-5xl">{title}</Tag>
-  {description && <p class="mt-4 text-lg text-gray-600 dark:text-gray-400">{description}</p>}
 </div>

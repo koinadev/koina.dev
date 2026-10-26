@@ -1,26 +1,22 @@
 @import 'tailwindcss';
-@import '@fontsource-variable/bricolage-grotesque';
-@import '@fontsource-variable/instrument-sans';
+@import './palettes.css';
 
 /* @feature:blog */
 @plugin '@tailwindcss/typography';
 /* @/feature:blog */
 
-/* @feature:dark-mode */
-@custom-variant dark (&:where(.dark, .dark *));
-/* @/feature:dark-mode */
-
-/* Tasarım paleti korunuyor — shadcn/tweakcn tarzı SEMANTIK token katmanı EKLENİYOR.
-   Şablonun ana paleti brand-* ve gray-* üzerinde yaşıyor; semantic token'lar bunlara
-   eşleniyor. Bileşenler `bg-white`, `text-gray-900` gibi ham sınıfları olduğu gibi
-   kullanabilir — `gray-*` Tailwind v4'ün kendi paletinden geliyor ve `@theme` ile çakışmıyor;
-   semantic token katmanı yalnızca "bu sınıfların YERİNE geçebilecek bir kısayol" olarak
-   duruyor (özellikle `bg-background` / `text-foreground` / `bg-muted` / `text-muted-foreground`).
-   `--color-X: var(--X)` biçimi `@theme inline` ile çalışır; değer `:root` ve `.dark` arasında
-   değişir ve utility sınıfı `bg-X` / `text-X` otomatik türetilir. */
+/* Koina token katmanı. Renk ve fontların TEK kaynağı `palettes.css` içindeki `--k-*`
+   değişkenleri; burada Tailwind ölçeklerine bağlanıyorlar. Template bileşenleri `brand-*`,
+   `gray-*` kullandığı için ölçekler palete göre TÜRETİLİR: palet değişince her bileşen uyar.
+   - brand-*: birincil renk. 600 = dolgu, 700 = metin/link olarak güvenli ton.
+   - gray-*: palete ait "kâğıt" ile "mürekkep" arasında karışım; moddan bağımsız sabit skala
+     (template `` gibi sınıflarla koyu tonu açıkça istiyor).
+   - ink/on-ink: koyu bloklar (sezon şeridi, CTA); accent: usta rengi; live: canlı göstergesi. */
 @theme inline {
-  --font-sans: 'Instrument Sans Variable', system-ui, sans-serif;
-  --font-display: 'Bricolage Grotesque Variable', 'Instrument Sans Variable', system-ui, sans-serif;
+  --font-sans: var(--k-font-body);
+  --font-display: var(--k-font-display);
+  --font-mono: var(--k-font-mono);
+  --font-hand: var(--k-font-hand);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -34,7 +30,7 @@
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
+  --color-accent: var(--k-accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
@@ -42,39 +38,42 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  /* Marka renkleri korunuyor — şablonun ana paleti */
-  --color-brand-50: oklch(97% 0.025 158);
-  --color-brand-100: oklch(93.5% 0.045 158);
-  --color-brand-200: oklch(87% 0.075 158);
-  --color-brand-300: oklch(79% 0.1 158);
-  --color-brand-400: oklch(69% 0.12 158);
-  --color-brand-500: oklch(60% 0.12 158);
-  --color-brand-600: oklch(52.5% 0.11 158);
-  --color-brand-700: oklch(45% 0.095 158);
-  --color-brand-800: oklch(37% 0.075 160);
-  --color-brand-900: oklch(29% 0.055 162);
-  --color-brand-950: oklch(21% 0.04 165);
+  --color-brand-50: color-mix(in oklab, var(--k-primary) 7%, var(--k-bg));
+  --color-brand-100: color-mix(in oklab, var(--k-primary) 13%, var(--k-bg));
+  --color-brand-200: color-mix(in oklab, var(--k-primary) 26%, var(--k-bg));
+  --color-brand-300: color-mix(in oklab, var(--k-primary) 45%, var(--k-bg));
+  --color-brand-400: var(--k-primary-text);
+  --color-brand-500: var(--k-primary);
+  --color-brand-600: var(--k-primary);
+  --color-brand-700: var(--k-primary-text);
+  --color-brand-800: color-mix(in oklab, var(--k-primary-text) 80%, var(--k-fg));
+  --color-brand-900: color-mix(in oklab, var(--k-primary) 30%, var(--k-bg));
+  --color-brand-950: color-mix(in oklab, var(--k-primary) 16%, var(--k-bg));
+  --color-on-primary: var(--k-on-primary);
 
-  /* Koina: Tailwind'in gri skalası çam tonlu nötrlerle değişiyor — template bileşenleri
-     `gray-*` kullandığı için tüm arayüz tek hamlede marka tonuna geçer. */
-  --color-gray-50: oklch(97.6% 0.006 160);
-  --color-gray-100: oklch(95% 0.009 160);
-  --color-gray-200: oklch(90% 0.013 160);
-  --color-gray-300: oklch(83% 0.016 160);
-  --color-gray-400: oklch(68% 0.02 160);
-  --color-gray-500: oklch(55% 0.022 160);
-  --color-gray-600: oklch(45% 0.026 162);
-  --color-gray-700: oklch(37% 0.028 162);
-  --color-gray-800: oklch(28% 0.03 164);
-  --color-gray-900: oklch(23.5% 0.03 165);
-  --color-gray-950: oklch(20.5% 0.026 165);
+  --color-gray-50: color-mix(in oklab, var(--k-ink) 3%, var(--k-paper));
+  --color-gray-100: color-mix(in oklab, var(--k-ink) 6%, var(--k-paper));
+  --color-gray-200: color-mix(in oklab, var(--k-ink) 11%, var(--k-paper));
+  --color-gray-300: color-mix(in oklab, var(--k-ink) 20%, var(--k-paper));
+  --color-gray-400: color-mix(in oklab, var(--k-ink) 40%, var(--k-paper));
+  --color-gray-500: color-mix(in oklab, var(--k-ink) 55%, var(--k-paper));
+  --color-gray-600: color-mix(in oklab, var(--k-ink) 68%, var(--k-paper));
+  --color-gray-700: color-mix(in oklab, var(--k-ink) 78%, var(--k-paper));
+  --color-gray-800: color-mix(in oklab, var(--k-ink) 87%, var(--k-paper));
+  --color-gray-900: color-mix(in oklab, var(--k-ink) 93%, var(--k-paper));
+  --color-gray-950: var(--k-ink);
 
-  /* Polen: Usta rengi, "canlı" göstergesi. Üzerinde yalnızca çam metin. */
-  --color-pollen-300: oklch(87% 0.11 82);
-  --color-pollen-400: oklch(81.5% 0.145 78);
-  --color-pollen-500: oklch(76% 0.15 72);
-  --color-pine: #173229;
-  --color-sprout: #9ed9a8;
+  --color-ink: var(--k-ink-surface);
+  --color-on-ink: var(--k-on-ink);
+  --color-mentor: var(--k-accent);
+  --color-live: var(--k-live);
+  --color-tint: var(--k-tint);
+  --color-on-tint: var(--k-on-tint);
+  --color-surface: var(--k-surface);
+  --color-line: var(--k-line);
+  --color-squiggle: var(--k-squiggle);
+  --color-ring-hand: var(--k-ring);
+  --color-primary-text: var(--k-primary-text);
 
   --animate-marquee: marquee 30s linear infinite;
   @keyframes marquee {
@@ -85,63 +84,24 @@
 }
 
 :root {
-  --background: #f2f5f1;
-  --foreground: #173229;
-
-  --card: oklch(100% 0 0);
-  --card-foreground: oklch(21% 0.006 285);
-
-  --popover: oklch(100% 0 0);
-  --popover-foreground: oklch(21% 0.006 285);
-
-  --primary: #2f7a55;
-  --primary-foreground: oklch(100% 0 0);
-
-  --secondary: oklch(96% 0.005 285);
-  --secondary-foreground: oklch(21% 0.006 285);
-
-  --muted: oklch(98% 0.005 285);
-  --muted-foreground: oklch(45% 0.01 285);
-
-  --accent: oklch(96% 0.005 285);
-  --accent-foreground: oklch(21% 0.006 285);
-
-  --destructive: oklch(60% 0.22 27);
-  --destructive-foreground: oklch(100% 0 0);
-
-  --border: oklch(91% 0.005 285);
-  --input: oklch(87% 0.006 285);
-  --ring: #2f7a55;
-}
-
-.dark {
-  --background: #0e1d18;
-  --foreground: #e6eee8;
-
-  --card: oklch(14% 0.01 285);
-  --card-foreground: oklch(96% 0.005 285);
-
-  --popover: oklch(14% 0.01 285);
-  --popover-foreground: oklch(96% 0.005 285);
-
-  --primary: #4fb37e;
-  --primary-foreground: oklch(100% 0 0);
-
-  --secondary: oklch(27% 0.006 285);
-  --secondary-foreground: oklch(96% 0.005 285);
-
-  --muted: oklch(20% 0.006 285);
-  --muted-foreground: oklch(65% 0.01 285);
-
-  --accent: oklch(27% 0.006 285);
-  --accent-foreground: oklch(96% 0.005 285);
-
-  --destructive: oklch(45% 0.2 27);
-  --destructive-foreground: oklch(96% 0.005 285);
-
-  --border: oklch(27% 0.006 285);
-  --input: oklch(27% 0.006 285);
-  --ring: #2f7a55;
+  --background: var(--k-bg);
+  --foreground: var(--k-fg);
+  --card: var(--k-surface);
+  --card-foreground: var(--k-fg);
+  --popover: var(--k-surface);
+  --popover-foreground: var(--k-fg);
+  --primary: var(--k-primary);
+  --primary-foreground: var(--k-on-primary);
+  --secondary: var(--color-gray-100);
+  --secondary-foreground: var(--k-fg);
+  --muted: var(--color-gray-50);
+  --muted-foreground: var(--k-muted);
+  --accent-foreground: var(--k-fg);
+  --destructive: oklch(55% 0.2 27);
+  --destructive-foreground: #fff;
+  --border: var(--k-line);
+  --input: color-mix(in oklab, var(--k-fg) 18%, var(--k-bg));
+  --ring: var(--k-primary);
 }
 
 @layer base {
@@ -151,12 +111,57 @@
   body {
     @apply bg-background font-sans text-foreground antialiased;
   }
-  /* Bricolage'ın optik boyut ekseni büyük başlıkta sıkı, küçükte açık harf biçimini kendisi seçer. */
+  /* Başlık ağırlığı ve harf aralığı palettes.css'ten gelir. */
   .font-display {
     font-optical-sizing: auto;
+    font-weight: var(--k-display-weight);
+    letter-spacing: var(--k-display-tracking);
+  }
+  /* Küçük etiketler. */
+  .label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--k-muted);
+  }
+  /* El yazısı notlar: kenara karalanmış kısa notlar. Yalnız kısa metinlerde kullan. */
+  .hand {
+    font-family: var(--k-font-hand);
+    font-weight: 600;
+    line-height: 1.05;
   }
   :focus-visible {
-    outline-color: var(--color-brand-600);
+    outline-color: var(--k-primary-text);
+  }
+
+  /* İnce, hap biçimli kaydırma çubuğu: zemin şeffaf, tutamak lacivert, üstüne gelince mavi.
+     Chrome 121+ `scrollbar-color` görünce `::-webkit-scrollbar`ı yok sayar ve hap biçimi
+     kaybolur; standart özellikler bu yüzden yalnız webkit seçicisini tanımayan tarayıcıya
+     (Firefox) veriliyor. */
+  @supports not selector(::-webkit-scrollbar) {
+    html {
+      scrollbar-width: thin;
+      scrollbar-color: color-mix(in oklab, var(--k-fg) 35%, transparent) transparent;
+    }
+  }
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+  ::-webkit-scrollbar-track,
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    min-height: 48px;
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--k-fg) 30%, transparent) padding-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--k-primary-text);
+  }
+  ::-webkit-scrollbar-thumb:active {
+    background-color: var(--k-accent);
   }
 }
 

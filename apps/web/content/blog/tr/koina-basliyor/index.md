@@ -25,7 +25,7 @@ alır, sonunda ekip v0.1'ini canlı gösterir.
 
 Çünkü bunların hepsini aynı anda açmak, hiçbirini iyi yapmamak demek. Sıra sıra gideceğiz:
 
-1. **Şimdi: yayın ve kesitler.** Her Cumartesi 20:00 canlı kod yazıyor, en öğretici anları kısa kesitlerle
+1. **Şimdi: yayın ve kesitler.** Her Cumartesi 20:00 canlı yayında kod yazıyor, konular ve fikirler üzerine tartışıyor, en öğretici anları kısa kesitlerle
    paylaşıyoruz.
 2. **Sonra: konuk ustalar.** Deneyimli geliştiriciler yayına geliyor, gerçek PR'lara bakıyoruz.
 3. **Sonra: topluluk buluşmaları.** Eşli çalışma, atölyeler, fikir havuzu, ilk katkılar.

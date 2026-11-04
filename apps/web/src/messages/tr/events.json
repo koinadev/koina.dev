@@ -5,7 +5,7 @@
   "formats": [
     {
       "name": "Kodla Buluşma",
-      "text": "Gerçek bir issue’yu canlı kapatıyoruz. Sohbetten gelen sorular yayının parçası.",
+      "text": "Canlı kod yazıyor, konular ve fikirler üzerine tartışıyoruz. Sohbetten gelen sorular yayının parçası.",
       "rhythm": "code-meetup",
       "minutes": 90,
       "icon": "CodeIcon"

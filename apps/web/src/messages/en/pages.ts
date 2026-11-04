@@ -22,7 +22,7 @@ const about: InfoPage = {
       type: 'prose',
       title: 'What we do',
       body: [
-        'Right now we code live every Saturday and share the most useful moments as short clips. Next come guest mentors, community sessions and a first project we build together.',
+        'Right now we go live every Saturday to write code and discuss topics and ideas, and share the most useful moments as short clips. Next come guest mentors, community sessions and a first project we build together.',
         'Where we’re heading: six-week seasons in which a mentor, three to five participants and often an idea owner write code in the open, with a review on every PR. We’re getting there one step at a time, making sure each step works.',
       ],
       aside: 'all in the open',

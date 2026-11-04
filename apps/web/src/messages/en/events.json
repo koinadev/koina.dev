@@ -5,7 +5,7 @@
   "formats": [
     {
       "name": "Code Meetup",
-      "text": "We close a real issue live. Questions from chat are part of the stream.",
+      "text": "We write code live and discuss topics and ideas. Questions from chat are part of the stream.",
       "rhythm": "code-meetup",
       "minutes": 90,
       "icon": "CodeIcon"

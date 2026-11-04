@@ -21,11 +21,11 @@
     "weekdays": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
     "streams": [
       {
-        "weekday": 2,
+        "weekday": 6,
         "name": "Code Meetup"
       }
     ],
-    "fallbackDay": "Tuesdays 21:00 TRT"
+    "fallbackDay": "Saturdays 20:00 TRT"
   },
   "status": {
     "liveLabel": "Next stream",
@@ -38,6 +38,6 @@
     "daysLeft": "days left"
   },
   "titleParts": ["A community that grows ideas ", "together.", ""],
-  "note": "We’re live every Tuesday at 21:00!",
+  "note": "We’re live every Saturday at 20:00!",
   "imageAlt": "Five people working together around a laptop in a workspace with a colorful wall"
 }

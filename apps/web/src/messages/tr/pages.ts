@@ -21,7 +21,7 @@ const about: InfoPage = {
       type: 'prose',
       title: 'Ne yapıyoruz?',
       body: [
-        'Şu an her Salı canlı kod yazıyor, yayınların en öğretici anlarını kısa kesitlerle paylaşıyoruz. Sırada konuk ustalar, topluluk buluşmaları ve birlikte çıkaracağımız ilk proje var.',
+        'Şu an her Cumartesi canlı kod yazıyor, yayınların en öğretici anlarını kısa kesitlerle paylaşıyoruz. Sırada konuk ustalar, topluluk buluşmaları ve birlikte çıkaracağımız ilk proje var.',
         'Varmak istediğimiz yer: bir usta, üç ila beş katılımcı ve çoğu zaman bir fikir sahibinin kodu açıkta yazdığı, her PR’ın review aldığı altı haftalık sezonlar. Oraya sıra sıra, her adımın çalıştığını görerek gidiyoruz.',
       ],
       aside: 'hepsi açıkta',
@@ -381,7 +381,7 @@ const learners: InfoPage = {
       type: 'prose',
       title: 'Şu an ne yapabilirsin?',
       body: [
-        'Bugün her Salı 21:00’de yayını izleyip sohbette soru sorabilirsin. Ekipler ve review’lar ilk projeyle başlayacak; aşağıdaki liste oraya giden yolu anlatıyor.',
+        'Bugün her Cumartesi 20:00’de yayını izleyip sohbette soru sorabilirsin. Ekipler ve review’lar ilk projeyle başlayacak; aşağıdaki liste oraya giden yolu anlatıyor.',
       ],
     },
     {
@@ -390,7 +390,7 @@ const learners: InfoPage = {
       intro: 'İlk günden kimse senden bir özellik beklemiyor. İşte yorulmadan başlamanın yolları:',
       items: [
         { icon: 'SmileIcon', title: 'Discord’da bir emojiyle kendini tanıt', time: '30 sn' },
-        { icon: 'Video01Icon', title: 'Salı yayınını izle, sohbete “selam” yaz', time: '5 dk' },
+        { icon: 'Video01Icon', title: 'Cumartesi yayınını izle, sohbete “selam” yaz', time: '5 dk' },
         {
           icon: 'BubbleChatQuestionIcon',
           title: '#genel kanalına takıldığın bir şeyi sor',
@@ -645,10 +645,10 @@ const streams: InfoPage = {
   meta: {
     title: 'Canlı yayınlar',
     description:
-      'Koina canlı yayınları: her Salı 21:00 Kodla Buluşma. Herkes izleyebilir ve sohbete katılabilir. En iyi anlar kısa kesit olarak paylaşılır.',
+      'Koina canlı yayınları: her Cumartesi 20:00 Kodla Buluşma. Herkes izleyebilir ve sohbete katılabilir. En iyi anlar kısa kesit olarak paylaşılır.',
   },
   hero: {
-    note: 'Her Salı 21:00',
+    note: 'Her Cumartesi 20:00',
     title: 'İzle, sor, birlikte öğren.',
     lead: 'Koina’da iş açıkta yapılır. Yayınlarda gerçek projeleri, gerçek PR’ları ve gerçek hataları görürsün. İzlemek için kayıt bile gerekmez.',
     photo: 'stream',

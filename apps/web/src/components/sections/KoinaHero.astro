@@ -113,9 +113,9 @@ const [before, ringed, after] = hero.titleParts;
     streams: { weekday: number; name: string }[];
   };
 
-  // Yayınlar 21:00 TRT = 18:00 UTC; aynı takvim günü (UTC+3, yaz saati yok). Bir yayın 90
+  // Yayınlar 20:00 TRT = 17:00 UTC; aynı takvim günü (UTC+3, yaz saati yok). Bir yayın 90
   // dakika sürer; o aralıkta durum "şu an canlı" olur.
-  const START_UTC_HOUR = 18;
+  const START_UTC_HOUR = 17;
   const LENGTH_MS = 90 * 60 * 1000;
 
   function nextStream(cfg: LiveConfig, now: Date) {
@@ -150,7 +150,7 @@ const [before, ringed, after] = hero.titleParts;
           : h > 0
             ? `${h} ${cfg.hours} ${m} ${cfg.minutes}`
             : `${m} ${cfg.minutes}`;
-      text.textContent = `${cfg.next}: ${cfg.weekdays[hit.start.getUTCDay()]} 21:00, ${hit.stream.name} (${left} ${cfg.in})`;
+      text.textContent = `${cfg.next}: ${cfg.weekdays[hit.start.getUTCDay()]} 20:00, ${hit.stream.name} (${left} ${cfg.in})`;
       el.dataset.state = 'upcoming';
     });
     document.querySelectorAll<HTMLElement>('[data-countdown]').forEach((el) => {

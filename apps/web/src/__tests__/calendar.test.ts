@@ -17,14 +17,14 @@ const items = [...getMessages('tr').rhythm.items, demoFriday] as RhythmItem[];
 
 describe('nextOccurrence', () => {
   it('Türkiye saatine göre sıradaki etkinliği bulur', () => {
-    // 2026-10-26 pazartesi 12:00 TR (09:00 UTC) → salı 21:00 TR = 18:00 UTC.
+    // 2026-10-26 pazartesi 12:00 TR (09:00 UTC) → cumartesi 20:00 TR = 17:00 UTC.
     const next = nextOccurrence(items, new Date('2026-10-26T09:00:00Z'), (i) => i.kind !== 'mail');
     expect(next?.item.id).toBe('code-meetup');
-    expect(next?.start.toISOString()).toBe('2026-10-27T18:00:00.000Z');
+    expect(next?.start.toISOString()).toBe('2026-10-31T17:00:00.000Z');
   });
 
   it('süren etkinliği döndürür', () => {
-    const next = nextOccurrence(items, new Date('2026-10-27T18:30:00Z'));
+    const next = nextOccurrence(items, new Date('2026-10-31T17:30:00Z'));
     expect(next?.item.id).toBe('code-meetup');
   });
 
@@ -55,9 +55,9 @@ describe('buildIcs', () => {
 
   it('her etkinlik için tekrar kuralı yazar', () => {
     expect(ics.match(/BEGIN:VEVENT/g)).toHaveLength(items.length);
-    expect(ics).toContain('RRULE:FREQ=WEEKLY;BYDAY=TU');
+    expect(ics).toContain('RRULE:FREQ=WEEKLY;BYDAY=SA');
     expect(ics).toContain('RRULE:FREQ=MONTHLY;BYDAY=3FR');
-    expect(ics).toContain('DTSTART;TZID=Europe/Istanbul:20260106T210000');
+    expect(ics).toContain('DTSTART;TZID=Europe/Istanbul:20260103T200000');
   });
 
   it('CRLF kullanır, metni kaçırır, satırları 75 sekizlide katlar', () => {

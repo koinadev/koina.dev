@@ -51,7 +51,7 @@ export const home: typeof trHome = {
       },
       {
         icon: 'Video01Icon',
-        title: 'Drop by the Tuesday stream, say “hi” in chat',
+        title: 'Drop by the Saturday stream, say “hi” in chat',
         time: '1 min',
         link: { label: 'Streams', route: 'streams' },
       },

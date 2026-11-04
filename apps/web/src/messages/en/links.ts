@@ -41,7 +41,7 @@ export const links: typeof trLinks = {
         {
           icon: 'YoutubeIcon',
           label: 'YouTube',
-          hint: 'live every Tuesday 21:00 (UTC+3)',
+          hint: 'live every Saturday 20:00 (UTC+3)',
           href: 'https://www.youtube.com/@koinadev',
         },
         {

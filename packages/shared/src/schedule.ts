@@ -1,4 +1,4 @@
-// Haftalık canlı yayın takvimi. Yayınlar 21:00 TRT = 18:00 UTC (Türkiye'de yaz saati yok, aynı
+// Haftalık canlı yayın takvimi. Yayınlar Cumartesi 20:00 TRT = 17:00 UTC (Türkiye'de yaz saati yok, aynı
 // takvim günü) ve 90 dakika sürer. Site geri sayımı, mobil uygulama ve API'nin ürettiği yayın
 // etkinlikleri bu tek listeden hesaplanır.
 
@@ -8,11 +8,13 @@ export interface StreamSlot {
   title: { tr: string; en: string };
 }
 
-export const STREAM_UTC_HOUR = 18;
+export const STREAM_UTC_HOUR = 17;
+/** Ekranda gösterilen yerel başlangıç saati (TRT). */
+export const STREAM_LOCAL_TIME = '20:00';
 export const STREAM_MINUTES = 90;
 
 export const streamSlots: StreamSlot[] = [
-  { weekday: 2, title: { tr: 'Kodla Buluşma', en: 'Code Meetup' } },
+  { weekday: 6, title: { tr: 'Kodla Buluşma', en: 'Code Meetup' } },
 ];
 
 export interface StreamOccurrence {

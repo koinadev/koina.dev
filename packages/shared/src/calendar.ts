@@ -102,7 +102,7 @@ export function weekdayName(weekday: number, lang: string, width: 'long' | 'shor
 }
 
 /**
- * Takvim satırının insan diliyle zamanı: `Her Salı 21:00`, `Ayın 1. haftası, Cumartesi 11:00`.
+ * Takvim satırının insan diliyle zamanı: `Her Cumartesi 20:00`, `Ayın 1. haftası, Cumartesi 11:00`.
  * Kalıplar içerikten gelir (`{day}`, `{n}`); dil kodda değil.
  */
 export function describeSlot(item: RhythmItem, lang: string, patterns: { weekly: string; monthly: string }): string {

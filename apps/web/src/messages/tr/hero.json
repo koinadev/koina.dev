@@ -21,11 +21,11 @@
     "weekdays": ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"],
     "streams": [
       {
-        "weekday": 2,
+        "weekday": 6,
         "name": "Kodla Buluşma"
       }
     ],
-    "fallbackDay": "Her Salı 21:00"
+    "fallbackDay": "Her Cumartesi 20:00"
   },
   "status": {
     "liveLabel": "Sonraki yayın",
@@ -38,6 +38,6 @@
     "daysLeft": "gün kaldı"
   },
   "titleParts": ["Fikri ", "imeceyle", " büyüten bir topluluğuz."],
-  "note": "Her Salı 21:00’de canlıyız!",
+  "note": "Her Cumartesi 20:00’de canlıyız!",
   "imageAlt": "Renkli duvarlı bir çalışma alanında bir laptopun etrafında birlikte çalışan beş kişi"
 }

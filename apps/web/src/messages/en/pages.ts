@@ -22,7 +22,7 @@ const about: InfoPage = {
       type: 'prose',
       title: 'What we do',
       body: [
-        'Right now we code live every Tuesday and share the most useful moments as short clips. Next come guest mentors, community sessions and a first project we build together.',
+        'Right now we code live every Saturday and share the most useful moments as short clips. Next come guest mentors, community sessions and a first project we build together.',
         'Where we’re heading: six-week seasons in which a mentor, three to five participants and often an idea owner write code in the open, with a review on every PR. We’re getting there one step at a time, making sure each step works.',
       ],
       aside: 'all in the open',
@@ -382,7 +382,7 @@ const learners: InfoPage = {
       type: 'prose',
       title: 'What can you do right now?',
       body: [
-        'Today you can watch the stream every Tuesday at 21:00 and ask questions in chat. Teams and reviews start with the first project; the list below describes the road there.',
+        'Today you can watch the stream every Saturday at 20:00 and ask questions in chat. Teams and reviews start with the first project; the list below describes the road there.',
       ],
     },
     {
@@ -391,7 +391,7 @@ const learners: InfoPage = {
       intro: 'Nobody expects a feature from you on day one. Here are ways to start without getting tired:',
       items: [
         { icon: 'SmileIcon', title: 'Introduce yourself on Discord with one emoji', time: '30 sec' },
-        { icon: 'Video01Icon', title: 'Watch the Tuesday stream, say “hi” in chat', time: '5 min' },
+        { icon: 'Video01Icon', title: 'Watch the Saturday stream, say “hi” in chat', time: '5 min' },
         {
           icon: 'BubbleChatQuestionIcon',
           title: 'Ask something you are stuck on in #questions',
@@ -653,10 +653,10 @@ const streams: InfoPage = {
   meta: {
     title: 'Live streams',
     description:
-      'Koina live streams: Code Meetup every Tuesday at 21:00. Anyone can watch and join the chat. The best moments are shared as short clips.',
+      'Koina live streams: Code Meetup every Saturday at 20:00. Anyone can watch and join the chat. The best moments are shared as short clips.',
   },
   hero: {
-    note: 'Tuesdays 21:00',
+    note: 'Saturdays 20:00',
     title: 'Watch, ask, learn together.',
     lead: 'At Koina the work happens in the open. On streams you see real projects, real PRs and real bugs. You do not even need to sign up to watch.',
     photo: 'stream',

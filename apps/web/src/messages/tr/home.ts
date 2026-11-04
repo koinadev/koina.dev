@@ -53,7 +53,7 @@ export const home = {
       },
       {
         icon: 'Video01Icon',
-        title: 'Salı yayınına uğra, sohbete “selam” yaz',
+        title: 'Cumartesi yayınına uğra, sohbete “selam” yaz',
         time: '1 dk',
         link: { label: 'Yayınlar', route: 'streams' },
       },

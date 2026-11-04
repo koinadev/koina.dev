@@ -4,8 +4,8 @@ import { countRsvps, listEventsBetween } from '@koina/db/repositories/events';
 import type { AppContext } from '../../../core/types/env';
 
 const streamCopy = {
-  tr: 'Salı ve Perşembe 21:00 canlı yayındayız. Herkes izleyebilir, sohbete katılmak serbest.',
-  en: "We're live Tuesdays and Thursdays at 21:00 (Istanbul). Anyone can watch; join the chat anytime.",
+  tr: 'Her Cumartesi 20:00 canlı yayındayız. Herkes izleyebilir, sohbete katılmak serbest.',
+  en: "We're live every Saturday at 20:00 (Istanbul). Anyone can watch; join the chat anytime.",
 };
 
 /** Canlı yayınlar (takvimden üretilir) + elle eklenen etkinlikler, başlangıca göre sıralı; katılım sayıları tek sorguda. */

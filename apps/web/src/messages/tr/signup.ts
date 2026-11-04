@@ -18,7 +18,7 @@ export const signup = {
       {
         icon: 'Calendar03Icon',
         title: 'İlk yayın',
-        text: 'Salı 21:00’de Kodla Buluşma. İstersen sadece izle.',
+        text: 'Cumartesi 20:00’de Kodla Buluşma. İstersen sadece izle.',
       },
       { icon: 'PartyIcon', title: 'Yeni adımlar', text: 'Girişte haber iznini işaretlersen yeni bir adım açılınca e-posta gelir.' },
     ] as { icon: IconName; title: string; text: string }[],

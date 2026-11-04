@@ -53,7 +53,7 @@
     }
   ],
   "followText": "Turn on notifications on any channel and you will know the moment we go live.",
-  "formatsLead": "Right now it’s Code Meetup every Tuesday. The others open when their turn comes. The bar is relative to the longest format.",
+  "formatsLead": "Right now it’s Code Meetup every Saturday. The others open when their turn comes. The bar is relative to the longest format.",
   "weekly": "Every {day}",
   "minutes": "{n} min"
 }

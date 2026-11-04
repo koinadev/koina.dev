@@ -25,7 +25,7 @@ PR gets a review, and at the end the team demos its v0.1 live.
 
 Because opening all of this at once means doing none of it well. We're going one step at a time:
 
-1. **Now: streams and clips.** We code live every Tuesday at 21:00 (TRT) and share the most useful
+1. **Now: streams and clips.** We code live every Saturday at 20:00 (TRT) and share the most useful
    moments as short clips.
 2. **Next: guest mentors.** Experienced developers join the stream and we look at real PRs.
 3. **Later: community sessions.** Pairing hours, workshops, an idea pool, first contributions.
@@ -41,5 +41,5 @@ stronger evidence than any line on a CV, for participants and mentors alike.
 
 ## What can you do now?
 
-Our first stream is tonight at 21:00 (TRT): [YouTube](https://www.youtube.com/@koinadev). To hear
+Our first stream is tonight at 20:00 (TRT): [YouTube](https://www.youtube.com/@koinadev). To hear
 about new steps first, [sign up](/en/signup) or come to Discord.

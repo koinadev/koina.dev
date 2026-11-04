@@ -25,7 +25,7 @@ alır, sonunda ekip v0.1'ini canlı gösterir.
 
 Çünkü bunların hepsini aynı anda açmak, hiçbirini iyi yapmamak demek. Sıra sıra gideceğiz:
 
-1. **Şimdi: yayın ve kesitler.** Her Salı 21:00 canlı kod yazıyor, en öğretici anları kısa kesitlerle
+1. **Şimdi: yayın ve kesitler.** Her Cumartesi 20:00 canlı kod yazıyor, en öğretici anları kısa kesitlerle
    paylaşıyoruz.
 2. **Sonra: konuk ustalar.** Deneyimli geliştiriciler yayına geliyor, gerçek PR'lara bakıyoruz.
 3. **Sonra: topluluk buluşmaları.** Eşli çalışma, atölyeler, fikir havuzu, ilk katkılar.
@@ -41,5 +41,5 @@ satırdan daha güçlü bir kanıttır. Hem katılımcı hem usta için.
 
 ## Şimdi ne yapabilirsin?
 
-Bu akşam 21:00'de ilk yayındayız: [YouTube](https://www.youtube.com/@koinadev). Yeni adımları ilk sen
+Bu akşam 20:00'de ilk yayındayız: [YouTube](https://www.youtube.com/@koinadev). Yeni adımları ilk sen
 duymak istersen [kayıt ol](/tr/kayit) ya da Discord'a gel.

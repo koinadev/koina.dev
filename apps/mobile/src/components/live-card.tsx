@@ -1,4 +1,4 @@
-import { upcomingStreams } from '@koina/shared/schedule';
+import { STREAM_LOCAL_TIME, upcomingStreams } from '@koina/shared/schedule';
 import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { locale, t } from '@/lib/i18n';
@@ -34,7 +34,7 @@ export function LiveCard() {
       </View>
       <Text style={styles.title}>{next.slot.title[locale]}</Text>
       <Text style={styles.meta}>
-        {day} 21:00{live ? '' : ` · ${left(next.start.getTime() - now.getTime())}`}
+        {day} {STREAM_LOCAL_TIME}{live ? '' : ` · ${left(next.start.getTime() - now.getTime())}`}
       </Text>
       <Button small label={t.home.watch} icon="LiveStreaming01Icon" onPress={() => openUrl('https://www.youtube.com/@koinadev/live')} />
     </View>

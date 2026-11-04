@@ -28,7 +28,7 @@ const strings = {
     },
     events: {
       title: 'Takvim',
-      lead: 'Her Salı 21:00 canlıdayız. Gelemezsen kayıtlar YouTube’da.',
+      lead: 'Her Cumartesi 20:00 canlıdayız. Gelemezsen kayıtlar YouTube’da.',
       going: (n: number) => (n === 0 ? 'İlk sen katıl' : `${n} kişi geliyor`),
       join: 'Ben de geliyorum',
       joined: 'Geliyorsun',
@@ -303,7 +303,7 @@ const strings = {
     },
     events: {
       title: 'Calendar',
-      lead: "We're live every Tuesday at 21:00 (Istanbul). Recordings are on YouTube.",
+      lead: "We're live every Saturday at 20:00 (Istanbul). Recordings are on YouTube.",
       going: (n: number) => (n === 0 ? 'Be the first to join' : `${n} going`),
       join: "I'm going",
       joined: "You're going",

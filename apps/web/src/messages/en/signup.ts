@@ -17,7 +17,7 @@ export const signup: typeof trSignup = {
       {
         icon: 'Calendar03Icon',
         title: 'Your first stream',
-        text: 'Code Meetup on Tuesday at 21:00 (UTC+3). Just watch if you like.',
+        text: 'Code Meetup on Saturday at 20:00 (UTC+3). Just watch if you like.',
       },
       { icon: 'PartyIcon', title: 'New steps', text: 'Tick the news box when signing in and we email you when a new step opens.' },
     ],

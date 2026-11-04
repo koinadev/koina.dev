@@ -53,7 +53,7 @@
     }
   ],
   "followText": "Bildirimleri açtığın kanaldan yayın başladığı an haberin olur.",
-  "formatsLead": "Şu an her Salı Kodla Buluşma var. Diğerleri sırası gelince açılacak. Süre çubuğu en uzun formata göre.",
+  "formatsLead": "Şu an her Cumartesi Kodla Buluşma var. Diğerleri sırası gelince açılacak. Süre çubuğu en uzun formata göre.",
   "weekly": "Her {day}",
   "minutes": "{n} dk"
 }

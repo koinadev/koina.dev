@@ -37,7 +37,7 @@ export const t = {
     description: 'Koina topluluğunun akışı: öğrenilenler, takılınanlar, çıkan projeler.',
     welcome: 'Açık kaynağı imeceyle büyüten bir topluluk.',
     welcomeHand: 'hoş geldin',
-    welcomeText: 'Ustalar, yeni başlayanlar ve fikir sahipleri için açık kaynak topluluğu. Her Salı canlı yayında buluşuyoruz; topluluk büyüdükçe yeni özellikler açılıyor.',
+    welcomeText: 'Ustalar, yeni başlayanlar ve fikir sahipleri için açık kaynak topluluğu. Her Cumartesi canlı yayında buluşuyoruz; topluluk büyüdükçe yeni özellikler açılıyor.',
     signIn: 'E-postayla giriş yap',
     learnMore: 'Koina’yı tanı',
     tabs: { top: 'Öne çıkanlar', following: 'Takip', latest: 'Son' },
@@ -273,7 +273,7 @@ export const t = {
   calendar: {
     title: 'Takvim',
     description: 'Koina’nın canlı yayınları, buluşmaları ve atölyeleri.',
-    lead: 'Her Salı 21:00’de canlıdayız. Gelemezsen kayıtlar YouTube’da.',
+    lead: 'Her Cumartesi 20:00’de canlıdayız. Gelemezsen kayıtlar YouTube’da.',
     subscribe: 'Takvime ekle',
     subscribeHint: 'Takvim uygulamana abone ol; yeni yayınlar kendiliğinden eklenir.',
     timezone: 'Saatler Türkiye saatiyle (UTC+3).',

@@ -43,7 +43,7 @@ export const links = {
         {
           icon: 'YoutubeIcon',
           label: 'YouTube',
-          hint: 'Her Salı 21:00 canlı',
+          hint: 'Her Cumartesi 20:00 canlı',
           href: 'https://www.youtube.com/@koinadev',
         },
         {

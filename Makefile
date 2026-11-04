@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 .PHONY: help install env dev dev-api dev-app dev-web dev-mobile infra-up infra-down \
-	migrate seed check test build deploy-web deploy-api deploy-app
+	migrate seed check test build deploy-web deploy-api deploy-app export
 
 help: ## Komutları listeler
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-12s\033[0m %s\n", $$1, $$2}'
@@ -56,3 +56,6 @@ deploy-api: ## API'yi yayına alır
 
 deploy-app: ## Web uygulamasını yayına alır
 	bun run deploy:app
+
+export: ## Ön kayıtları CSV indirir (ana dizine; dosya adı için: make export OUT=liste.csv)
+	bun apps/web/scripts/export-presignups.ts $(OUT)

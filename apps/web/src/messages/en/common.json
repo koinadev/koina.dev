@@ -1,0 +1,44 @@
+{
+  "site": {
+    "title": "koina.dev — An imece-style open source community",
+    "description": "Koina is a community bringing experienced developers and newcomers together on open source projects. Our main goal is supporting open source: imece-style solidarity and live streams every Tuesday.",
+    "shortDescription": "Open source community",
+    "tagline": "Supporting open source, imece style. Meet in the same repo."
+  },
+  "nav": {
+    "menu": "Menu",
+    "close": "Close",
+    "mainMenu": "Main menu",
+    "footerMenu": "Footer menu",
+    "switchLocale": "Switch to English",
+    "skipToContent": "Skip to content",
+    "links": "Links",
+    "free": "for open source!",
+    "signIn": "Sign in"
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "source": "Source code (AGPL-3.0)",
+    "free": "Koina’s main goal is supporting open source. Everyone shares what they know and we grow imece style.",
+    "groups": {
+      "community": "Community",
+      "join": "Join",
+      "support": "Support",
+      "follow": "Follow"
+    }
+  },
+  "redirect": {
+    "title": "Redirecting",
+    "text": "Detecting your language, you will be redirected in a moment."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "back": "Back to home"
+  },
+  "consent": {
+    "text": "We use cookieless, anonymous analytics to understand how the site is used.",
+    "accept": "Accept",
+    "decline": "Decline",
+    "privacy": "Privacy"
+  }
+}

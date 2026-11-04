@@ -1,0 +1,21 @@
+---
+// Koina logotipi: işaret + `koina.dev`. Alan adı adın parçası: ziyaretçi neye baktığını (bir
+// geliştirici topluluğu) ve nereye döneceğini tek bakışta okur. `.dev` aynı yazı ailesinde, bir
+// tık açık renkte; ad ile uzantı ayrı okunur ama tek kelime gibi durur.
+import Mark from './Mark.astro';
+import { siteConfig } from '../../config/site.config';
+
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+const [name, ...rest] = siteConfig.name.toLowerCase().split('.');
+const tld = rest.length ? `.${rest.join('.')}` : '';
+---
+
+<span class:list={['inline-flex shrink-0 items-center gap-2 sm:gap-2.5', className]}>
+  <Mark class="size-6 shrink-0 sm:size-7" />
+  <span class="font-display text-[1.375rem] leading-none whitespace-nowrap sm:text-2xl">
+    {name}<span class="text-primary-text">{tld}</span>
+  </span>
+</span>

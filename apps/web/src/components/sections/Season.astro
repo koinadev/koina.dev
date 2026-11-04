@@ -1,0 +1,182 @@
+---
+import Section from '../ui/Section.astro';
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import Button from '../ui/Button.astro';
+import { getMessages } from '../../messages';
+import { getLocaleMeta, type Locale } from '../../i18n/utils';
+import { routePath } from '../../i18n/routes';
+
+// Sezon takvimi: yedi hafta (0-6) tarihleriyle, her aşama sürdüğü hafta kadar bir çubuk. Gerçek
+// bir sıra olduğu için hafta numaraları burada anlamlı. Sezonun neresinde olunduğu (öncesi,
+// hangi aşama, bitti) tarayıcıda hesaplanır; build anındaki durum ilk boyama için yazılır.
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const { season, hero } = getMessages(locale);
+const lang = getLocaleMeta(locale).htmlLang;
+
+const WEEK = 7 * 86_400_000;
+const WEEKS = 7;
+// Hafta 0 kickoff gününün başında (Türkiye saatiyle 00:00) başlar.
+const kickoff = new Date(hero.status.kickoffAt);
+const start = Date.parse(`${hero.status.kickoffAt.slice(0, 10)}T00:00:00+03:00`);
+const end = start + WEEKS * WEEK;
+
+const short = new Intl.DateTimeFormat(lang, { day: 'numeric', month: 'short', timeZone: 'Europe/Istanbul' });
+const weeks = Array.from({ length: WEEKS }, (_, i) => ({ n: i, date: short.format(start + i * WEEK) }));
+const phases = season.steps.map((step) => {
+  const from = start + step.start * WEEK;
+  const to = from + step.span * WEEK;
+  return { ...step, from, to, range: `${short.format(from)} – ${short.format(to - 86_400_000)}` };
+});
+const last = phases.length - 1;
+const now = Date.now();
+const stateOf = (from: number, to: number) => (now >= to ? 'past' : now >= from ? 'current' : 'future');
+const daysLeft = Math.max(0, Math.ceil((kickoff.getTime() - now) / 86_400_000));
+---
+
+<Section class="bg-surface">
+  <Container>
+    <SectionHeading eyebrow={season.eyebrow} title={season.title} description={season.description} />
+
+    <div
+      data-season
+      data-start={start}
+      data-end={end}
+      data-kickoff={kickoff.getTime()}
+      class="mx-auto max-w-6xl"
+    >
+      <div
+        class="mb-6 flex flex-col gap-4 rounded-[28px] bg-background p-6 sm:flex-row sm:items-center sm:justify-between sm:p-7"
+      >
+        <div>
+          <p data-season-before class:list={[now >= start && 'hidden']}>
+            <span class="text-muted-foreground">{season.before}</span>
+            <span class="font-display ml-1 text-4xl tabular-nums"
+              ><span data-season-days>{daysLeft}</span> {season.days}</span
+            >
+          </p>
+          <p
+            data-season-during
+            class:list={['font-display text-2xl', (now < start || now >= end) && 'hidden']}
+          >
+            {season.during}
+          </p>
+          <p data-season-after class:list={['max-w-xl text-lg', now < end && 'hidden']}>{season.after}</p>
+          <p class="mt-1 text-sm text-muted-foreground">
+            {hero.status.kickoffLabel}: {hero.status.kickoffDate}. {season.applyBy}: {hero.status.closeDate}.
+          </p>
+        </div>
+        <Button href={routePath('signup', locale)} size="lg" analytics={{ event: 'season_apply' }}>
+          {season.apply}
+        </Button>
+      </div>
+
+      <!-- Geniş ekran: haftalar sütun, aşamalar çubuk. -->
+      <div class="relative hidden lg:block" aria-hidden="true">
+        <div class="grid grid-cols-7 gap-2 border-b border-line pb-3">
+          {
+            weeks.map((w) => (
+              <p class="px-3">
+                <span class="label block">{season.steps.find((s) => s.start === w.n)?.week ?? ''}</span>
+                <span class="text-sm tabular-nums">{w.date}</span>
+              </p>
+            ))
+          }
+        </div>
+        <div class="relative mt-3 grid grid-cols-7 gap-x-2 gap-y-2">
+          {
+            phases.map((p, i) => (
+              <div
+                data-phase
+                data-from={p.from}
+                data-to={p.to}
+                data-state={stateOf(p.from, p.to)}
+                style={`grid-column:${p.start + 1} / span ${p.span}`}
+                class:list={[
+                  'relative rounded-2xl px-4 py-3 transition-colors',
+                  'data-[state=current]:bg-ink data-[state=current]:text-on-ink data-[state=past]:opacity-50',
+                  i === last ? 'bg-primary text-on-primary' : 'bg-tint text-on-tint',
+                ]}
+              >
+                <p class="font-display text-lg leading-tight">{p.name}</p>
+                <p class="mt-1 text-sm leading-snug opacity-80">{p.text}</p>
+              </div>
+            ))
+          }
+          <span
+            data-today-line
+            class="pointer-events-none absolute -top-3 bottom-0 z-10 hidden w-0.5 rounded-full bg-accent"
+          >
+            <span
+              class="absolute -top-6 left-1/2 -translate-x-1/2 rounded-full bg-accent px-2 py-0.5 text-xs font-medium whitespace-nowrap text-foreground"
+            >
+              {season.today}
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Dar ekran: aşamalar tarih aralığıyla alt alta. -->
+      <ol class="grid gap-2 lg:hidden">
+        {
+          phases.map((p, i) => (
+            <li
+              data-phase
+              data-from={p.from}
+              data-to={p.to}
+              data-state={stateOf(p.from, p.to)}
+              class:list={[
+                'flex gap-4 rounded-2xl p-4 data-[state=current]:bg-ink data-[state=current]:text-on-ink data-[state=past]:opacity-50',
+                i === last ? 'bg-primary text-on-primary' : 'bg-tint text-on-tint',
+              ]}
+            >
+              <div class="w-28 shrink-0">
+                <p class="text-sm font-medium">{p.week}</p>
+                <p class="text-xs whitespace-nowrap tabular-nums opacity-75">{p.range}</p>
+              </div>
+              <div>
+                <p class="font-display text-lg leading-tight">{p.name}</p>
+                <p class="mt-1 text-sm leading-snug opacity-80">{p.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </Container>
+</Section>
+
+<script>
+  function init() {
+    const root = document.querySelector<HTMLElement>('[data-season]');
+    if (!root) return;
+    const now = Date.now();
+    const start = Number(root.dataset.start);
+    const end = Number(root.dataset.end);
+    const kickoff = Number(root.dataset.kickoff);
+
+    root.querySelector('[data-season-before]')?.classList.toggle('hidden', now >= start);
+    root.querySelector('[data-season-during]')?.classList.toggle('hidden', now < start || now >= end);
+    root.querySelector('[data-season-after]')?.classList.toggle('hidden', now < end);
+    const days = root.querySelector('[data-season-days]');
+    if (days) days.textContent = String(Math.max(0, Math.ceil((kickoff - now) / 86_400_000)));
+
+    root.querySelectorAll<HTMLElement>('[data-phase]').forEach((el) => {
+      const from = Number(el.dataset.from);
+      const to = Number(el.dataset.to);
+      el.dataset.state = now >= to ? 'past' : now >= from ? 'current' : 'future';
+    });
+
+    const line = root.querySelector<HTMLElement>('[data-today-line]');
+    if (line) {
+      const inside = now >= start && now < end;
+      line.classList.toggle('hidden', !inside);
+      if (inside) line.style.left = `${((now - start) / (end - start)) * 100}%`;
+    }
+  }
+  document.addEventListener('astro:page-load', init);
+</script>

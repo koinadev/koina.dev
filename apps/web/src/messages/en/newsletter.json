@@ -1,0 +1,10 @@
+{
+  "title": "Koina Weekly",
+  "description": "Every Monday morning: merged PRs, first contributions, this week's streams. One email, unsubscribe any time.",
+  "placeholder": "Your email address",
+  "emailLabel": "Email address",
+  "subscribe": "Subscribe",
+  "sending": "Sending…",
+  "success": "Almost there! Check your inbox for the confirmation link.",
+  "error": "We couldn't save that right now. Please try again in a moment."
+}

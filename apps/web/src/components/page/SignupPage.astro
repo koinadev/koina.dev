@@ -1,0 +1,65 @@
+---
+// Kayıt sayfası. Katılmak = uygulamada hesap açmak (üye eşikleri yalnız hesapları sayar);
+// form yok, tek düğme uygulamanın girişine gider. Boş appUrl canlıda aynı köken demektir.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../ui/Container.astro';
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+import { getMessages } from '../../messages';
+import { alternatesFor } from '../../i18n/routes';
+import { siteConfig } from '../../config/site.config';
+import type { Locale } from '../../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const { signup } = getMessages(locale);
+---
+
+<BaseLayout
+  title={signup.meta.title}
+  description={signup.meta.description}
+  {locale}
+  alternates={alternatesFor('signup')}
+  route="signup"
+>
+  <section class="pt-12 pb-20 sm:pt-16">
+    <Container class="grid gap-12 lg:grid-cols-[1.25fr_1fr] lg:gap-16">
+      <div>
+        <p class="hand -rotate-2 text-3xl text-primary-text">{signup.note}</p>
+        <h1 class="font-display mt-2 text-[clamp(2.5rem,6vw,4rem)] leading-[1.03]">{signup.title}</h1>
+        <p class="mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground">{signup.lead}</p>
+
+        <Button href={`${siteConfig.appUrl}/giris`} size="lg" class="mt-10 w-full sm:w-auto sm:px-10" analytics={{ event: 'signup_account' }}>
+          {signup.account}
+        </Button>
+      </div>
+
+      <aside class="lg:pt-24">
+        <div class="rounded-[32px] bg-surface p-7 shadow-[0_1px_0_var(--k-line)] sm:p-9">
+          <h2 class="font-display text-2xl">{signup.next.title}</h2>
+          <ul class="mt-6 space-y-6">
+            {
+              signup.next.items.map((item) => (
+                <li class="flex gap-4">
+                  <span class="grid size-11 shrink-0 place-items-center rounded-2xl bg-tint text-primary-text">
+                    <Icon name={item.icon} class="size-5" />
+                  </span>
+                  <div>
+                    <p class="font-semibold">{item.title}</p>
+                    <p class="mt-0.5 text-muted-foreground">{item.text}</p>
+                  </div>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+        <p class="mt-6 flex gap-3 rounded-[24px] bg-primary p-5 text-on-primary">
+          <Icon name="GiftIcon" class="mt-0.5 size-6 shrink-0" />
+          {signup.free}
+        </p>
+      </aside>
+    </Container>
+  </section>
+</BaseLayout>

@@ -1,0 +1,29 @@
+{
+  "name": "@koina/api",
+  "version": "0.1.0",
+  "private": true,
+  "license": "AGPL-3.0-only",
+  "type": "module",
+  "scripts": {
+    "dev": "bun --filter @koina/db db:migrate && wrangler dev",
+    "check": "tsc --noEmit",
+    "test": "bun test --timeout 20000",
+    "deploy": "wrangler deploy",
+    "seed": "bun scripts/seed-dev.ts"
+  },
+  "dependencies": {
+    "@hono/zod-validator": "^0.9.1",
+    "@koina/db": "workspace:*",
+    "@koina/shared": "workspace:*",
+    "better-auth": "1.7.5",
+    "hono": "^4.13.14",
+    "postgres": "3.4.7",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261026.1",
+    "@types/bun": "1.4.2",
+    "typescript": "^5.9.3",
+    "wrangler": "^4.153.0"
+  }
+}

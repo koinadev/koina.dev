@@ -1,0 +1,62 @@
+{
+  "name": "@koina/web",
+  "private": true,
+  "version": "0.1.0",
+  "license": "AGPL-3.0-only",
+  "type": "module",
+  "exports": {
+    "./content": "./src/messages/index.ts",
+    "./content/types": "./src/messages/types.ts",
+    "./routes": "./src/i18n/routes.ts",
+    "./photos/*": "./src/assets/photos/*",
+    "./calendar": "./src/lib/calendar.ts"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "prebuild": "bun scripts/sync-wrangler-env.ts",
+    "build": "astro build",
+    "build:incremental": "bun scripts/build-incremental.ts",
+    "preview": "astro preview",
+    "check": "astro check",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "remove": "bun scripts/remove-feature.ts",
+    "test:removal": "bun scripts/test-removal.ts",
+    "deploy": "bun run build && wrangler deploy",
+    "presignups:export": "bun scripts/export-presignups.ts"
+  },
+  "dependencies": {
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.3",
+    "@fontsource-variable/caveat": "^5.3.0",
+    "@fontsource-variable/dm-sans": "^5.3.0",
+    "@fontsource-variable/jetbrains-mono": "^5.3.0",
+    "@hugeicons/core-free-icons": "^4.3.5",
+    "@resvg/resvg-js": "^2.6.2",
+    "@tailwindcss/typography": "^0.5.20",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.2.9",
+    "gsap": "^3.15.0",
+    "satori": "^0.29.0",
+    "sharp": "^0.35.5",
+    "tailwindcss": "^4.3.3",
+    "@koina/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@fontsource/dm-sans": "^5.3.0",
+    "happy-dom": "^20.11.2",
+    "prettier": "^3.9.6",
+    "prettier-plugin-astro": "^0.14.1",
+    "smol-toml": "^1.9.1",
+    "tinyglobby": "^0.2.17",
+    "tsx": "^4.23.12",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.11",
+    "wrangler": "^4.127.1"
+  }
+}

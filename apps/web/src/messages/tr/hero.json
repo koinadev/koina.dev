@@ -1,0 +1,43 @@
+{
+  "eyebrow": "Açık kaynağa destek, imece usulü",
+  "title": "Fikri imeceyle büyüten bir topluluğuz.",
+  "description": "Koina, deneyimli geliştiricilerle yolun başındakilerin açık kaynakta yan yana çalıştığı bir topluluk. Ana amacımız açık kaynağa destek olmak; herkes bildiğini paylaşır, birlikte büyürüz.",
+  "primaryCta": {
+    "label": "Topluluğa katıl",
+    "href": "/tr/kayit"
+  },
+  "secondaryCta": {
+    "label": "Bağlantılarımız",
+    "href": "/tr/baglantilar"
+  },
+  "live": {
+    "fallback": "Kodla Buluşma",
+    "next": "Sonraki yayın",
+    "now": "Şu an canlı",
+    "in": "sonra",
+    "days": "gün",
+    "hours": "saat",
+    "minutes": "dk",
+    "weekdays": ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"],
+    "streams": [
+      {
+        "weekday": 2,
+        "name": "Kodla Buluşma"
+      }
+    ],
+    "fallbackDay": "Her Salı 21:00"
+  },
+  "status": {
+    "liveLabel": "Sonraki yayın",
+    "closeLabel": "Başvurular kapanıyor",
+    "closeDate": "20 Aralık 2026",
+    "closeAt": "2026-12-20T20:59:00Z",
+    "kickoffLabel": "Sezon 1 kickoff",
+    "kickoffDate": "4 Ocak 2027",
+    "kickoffAt": "2027-01-04T17:00:00Z",
+    "daysLeft": "gün kaldı"
+  },
+  "titleParts": ["Fikri ", "imeceyle", " büyüten bir topluluğuz."],
+  "note": "Her Salı 21:00’de canlıyız!",
+  "imageAlt": "Renkli duvarlı bir çalışma alanında bir laptopun etrafında birlikte çalışan beş kişi"
+}

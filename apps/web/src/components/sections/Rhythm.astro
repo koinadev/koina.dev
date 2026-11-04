@@ -1,0 +1,290 @@
+---
+import Section from '../ui/Section.astro';
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import Icon from '../ui/Icon.astro';
+import { getMessages } from '../../messages';
+import { getLocaleMeta, type Locale } from '../../i18n/utils';
+import { siteConfig } from '../../config/site.config';
+import {
+  calendarFeeds,
+  nextOccurrence,
+  weekdayName,
+  type RhythmItem,
+  type RhythmKind,
+} from '../../lib/calendar';
+import type { IconName } from '../../lib/icons';
+
+// Haftalık takvim: üstte sıradaki etkinlik ve abonelik, altında yedi günlük hafta. Sayfa statik;
+// "bugün", tarihler ve geri sayım tarayıcıda hesaplanır. Build anındaki değerler JS'siz ziyaretçi
+// ve ilk boyama için yazılır.
+
+interface Props {
+  locale: Locale;
+  headingLevel?: 'h1' | 'h2';
+}
+const { locale, headingLevel = 'h2' } = Astro.props;
+const { rhythm } = getMessages(locale);
+const items = rhythm.items as RhythmItem[];
+const lang = getLocaleMeta(locale).htmlLang;
+
+const dayName = (weekday: number, style: 'long' | 'short') => weekdayName(weekday, lang, style);
+const week = [1, 2, 3, 4, 5, 6, 7].map((weekday) => ({
+  weekday,
+  long: dayName(weekday, 'long'),
+  short: dayName(weekday, 'short'),
+  items: items.filter((item) => item.weekday === weekday).sort((a, b) => a.time.localeCompare(b.time)),
+}));
+
+const isEvent = (item: RhythmItem) => item.kind !== 'mail';
+const next = nextOccurrence(items, new Date(), isEvent);
+
+const kindIcon: Record<RhythmKind, IconName> = {
+  live: 'LiveStreaming02Icon',
+  discord: 'DiscordIcon',
+  mail: 'Mail01Icon',
+};
+const kindClass: Record<RhythmKind, string> = {
+  live: 'bg-[color-mix(in_oklab,var(--k-accent)_16%,var(--k-surface))]',
+  discord: 'bg-tint',
+  mail: 'bg-[color-mix(in_oklab,var(--k-squiggle)_30%,var(--k-surface))]',
+};
+
+const feedPath = calendarFeeds[locale];
+const feedUrl = new URL(feedPath, siteConfig.url || Astro.site);
+const webcal = feedUrl.href.replace(/^https?:/, 'webcal:');
+const google = `https://calendar.google.com/calendar/r?cid=${encodeURIComponent(webcal)}`;
+---
+
+<Section id={locale === 'tr' ? 'ritim' : 'rhythm'}>
+  <Container>
+    <SectionHeading
+      eyebrow={rhythm.eyebrow}
+      title={rhythm.title}
+      description={rhythm.description}
+      as={headingLevel}
+    />
+
+    <div
+      data-rhythm
+      data-items={JSON.stringify(items.filter(isEvent))}
+      data-lang={lang}
+      data-units={JSON.stringify(rhythm.units)}
+      class="mx-auto max-w-6xl"
+    >
+      <div
+        class="grid gap-6 rounded-[28px] bg-ink p-6 text-on-ink sm:p-8 lg:grid-cols-[1fr_auto] lg:items-center"
+      >
+        <div class="flex items-start gap-4">
+          <span class="relative mt-2 flex size-3 shrink-0" aria-hidden="true">
+            <span data-live-ping class="absolute inset-0 hidden rounded-full bg-live motion-safe:animate-ping"
+            ></span>
+            <span class="relative size-3 rounded-full bg-live"></span>
+          </span>
+          <div class="min-w-0">
+            <p class="text-sm text-on-ink/70">
+              <span data-next-label data-next={rhythm.next} data-now={rhythm.now}>{rhythm.next}</span>
+            </p>
+            <p data-next-title class="font-display mt-1 text-3xl leading-tight sm:text-4xl">
+              {next?.item.title}
+            </p>
+            <p data-next-when class="mt-2 text-lg">
+              {next && `${dayName(next.item.weekday, 'long')} ${next.item.time}`}
+            </p>
+            <p data-next-where class="text-sm text-on-ink/70">{next?.item.where}</p>
+          </div>
+        </div>
+        <div class="flex flex-col gap-4 lg:items-end">
+          <p
+            data-countdown
+            class="font-display hidden text-4xl tabular-nums sm:text-5xl"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <a
+              href={webcal}
+              data-feed="webcal"
+              class="inline-flex h-11 items-center gap-2 rounded-full bg-primary px-5 text-sm font-medium text-on-primary transition hover:brightness-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-on-ink"
+            >
+              <Icon name="CalendarAdd01Icon" class="size-5" />
+              {rhythm.subscribe}
+            </a>
+            <a
+              href={google}
+              data-feed="google"
+              target="_blank"
+              rel="noopener"
+              class="inline-flex h-11 items-center gap-2 rounded-full bg-on-ink/10 px-5 text-sm font-medium transition hover:bg-on-ink/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-on-ink"
+            >
+              <Icon name="GoogleIcon" class="size-5" />
+              {rhythm.google}
+            </a>
+            <a
+              href={feedPath}
+              download
+              class="inline-flex h-11 items-center gap-2 rounded-full px-4 text-sm font-medium text-on-ink/75 transition hover:text-on-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-on-ink"
+            >
+              <Icon name="Download04Icon" class="size-5" />
+              {rhythm.download}
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <ol class="mt-4 grid gap-2 md:grid-cols-7">
+        {
+          week.map((day) => (
+            <li
+              data-weekday={day.weekday}
+              class="group flex gap-3 rounded-[22px] bg-surface p-2 shadow-[0_1px_0_var(--k-line)] data-[today]:shadow-[inset_0_0_0_2px_var(--k-fg)] md:min-h-56 md:flex-col"
+            >
+              <div class="flex w-24 shrink-0 flex-col justify-center gap-1 px-2 py-1 md:gap-0 md:w-auto md:flex-row md:items-baseline md:justify-between">
+                <span class="font-display text-lg leading-tight">
+                  <span class="md:hidden">{day.long}</span>
+                  <span class="hidden md:inline">{day.short}</span>
+                </span>
+                <span class="flex flex-col items-start gap-1 text-sm text-muted-foreground md:flex-row md:items-center md:gap-1.5">
+                  <span
+                    data-today-badge
+                    class="hidden rounded-full bg-primary px-2 py-0.5 text-xs font-medium text-on-primary group-data-[today]:inline md:group-data-[today]:hidden"
+                  >
+                    {rhythm.today}
+                  </span>
+                  <span
+                    data-date
+                    class="rounded-full tabular-nums md:group-data-[today]:bg-primary md:group-data-[today]:px-2 md:group-data-[today]:py-0.5 md:group-data-[today]:font-medium md:group-data-[today]:text-on-primary"
+                  />
+                </span>
+              </div>
+              <div class="flex min-w-0 flex-1 flex-col gap-2">
+                {day.items.length === 0 && (
+                  <p class="grid flex-1 place-items-center rounded-2xl border-2 border-dashed border-line p-3 text-sm text-muted-foreground">
+                    {rhythm.empty}
+                  </p>
+                )}
+                {day.items.map((item) => (
+                  <article
+                    data-item={item.id}
+                    class:list={[
+                      'flex flex-1 flex-col rounded-2xl p-3 transition-opacity data-[next]:shadow-[inset_0_0_0_2px_var(--k-fg)] data-[off]:opacity-40 data-[off]:saturate-0 md:flex-none',
+                      kindClass[item.kind],
+                    ]}
+                  >
+                    <p class="flex items-center justify-between gap-2 text-sm">
+                      <time class="font-medium tabular-nums">{item.time}</time>
+                      <Icon
+                        name={kindIcon[item.kind]}
+                        class="size-4 text-muted-foreground"
+                        label={item.kind === 'live' ? rhythm.live : undefined}
+                      />
+                    </p>
+                    <h3 class="font-display mt-1.5 text-base leading-snug">{item.title}</h3>
+                    <p class="mt-1 text-sm leading-snug text-muted-foreground">{item.text}</p>
+                    {item.nth && (
+                      <p class="mt-2 w-fit rounded-full bg-surface/80 px-2 py-0.5 text-xs font-medium">
+                        {rhythm.monthly.replace('{n}', String(item.nth))}
+                      </p>
+                    )}
+                    <p class="mt-auto pt-2 text-xs text-muted-foreground">{item.where}</p>
+                  </article>
+                ))}
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+      <p class="mt-4 text-center text-sm text-muted-foreground">{rhythm.timezone}</p>
+    </div>
+  </Container>
+</Section>
+
+<script>
+  import { nextOccurrence, trWeekday, TR_OFFSET_MINUTES, type RhythmItem } from '../../lib/calendar';
+
+  // Sayfa geçişleri (ClientRouter) arasında tek zamanlayıcı.
+  let timer: number | undefined;
+
+  function init() {
+    window.clearInterval(timer);
+    const root = document.querySelector<HTMLElement>('[data-rhythm]');
+    if (!root) return;
+    const items = JSON.parse(root.dataset.items ?? '[]') as RhythmItem[];
+    const units = JSON.parse(root.dataset.units ?? '{}') as Record<'d' | 'h' | 'm', string>;
+    const lang = root.dataset.lang ?? 'tr';
+
+    // Abonelik adresleri: build `siteConfig.url`i yazar; site henüz kendi alan adında değilken
+    // (workers.dev) bağlantı açıldığı adrese göre düzeltilir.
+    const feed = root.querySelector<HTMLAnchorElement>('[data-feed="webcal"]');
+    const google = root.querySelector<HTMLAnchorElement>('[data-feed="google"]');
+    if (feed && google) {
+      const url = new URL(new URL(feed.href).pathname, location.origin);
+      const webcal = url.href.replace(/^https?:/, 'webcal:');
+      feed.href = webcal;
+      google.href = `https://calendar.google.com/calendar/r?cid=${encodeURIComponent(webcal)}`;
+    }
+
+    // Bu haftanın tarihleri ve bugün (Türkiye saatine göre).
+    const now = new Date();
+    const today = trWeekday(now);
+    const dayFormat = new Intl.DateTimeFormat(lang, { day: 'numeric', month: 'short', timeZone: 'UTC' });
+    root.querySelectorAll<HTMLElement>('[data-weekday]').forEach((el) => {
+      const weekday = Number(el.dataset.weekday);
+      const date = new Date(now.getTime() + TR_OFFSET_MINUTES * 60_000 + (weekday - today) * 86_400_000);
+      el.toggleAttribute('data-today', weekday === today);
+      const label = el.querySelector('[data-date]');
+      if (label) label.textContent = dayFormat.format(date);
+    });
+
+    // Aylık etkinlik bu hafta yoksa soluk; sıradaki etkinlik bu haftadaysa çerçeveli.
+    root.querySelectorAll<HTMLElement>('[data-item]').forEach((el) => {
+      const item = items.find((i) => i.id === el.dataset.item);
+      if (!item?.nth) return;
+      const date = new Date(now.getTime() + TR_OFFSET_MINUTES * 60_000 + (item.weekday - today) * 86_400_000);
+      el.toggleAttribute('data-off', Math.ceil(date.getUTCDate() / 7) !== item.nth);
+    });
+
+    const weekdayName = (weekday: number) =>
+      new Intl.DateTimeFormat(lang, { weekday: 'long', timeZone: 'UTC' }).format(
+        new Date(Date.UTC(2024, 0, weekday)),
+      );
+    const set = (selector: string, text: string) => {
+      const el = root.querySelector(selector);
+      if (el) el.textContent = text;
+    };
+
+    const tick = () => {
+      const at = new Date();
+      const next = nextOccurrence(items, at);
+      if (!next) return;
+      const live = next.start <= at;
+      const label = root.querySelector<HTMLElement>('[data-next-label]');
+      if (label) label.textContent = (live ? label.dataset.now : label.dataset.next) ?? '';
+      root.querySelector('[data-live-ping]')?.classList.toggle('hidden', !live);
+      set('[data-next-title]', next.item.title);
+      set('[data-next-when]', `${weekdayName(next.item.weekday)} ${next.item.time}`);
+      set('[data-next-where]', next.item.where);
+      const inWeek =
+        next.start.getTime() - at.getTime() < 7 * 86_400_000 && trWeekday(next.start) >= trWeekday(at);
+      root.querySelectorAll<HTMLElement>('[data-item]').forEach((el) => {
+        el.toggleAttribute('data-next', inWeek && el.dataset.item === next.item.id);
+      });
+
+      const countdown = root.querySelector<HTMLElement>('[data-countdown]');
+      if (!countdown) return;
+      countdown.classList.toggle('hidden', live);
+      const minutes = Math.max(0, Math.ceil((next.start.getTime() - at.getTime()) / 60_000));
+      const d = Math.floor(minutes / 1440);
+      const h = Math.floor((minutes % 1440) / 60);
+      const m = minutes % 60;
+      countdown.textContent = [d && `${d}${units.d}`, (d || h) && `${h}${units.h}`, `${m}${units.m}`]
+        .filter(Boolean)
+        .join(' ');
+    };
+    tick();
+    timer = window.setInterval(tick, 30_000);
+  }
+
+  document.addEventListener('astro:page-load', init);
+</script>

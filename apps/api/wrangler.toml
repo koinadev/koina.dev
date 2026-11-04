@@ -1,0 +1,46 @@
+# Koina API: Cloudflare Worker (Hono). Veri Postgres'te (canlıda Neon), Worker'dan Hyperdrive ile; görseller R2'de.
+# Kurulum, sırlar ve ilk yayın: README.md.
+name = "koina-api"
+main = "src/index.ts"
+compatibility_date = "2026-08-15"
+# postgres.js (cloudflare:sockets) ve Better Auth (AsyncLocalStorage) Node uyumluluğu ister.
+compatibility_flags = ["nodejs_compat"]
+
+# Önbelleği KAPALI Hyperdrive: `wrangler hyperdrive create koina --connection-string=<NEON_URL> --caching-disabled`; çıktıdaki
+# kimlik `id`'ye yazılır. `localConnectionString` `wrangler dev` içindir: yerel PgBouncer (packages/db, `bun run infra:up`).
+[[hyperdrive]]
+binding = "HYPERDRIVE"
+id = "00000000000000000000000000000000"
+localConnectionString = "postgres://admin:local_admin_password@127.0.0.1:46563/koina"
+
+# Gönderi görselleri. `wrangler r2 bucket create koina-media`.
+[[r2_buckets]]
+binding = "MEDIA"
+bucket_name = "koina-media"
+
+# İsteğe bağlı yapay zekâ denetimi (Llama Guard). `AI_MODERATION = "on"` olmadıkça çağrılmaz.
+[ai]
+binding = "AI"
+
+# Saatlik bakım: bağlanmamış görseller ve eski hız sınırı sayaçları.
+[triggers]
+crons = ["17 * * * *"]
+
+[vars]
+ENVIRONMENT = "production"
+# Tarayıcıdan çağrı yapabilecek ve oturum çerezi kullanabilecek kökler. Mobil uygulama tarayıcı değildir, Bearer belirteci taşır.
+ALLOWED_ORIGINS = "https://koina.dev,https://koina-site.0furkancolak.workers.dev,https://koina-app.0furkancolak.workers.dev,http://localhost:4321,http://localhost:5173,http://127.0.0.1:5173"
+# API'nin herkese açık adresi: Better Auth'un taban adresi ve görsel bağlantıları.
+API_URL = "https://koina-api.0furkancolak.workers.dev"
+MAIL_FROM = "Koina <info@koina.dev>"
+# Bülten onay/çıkış bağlantılarının döneceği site.
+SITE_URL = "https://koina.dev"
+AI_MODERATION = "off"
+
+# Sırlar (`wrangler secret put <AD>`), burada DEĞİL:
+#   BETTER_AUTH_SECRET  Oturum imzası (en az 32 karakter rastgele)
+#   TURNSTILE_SECRET    Turnstile gizli anahtarı (form uçları ve web'den giriş kodu bunsuz kapalı)
+#   RESEND_API_KEY      Giriş kodu ve bülten onay e-postası (yoksa giriş 503 döner)
+#   ADMIN_TOKEN         /v1/admin/* uçları
+#   NOTIFY_WEBHOOK      Yeni form/kayıt bildirimi için Discord webhook'u (isteğe bağlı)
+#   HASH_SALT           IP özetleme tuzu

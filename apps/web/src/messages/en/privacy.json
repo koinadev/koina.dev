@@ -1,0 +1,40 @@
+{
+  "eyebrow": "Legal",
+  "title": "Privacy",
+  "description": "What personal data Koina processes, why, for how long, and your rights.",
+  "notice": "Draft: this text is not final until it has been legally reviewed and the data controller details are added.",
+  "sections": [
+    {
+      "heading": "Account",
+      "body": "To create an account we only ask for your email address; your sign-in code is sent there. The name, username, bio, location, interests, GitHub and website you add to your profile appear on your public profile. Posts, links and comments you share are public too."
+    },
+    {
+      "heading": "Sessions and security",
+      "body": "We use one essential session cookie to keep you signed in. For security, the session record keeps your IP address and browser details. To limit abuse we use a daily hash of your IP address and never store the address itself. Forms run Cloudflare Turnstile for bot checks."
+    },
+    {
+      "heading": "Pre-registration",
+      "body": "We store the email address you enter in the pre-registration form on Cloudflare, together with the date you ticked the consent box and the version of the text you agreed to. We use this address only to tell you when Koina opens; at launch we ask for your consent again before adding you to the newsletter. Write to us if you want your record deleted. The form runs Cloudflare Turnstile for bot checks."
+    },
+    {
+      "heading": "News emails",
+      "body": "We only send news emails if you explicitly opt in and click the link in the confirmation email. Every email has a link to unsubscribe at any time. Not opting in does not affect your account."
+    },
+    {
+      "heading": "Contact form",
+      "body": "We use the name, email and message you send through the contact form only to reply to you."
+    },
+    {
+      "heading": "Measurement",
+      "body": "We count visits without cookies: we record which page was opened and where the visit came from, never the person, device or IP address. We use no advertising or tracking cookies and never sell your data."
+    },
+    {
+      "heading": "Service providers",
+      "body": "The site and app run on Cloudflare, the database lives on Neon, and emails are sent with Resend. These providers may have servers outside Türkiye; data is passed to them only to provide the service."
+    },
+    {
+      "heading": "Retention and rights",
+      "body": "You can delete your account at any time from the profile edit page; your profile, posts and sessions are deleted together. The news subscription is separate and ends via the link in any email. Under KVKK you have the right to access, correct, delete and object to the processing of your data. Write to the address below to do so."
+    }
+  ]
+}

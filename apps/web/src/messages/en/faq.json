@@ -1,0 +1,30 @@
+{
+  "eyebrow": "good questions",
+  "title": "Frequently asked questions",
+  "items": [
+    {
+      "question": "Does it cost anything?",
+      "answer": "No, you don't pay to join the community or the streams, and projects and seasons will be free too. Our main goal is supporting open source. Over time, partnerships or paid work may come out of projects, or someone may want to pay for a piece of work; that is up to the people involved. Koina doesn't stand in the middle or take a cut."
+    },
+    {
+      "question": "When do seasons start?",
+      "answer": "We're not giving a date yet. First streams, then guest mentors and community sessions, then a small first project. Seasons start if that project works; people who opted in to news hear first."
+    },
+    {
+      "question": "Can I just watch?",
+      "answer": "Of course. Watching streams, hanging out on Discord and reading the newsletter are all ways to take part. Nobody pushes you to code; you take a small step when you feel ready."
+    },
+    {
+      "question": "How much do I need to know to join as a participant?",
+      "answer": "If you can use Git and write a small program in at least one language, you're ready. You don't need to know anything to watch the streams."
+    },
+    {
+      "question": "How much time does mentoring take?",
+      "answer": "Just one stream as a guest to begin with: a single evening. With the first project, mentors give two to three hours a week for six weeks: a 45-minute team sync and at least three PR reviews."
+    },
+    {
+      "question": "Can I use AI tools?",
+      "answer": "Yes. One rule: say so in the PR description and be able to explain the code you send. Sending code you don't understand is not allowed; using tools is."
+    }
+  ]
+}

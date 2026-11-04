@@ -1,0 +1,31 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import Section from '@/components/ui/Section.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import PostList from '@/components/blog/PostList.astro';
+import { getMessages } from '@/messages';
+import { alternatesFor } from '@/i18n/routes';
+
+const posts = (await getCollection('blog', ({ data }) => data.locale === 'en')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+const { blog } = getMessages('en');
+const alternates = alternatesFor('blog');
+---
+
+<BaseLayout
+  title={`${blog.title} — ${blog.allPosts}`}
+  description={blog.description}
+  locale="en"
+  {alternates}
+  route="blog"
+>
+  <Section>
+    <Container class="max-w-5xl">
+      <SectionHeading as="h1" eyebrow={blog.note} title={blog.title} description={blog.description} />
+      <PostList {posts} locale="en" />
+    </Container>
+  </Section>
+</BaseLayout>

@@ -1,0 +1,100 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import BlogCover from '@/components/blog/Cover.astro';
+import Section from '@/components/ui/Section.astro';
+import Icon from '@/components/ui/Icon.astro';
+import PostJsonLd from '@/components/blog/PostJsonLd.astro';
+import { formatDate, readingTime } from '@/lib/utils';
+import { getMessages } from '@/messages';
+import { blogPostPath, type Alternates, blogSlugFromId } from '@/i18n/routes';
+import { routePath } from '@/i18n/routes';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => data.locale === 'tr');
+  return posts.map((post) => ({ params: { slug: blogSlugFromId(post.id, 'tr') }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const { blog } = getMessages('tr');
+const slug = blogSlugFromId(post.id, 'tr');
+// OG görselinin yolu İKİ tüketiciye gidiyor (`<meta og:image>` ve BlogPosting.image);
+// tek değişken, iki yerde ayrı ayrı türetilmesin.
+const ogImage = `/og/blog-${post.id.replaceAll('/', '-')}.png`;
+/* @feature:i18n */
+// Diller arası eşleme SLUG'a göre YAPILAMAZ (slug'lar lokalize). Ortak `translationKey`
+// üzerinden eşleşiyoruz; karşılığı olmayan bir yazıda dil değiştirici o dilin blog
+// INDEX'ine düşer — asla 404'e değil.
+const enPost = (await getCollection('blog', ({ data }) => data.locale === 'en')).find(
+  (entry) => entry.data.translationKey === post.data.translationKey,
+);
+const enHref = enPost ? blogPostPath(blogSlugFromId(enPost.id, 'en'), 'en') : routePath('blog', 'en');
+/* @/feature:i18n */
+const alternates: Alternates = {
+  tr: blogPostPath(slug, 'tr'),
+  en: enHref, // @feature:i18n
+};
+---
+
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  locale="tr"
+  image={ogImage}
+  {alternates}
+  route="blog"
+  type="article"
+  publishedTime={post.data.date.toISOString()}
+  modifiedTime={post.data.updated?.toISOString()}
+>
+  <Section>
+    <Container class="max-w-3xl">
+      <a
+        href={routePath('blog', 'tr')}
+        class="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground"
+      >
+        <Icon name="ArrowLeft01Icon" class="size-4" />
+        {blog.back}
+      </a>
+      <p class="mt-8 text-sm text-muted-foreground">
+        <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date, 'tr')}</time>
+        {' · '}
+        {readingTime(post.body ?? '')}
+        {blog.minRead}
+      </p>
+      <h1 class="font-display mt-3 text-[clamp(2.2rem,5vw,3.5rem)] leading-[1.05] text-balance">
+        {post.data.title}
+      </h1>
+      <p class="mt-4 text-xl leading-relaxed text-muted-foreground">{post.data.description}</p>
+      {
+        post.data.cover && (
+          <BlogCover
+            cover={post.data.cover}
+            alt={post.data.coverAlt ?? post.data.title}
+            width={1024}
+            loading="eager"
+            class="mt-10 aspect-[1200/630] w-full rounded-[28px] object-cover"
+          />
+        )
+      }
+      <article
+        class="prose prose-lg mt-12 max-w-none prose-gray prose-headings:font-display prose-headings:font-normal prose-headings:text-foreground prose-a:text-primary-text prose-strong:text-foreground"
+      >
+        <Content />
+      </article>
+    </Container>
+  </Section>
+  <PostJsonLd
+    locale="tr"
+    {slug}
+    title={post.data.title}
+    description={post.data.description}
+    date={post.data.date}
+    updated={post.data.updated}
+    author={post.data.author}
+    image={ogImage}
+    blogTitle={blog.title}
+  />
+</BaseLayout>

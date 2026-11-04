@@ -1,0 +1,59 @@
+{
+  "title": "Etkinlikler ve canlı yayınlar",
+  "description": "Koina'da iş açıkta yapılır. Yayınlarda gerçek projeleri, gerçek PR'ları ve gerçek hataları görürsün.",
+  "formatsTitle": "Yayın formatları",
+  "formats": [
+    {
+      "name": "Kodla Buluşma",
+      "text": "Gerçek bir issue’yu canlı kapatıyoruz. Sohbetten gelen sorular yayının parçası.",
+      "rhythm": "code-meetup",
+      "minutes": 90,
+      "icon": "CodeIcon"
+    },
+    {
+      "name": "Açık Review",
+      "text": "Bir usta, topluluk projelerinden gerçek PR'ları canlı inceliyor. Review kültürünü öğrenmenin en hızlı yolu.",
+      "minutes": 60,
+      "icon": "GitPullRequestIcon",
+      "when": "Sırada; konuk ustalarla açılacak"
+    },
+    {
+      "name": "Koina Atölye",
+      "text": "Ayda bir tematik eğitim: test yazmak, yapay zekâyla güvenli kod, CI/CD.",
+      "minutes": 120,
+      "icon": "School01Icon",
+      "when": "Topluluk buluşmalarıyla açılacak"
+    },
+    {
+      "name": "Usta AMA",
+      "text": "Sektörden kıdemli bir isimle kariyer, işe alım ve deneyim üzerine açık soru-cevap.",
+      "minutes": 45,
+      "icon": "BubbleChatQuestionIcon",
+      "when": "Sırada; konuk netleşince duyurulur"
+    },
+    {
+      "name": "Demo Günü",
+      "text": "Sezon sonunda her ekip v0.1'ini canlı gösteriyor.",
+      "minutes": 150,
+      "icon": "Presentation01Icon",
+      "when": "Sezonlar başlayınca"
+    }
+  ],
+  "follow": "Yayın başlayınca haber al",
+  "links": [
+    {
+      "label": "YouTube",
+      "href": "https://youtube.com/@koinadev",
+      "icon": "YoutubeIcon"
+    },
+    {
+      "label": "Discord",
+      "href": "https://discord.gg/koinadev",
+      "icon": "DiscordIcon"
+    }
+  ],
+  "followText": "Bildirimleri açtığın kanaldan yayın başladığı an haberin olur.",
+  "formatsLead": "Şu an her Salı Kodla Buluşma var. Diğerleri sırası gelince açılacak. Süre çubuğu en uzun formata göre.",
+  "weekly": "Her {day}",
+  "minutes": "{n} dk"
+}

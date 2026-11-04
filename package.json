@@ -1,52 +1,27 @@
 {
-  "name": "koina-site",
-  "version": "0.1.0",
+  "name": "koina",
+  "private": true,
   "license": "AGPL-3.0-only",
   "type": "module",
-  "engines": {
-    "node": ">=22.12.0"
-  },
-  "packageManager": "bun@1.3.14",
+  "packageManager": "bun@1.4.2",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "astro dev",
-    "prebuild": "bun scripts/sync-wrangler-env.ts",
-    "build": "astro build",
-    "build:incremental": "bun scripts/build-incremental.ts",
-    "preview": "astro preview",
-    "check": "astro check",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "test": "vitest run",
-    "remove": "bun scripts/remove-feature.ts",
-    "test:removal": "bun scripts/test-removal.ts"
-  },
-  "dependencies": {
-    "@astrojs/rss": "^4.0.19",
-    "@astrojs/sitemap": "^3.7.3",
-    "@fontsource-variable/caveat": "^5.3.0",
-    "@fontsource-variable/dm-sans": "^5.3.0",
-    "@fontsource-variable/jetbrains-mono": "^5.3.0",
-    "@hugeicons/core-free-icons": "^4.3.5",
-    "@resvg/resvg-js": "^2.6.2",
-    "@tailwindcss/typography": "^0.5.20",
-    "@tailwindcss/vite": "^4.3.3",
-    "astro": "^7.2.9",
-    "gsap": "^3.15.0",
-    "satori": "^0.29.0",
-    "sharp": "^0.35.5",
-    "tailwindcss": "^4.3.3"
-  },
-  "devDependencies": {
-    "@astrojs/check": "^0.9.10",
-    "@fontsource/dm-sans": "^5.3.0",
-    "happy-dom": "^20.11.2",
-    "prettier": "^3.9.6",
-    "prettier-plugin-astro": "^0.14.1",
-    "smol-toml": "^1.9.1",
-    "tinyglobby": "^0.2.17",
-    "tsx": "^4.23.12",
-    "typescript": "^5.9.3",
-    "vitest": "^4.1.11",
-    "wrangler": "^4.127.1"
+    "dev:web": "bun --filter @koina/web dev",
+    "dev:api": "bun --filter @koina/api dev",
+    "dev:mobile": "bun --filter @koina/mobile start",
+    "dev:app": "bun --filter @koina/app dev",
+    "build": "bun --filter @koina/web build",
+    "check": "bun --filter '*' check",
+    "test": "bun --filter '*' test",
+    "deploy:web": "bun --filter @koina/web deploy",
+    "deploy:api": "bun --filter @koina/api deploy",
+    "deploy:app": "bun --filter @koina/app deploy",
+    "infra:up": "bun --filter @koina/db infra:up",
+    "infra:down": "bun --filter @koina/db infra:down",
+    "db:migrate": "bun --filter @koina/db db:migrate",
+    "seed": "bun --filter @koina/api seed"
   }
 }

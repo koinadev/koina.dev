@@ -1,0 +1,11 @@
+---
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+// Dışarıdan bir `max-w-*` gelirse varsayılan eklenmez: iki sınıf yan yana olunca hangisinin
+// kazanacağını üretilen CSS'in sırası belirler ve `max-w-6xl` daha dar olanları eziyordu.
+const width = /(^|\s)max-w-/.test(className) ? '' : 'max-w-6xl';
+---
+
+<div class:list={['mx-auto w-full px-4 sm:px-6 lg:px-8', width, className]}><slot /></div>

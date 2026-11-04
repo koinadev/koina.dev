@@ -1,0 +1,743 @@
+---
+// Kök `/` — lansmana kadar ön kayıt sayfası, Türkçe ve İngilizce. Sayfa Türkçe üretilir; ziyaretçinin dili Türkçe değilse ya da
+// TR/EN düğmesiyle seçerse metinler istemcide değişir (tek adres, tek form). Form sitenin kendi Worker'ına gider (worker/index.ts):
+// Turnstile doğrular, açık rızayı dil ve sürümüyle KV'ye yazar. Lansmanda eski dil yönlendirmesi git geçmişinden geri gelir.
+import '@/styles/global.css';
+import Wordmark from '@/components/ui/Wordmark.astro';
+import { siteConfig } from '@/config/site.config';
+
+// Her iki dilde aynı anahtarlar; `data-t` bu anahtarları gösterir. Aydınlatma metni yalnız ön kaydı anlatır: hesap, oturum ve
+// bülten bölümleri lansmanda sitenin gizlilik sayfasıyla gelir.
+const copy = {
+  tr: {
+    title: 'Çok yakında sizlerle',
+    description:
+      'koinadev, geliştiricilerle fikir sahiplerini bir araya getiren bir topluluk. Ön kayıt ol, kapılar açılınca ilk sen duy.',
+    hand: 'ön kayıt açık',
+    lead: 'koinadev, geliştiricilerle fikir sahiplerini bir araya getiren bir topluluk. Ürettiğimiz her şey açık kaynak.',
+    idea: 'Fikrin var mı? Onu birlikte kuracak ekibi bul.',
+    code: 'Kod mu yazıyorsun? Emeğine değecek projeyi bul.',
+    emailLabel: 'E-posta adresin',
+    placeholder: 'ornek@eposta.com',
+    consentLink: 'Aydınlatma metnini',
+    consentAfter:
+      ' okudum. Açılış haberi için e-posta adresimin saklanmasına ve bu amaçla yurt dışındaki sunuculara (Cloudflare) aktarılmasına açık rıza veriyorum.',
+    submit: 'Ön kayıt ol',
+    sending: 'Kaydediliyor…',
+    done: 'Ön kaydın alındı. Kapılar açılınca ilk sen duyacaksın.',
+    note: 'Adresini yalnız açılış haberi için kullanırız. Silinmesini istersen bize yazman yeterli.',
+    privacyLink: 'Gizlilik ve aydınlatma metni',
+    socials: 'Sosyal hesaplar',
+    board: 'Fikirlerle kodun buluştuğu karo deseni',
+    legendIdea: 'fikirler',
+    legendCode: 'kod',
+    legendBoth: 'birlikte çıkan iş',
+    switchTo: 'English',
+    errors: {
+      EMAIL_INVALID: 'Bu e-posta adresi geçerli görünmüyor. Yazımını kontrol et.',
+      CONSENT_REQUIRED: 'Devam etmek için onay kutusunu işaretle.',
+      TURNSTILE_FAILED: 'Güvenlik doğrulaması tamamlanmadı. Kutunun onaylanmasını bekleyip yeniden dene.',
+      default: 'Kayıt şu an alınamadı. Birkaç dakika sonra yeniden dene.',
+    },
+    privacy: {
+      title: 'Ön kayıt aydınlatma metni',
+      updated: 'Son güncelleme: 4 Kasım 2026',
+      close: 'Kapat',
+      sections: [
+        ['Veri sorumlusu', 'koinadev (koina.dev). Bize info@koina.dev adresinden ulaşabilirsin.'],
+        [
+          'Hangi veriyi işliyoruz?',
+          "Forma yazdığın e-posta adresini, onay kutusunu işaretlediğin tarihi, onayladığın metnin sürümünü ve dilini saklarız. Bot denetimi için Cloudflare Turnstile tarayıcı ve cihaz sinyallerini işler; IP adresin yalnız bu doğrulama için Cloudflare'e iletilir, bizde saklanmaz.",
+        ],
+        [
+          'Amaç ve hukuki sebep',
+          'Adresini yalnız koinadev açıldığında sana haber vermek için kullanırız. Hukuki sebep, KVKK madde 5/1 uyarınca verdiğin açık rızadır. Reklam ya da pazarlama için kullanmaz, kimseye satmayız.',
+        ],
+        [
+          'Yurt dışına aktarım',
+          'Kayıtlar Cloudflare, Inc. altyapısında saklanır; sunucular Türkiye dışında olabilir. Bu aktarım KVKK madde 9 kapsamında verdiğin açık rızaya dayanır.',
+        ],
+        [
+          'Saklama süresi',
+          'Kaydın açılış duyurusu gönderilene kadar saklanır, ardından silinir. Duyurudan sonra bültene katılmak istersen ayrıca onayını isteriz.',
+        ],
+        [
+          'Hakların',
+          'KVKK madde 11 uyarınca verilerinin işlenip işlenmediğini öğrenme, düzeltilmesini ya da silinmesini isteme ve işlemeye itiraz etme hakların var. Açık rızanı istediğin an geri alabilirsin; info@koina.dev adresine yazman yeterli.',
+        ],
+        ['Çerezler', 'Bu sayfa reklam ya da takip çerezi kullanmaz.'],
+      ],
+    },
+  },
+  en: {
+    title: 'Coming soon',
+    description: 'koinadev is a community that brings developers and idea owners together. Pre-register and be the first to hear when we open.',
+    hand: 'pre-registration is open',
+    lead: 'koinadev is a community that brings developers and idea owners together. Everything we build is open source.',
+    idea: 'Have an idea? Find the team to build it with.',
+    code: 'Writing code? Find a project worth your effort.',
+    emailLabel: 'Your email address',
+    placeholder: 'you@example.com',
+    consentLink: 'I have read the privacy notice',
+    consentAfter:
+      ' and explicitly consent to my email address being stored, and transferred to servers outside Türkiye (Cloudflare), so you can tell me when koinadev opens.',
+    submit: 'Pre-register',
+    sending: 'Saving…',
+    done: 'You’re pre-registered. You’ll be the first to hear when we open.',
+    note: 'We use your address only to announce the launch. Write to us if you want it deleted.',
+    privacyLink: 'Privacy notice',
+    socials: 'Social accounts',
+    board: 'A tile pattern where ideas and code meet',
+    legendIdea: 'ideas',
+    legendCode: 'code',
+    legendBoth: 'built together',
+    switchTo: 'Türkçe',
+    errors: {
+      EMAIL_INVALID: 'This email address doesn’t look valid. Check the spelling.',
+      CONSENT_REQUIRED: 'Tick the consent box to continue.',
+      TURNSTILE_FAILED: 'The security check didn’t finish. Wait for the box to confirm, then try again.',
+      default: 'We couldn’t save your registration right now. Try again in a few minutes.',
+    },
+    privacy: {
+      title: 'Pre-registration privacy notice',
+      updated: 'Last updated: 4 November 2026',
+      close: 'Close',
+      sections: [
+        ['Data controller', 'koinadev (koina.dev). You can reach us at info@koina.dev.'],
+        [
+          'What we process',
+          'We store the email address you enter, the date you ticked the consent box, and the version and language of the text you agreed to. Cloudflare Turnstile processes browser and device signals for bot checks; your IP address is sent to Cloudflare only for this check and is not stored by us.',
+        ],
+        [
+          'Purpose and legal basis',
+          'We use your address only to tell you when koinadev opens. The legal basis is the explicit consent you give under Article 5(1) of the Turkish Personal Data Protection Law (KVKK). We never use it for advertising or marketing, and never sell it.',
+        ],
+        [
+          'Transfer abroad',
+          'Records are stored on Cloudflare, Inc. infrastructure; servers may be outside Türkiye. This transfer relies on the explicit consent you give under Article 9 of the KVKK.',
+        ],
+        [
+          'Retention',
+          'Your record is kept until the launch announcement is sent and then deleted. If you want to join the newsletter after that, we will ask for your consent again.',
+        ],
+        [
+          'Your rights',
+          'Under Article 11 of the KVKK you can ask whether your data is processed, ask for it to be corrected or deleted, and object to processing. You can withdraw your consent at any time by writing to info@koina.dev.',
+        ],
+        ['Cookies', 'This page uses no advertising or tracking cookies.'],
+      ],
+    },
+  },
+};
+const t = copy.tr;
+const socials = [
+  ['X', 'https://x.com/koinadev'],
+  ['Instagram', 'https://www.instagram.com/koinadev/'],
+  ['YouTube', 'https://www.youtube.com/@koinadev'],
+  ['GitHub', 'https://github.com/koinadev'],
+];
+const site = Astro.site ?? siteConfig.url;
+
+// Karo ızgarası: soldan fikirler, sağdan kod gelir, ortada birlikte çıkan iş belirir. Tohumlu ve deterministik: her build aynı desen.
+const COLS = 12;
+const ROWS = 9;
+let seed = 7;
+const rand = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+const cells = Array.from({ length: COLS * ROWS }, (_, i) => {
+  const x = i % COLS;
+  const y = Math.floor(i / COLS);
+  const fromCenter = Math.abs(x - (COLS - 1) / 2) / ((COLS - 1) / 2);
+  const r = rand();
+  let kind = 'empty';
+  if (fromCenter < 0.2 && r < 0.55) kind = 'both';
+  else if (x < COLS / 2 && r < 0.75 * fromCenter + 0.05) kind = 'idea';
+  else if (x >= COLS / 2 && r < 0.75 * fromCenter + 0.05) kind = 'code';
+  // Sıra merkezden dışa doğru değil, kenarlardan merkeze: iki taraf birbirine yürür.
+  const delay = Math.round((1 - fromCenter) * 700 + y * 25 + r * 120);
+  return { kind, delay };
+});
+---
+
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{t.title} · koinadev</title>
+    <meta name="description" content={t.description} />
+    <link rel="canonical" href={new URL('/', site)} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={`${t.title} · koinadev`} />
+    <meta property="og:description" content={t.description} />
+    <meta property="og:image" content={new URL('/og-default.png', site)} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@koinadev" />
+    <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  </head>
+  <body class="bg-background text-foreground">
+    <div class="page">
+      <main class="copy">
+        <div class="top">
+          <a href="/" aria-label="koinadev"><Wordmark /></a>
+          <button type="button" class="lang" data-switch-lang data-t="switchTo">{t.switchTo}</button>
+        </div>
+
+        <div class="intro">
+          <p class="hand" aria-hidden="true" data-t="hand">{t.hand}</p>
+          <h1><span data-t="title">{t.title}</span>.</h1>
+          <p class="lead" data-t="lead">{t.lead}</p>
+          <ul class="sides">
+            <li><span class="dot idea" aria-hidden="true"></span><span data-t="idea">{t.idea}</span></li>
+            <li><span class="dot code" aria-hidden="true"></span><span data-t="code">{t.code}</span></li>
+          </ul>
+        </div>
+
+        <form class="signup" data-presignup novalidate>
+          <label for="presignup-email" class="label" data-t="emailLabel">{t.emailLabel}</label>
+          <div class="row">
+            <input
+              id="presignup-email"
+              type="email"
+              name="email"
+              required
+              autocomplete="email"
+              inputmode="email"
+              placeholder={t.placeholder}
+              data-t-placeholder="placeholder"
+              class="email"
+            />
+            <button type="submit" class="submit" data-t="submit">{t.submit}</button>
+          </div>
+          <!-- Bal küpü: insanlar görmez, botlar doldurur; Worker dolu gelen kaydı reddeder. -->
+          <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+          <label class="consent">
+            <input type="checkbox" name="consent" required />
+            <span>
+              <button type="button" class="linklike" data-open-privacy data-t="consentLink">{t.consentLink}</button><span
+                data-t="consentAfter">{t.consentAfter}</span
+              >
+            </span>
+          </label>
+          <!-- `auto`: widget dili ziyaretçinin tarayıcısından alır; sayfa dili değişince yeniden çizmek gerekmez. -->
+          <div
+            class="cf-turnstile"
+            data-sitekey={siteConfig.turnstileSiteKey}
+            data-action="on-kayit"
+            data-language="auto"
+            data-theme="light"
+            data-size="flexible"
+          >
+          </div>
+          <p class="status" role="status" aria-live="polite" data-status></p>
+        </form>
+        <p class="note" data-t="note">{t.note}</p>
+
+        <footer class="foot">
+          <nav aria-label={t.socials} data-t-aria="socials">
+            {socials.map(([name, href]) => <a href={href} rel="me noopener" target="_blank">{name}</a>)}
+          </nav>
+          <button type="button" class="linklike" data-open-privacy data-t="privacyLink">{t.privacyLink}</button>
+        </footer>
+      </main>
+
+      <dialog class="privacy" aria-labelledby="privacy-title">
+        <div class="privacy-head">
+          <h2 id="privacy-title" data-t="privacy.title">{t.privacy.title}</h2>
+          <button type="button" class="close" data-close-privacy aria-label={t.privacy.close} data-t-aria="privacy.close"
+            >×</button
+          >
+        </div>
+        <p class="updated" data-t="privacy.updated">{t.privacy.updated}</p>
+        {
+          t.privacy.sections.map(([heading, body], i) => (
+            <section>
+              <h3 data-t={`privacy.sections.${i}.0`}>{heading}</h3>
+              <p data-t={`privacy.sections.${i}.1`}>{body}</p>
+            </section>
+          ))
+        }
+        <button type="button" class="submit" data-close-privacy data-t="privacy.close">{t.privacy.close}</button>
+      </dialog>
+
+      <aside class="board" aria-label={t.board} data-t-aria="board">
+        <div class="grid" style={`--cols:${COLS}`} aria-hidden="true">
+          {cells.map((c) => <span class={`cell ${c.kind}`} style={`--d:${c.delay}ms`}></span>)}
+        </div>
+        <ul class="legend">
+          <li><span class="swatch idea" aria-hidden="true"></span><span data-t="legendIdea">{t.legendIdea}</span></li>
+          <li><span class="swatch code" aria-hidden="true"></span><span data-t="legendCode">{t.legendCode}</span></li>
+          <li><span class="swatch both" aria-hidden="true"></span><span data-t="legendBoth">{t.legendBoth}</span></li>
+        </ul>
+      </aside>
+    </div>
+
+    <script type="application/json" id="copy" set:html={JSON.stringify(copy)} />
+    <script>
+      type Locale = 'tr' | 'en';
+      type Copy = Record<string, unknown> & { errors: Record<string, string>; title: string; description: string };
+      const copy = JSON.parse(document.getElementById('copy')!.textContent!) as Record<Locale, Copy>;
+      const lookup = (dict: unknown, path: string) =>
+        path.split('.').reduce<unknown>((node, key) => (node as Record<string, unknown> | undefined)?.[key], dict) as string;
+
+      // Öncelik: ziyaretçinin seçimi, sonra tarayıcı dili; Türkçe olmayan her dil İngilizce görür.
+      const stored = (() => {
+        try {
+          return localStorage.getItem('locale');
+        } catch {
+          return null;
+        }
+      })();
+      let locale: Locale =
+        stored === 'tr' || stored === 'en'
+          ? stored
+          : navigator.languages.some((l) => l.toLowerCase().startsWith('tr'))
+            ? 'tr'
+            : 'en';
+
+      const apply = () => {
+        const dict = copy[locale];
+        document.documentElement.lang = locale;
+        document.title = `${dict.title} · koinadev`;
+        document.querySelector('meta[name="description"]')?.setAttribute('content', dict.description);
+        document.querySelectorAll<HTMLElement>('[data-t]').forEach((el) => (el.textContent = lookup(dict, el.dataset.t!)));
+        document
+          .querySelectorAll<HTMLInputElement>('[data-t-placeholder]')
+          .forEach((el) => (el.placeholder = lookup(dict, el.dataset.tPlaceholder!)));
+        document
+          .querySelectorAll<HTMLElement>('[data-t-aria]')
+          .forEach((el) => el.setAttribute('aria-label', lookup(dict, el.dataset.tAria!)));
+      };
+      if (locale !== 'tr') apply();
+
+      document.querySelector('[data-switch-lang]')!.addEventListener('click', () => {
+        locale = locale === 'tr' ? 'en' : 'tr';
+        try {
+          localStorage.setItem('locale', locale);
+        } catch {
+          // Depolama kapalıysa seçim yalnız bu ziyarette geçerli.
+        }
+        apply();
+      });
+
+      const dialog = document.querySelector<HTMLDialogElement>('dialog.privacy')!;
+      document.querySelectorAll('[data-open-privacy]').forEach((el) => el.addEventListener('click', () => dialog.showModal()));
+      document.querySelectorAll('[data-close-privacy]').forEach((el) => el.addEventListener('click', () => dialog.close()));
+      // Pencerenin dışına (arka plana) tıklamak da kapatır; Esc'i tarayıcı kendisi halleder.
+      dialog.addEventListener('click', (event) => event.target === dialog && dialog.close());
+
+      type Turnstile = { reset(el?: Element): void };
+      const form = document.querySelector<HTMLFormElement>('form[data-presignup]')!;
+      const status = form.querySelector<HTMLElement>('[data-status]')!;
+      const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+      const show = (message: string, kind: 'ok' | 'error' | '' = '') => {
+        status.textContent = message;
+        status.dataset.kind = kind;
+      };
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const dict = copy[locale];
+        const data = new FormData(form);
+        const email = String(data.get('email') ?? '').trim();
+        const emailInput = form.elements.namedItem('email') as HTMLInputElement;
+        if (!emailInput.checkValidity()) return show(dict.errors.EMAIL_INVALID!, 'error'), emailInput.focus();
+        if (!data.get('consent')) return show(dict.errors.CONSENT_REQUIRED!, 'error');
+        show(lookup(dict, 'sending'));
+        button.disabled = true;
+        try {
+          const res = await fetch('/api/on-kayit', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({
+              email,
+              consent: true,
+              locale,
+              token: data.get('cf-turnstile-response') ?? '',
+              website: data.get('website') ?? '',
+            }),
+          });
+          const body = (await res.json().catch(() => ({}))) as { error?: string };
+          if (!res.ok) throw new Error(body.error ?? 'default');
+          form.reset();
+          form.dataset.state = 'done';
+          show(lookup(dict, 'done'), 'ok');
+        } catch (error) {
+          show(dict.errors[(error as Error).message] ?? dict.errors.default!, 'error');
+          (window as unknown as { turnstile?: Turnstile }).turnstile?.reset();
+        } finally {
+          button.disabled = false;
+        }
+      });
+    </script>
+  </body>
+</html>
+
+<style>
+  .page {
+    display: grid;
+    min-height: 100svh;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  @media (min-width: 960px) {
+    .page {
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    }
+  }
+
+  .copy {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    padding: 1.5rem 1rem 2rem;
+    max-width: 38rem;
+    width: 100%;
+    margin-inline: auto;
+  }
+  @media (min-width: 640px) {
+    .copy {
+      padding: 2rem 2.5rem 2.5rem;
+    }
+  }
+  .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .lang {
+    padding: 0.375rem 0.875rem;
+    border: 2px solid var(--k-line);
+    border-radius: 999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .lang:hover {
+    border-color: var(--k-fg);
+  }
+  .lang:focus-visible {
+    outline: 3px solid var(--k-ring);
+    outline-offset: 2px;
+  }
+  .intro {
+    margin-top: auto;
+  }
+  .hand {
+    font-family: var(--k-font-hand);
+    font-size: 1.875rem;
+    line-height: 1;
+    color: var(--k-primary-text);
+    rotate: -3deg;
+    width: fit-content;
+  }
+  h1 {
+    margin-top: 0.5rem;
+    font-family: var(--k-font-display);
+    font-weight: 750;
+    font-size: clamp(3rem, 8vw, 5.25rem);
+    line-height: 0.95;
+    letter-spacing: -0.045em;
+    text-wrap: balance;
+  }
+  .lead {
+    margin-top: 1.25rem;
+    max-width: 32rem;
+    font-size: 1.1875rem;
+    line-height: 1.55;
+    color: var(--k-muted);
+  }
+  .sides {
+    margin-top: 1.5rem;
+    display: grid;
+    gap: 0.625rem;
+    font-size: 1.0625rem;
+    font-weight: 500;
+  }
+  .sides li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+  .sides .dot {
+    translate: 0 0.1em;
+  }
+  .dot,
+  .swatch {
+    flex: none;
+    width: 0.875rem;
+    height: 0.875rem;
+    border-radius: 4px;
+  }
+
+  .signup {
+    display: grid;
+    gap: 0.875rem;
+  }
+  .signup[data-state='done'] > :not(.status) {
+    display: none;
+  }
+  .label {
+    font-weight: 600;
+    font-size: 0.9375rem;
+  }
+  .row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.375rem;
+    border: 2px solid var(--k-fg);
+    border-radius: 18px;
+    background: var(--k-surface);
+    box-shadow: 4px 4px 0 var(--k-fg);
+  }
+  @media (min-width: 480px) {
+    .row {
+      flex-direction: row;
+    }
+  }
+  .row:focus-within {
+    box-shadow: 4px 4px 0 var(--k-accent);
+  }
+  .email {
+    flex: 1;
+    min-width: 0;
+    height: 3rem;
+    padding-inline: 0.875rem;
+    font-size: 1rem;
+    background: transparent;
+    outline: none;
+  }
+  .email::placeholder {
+    color: color-mix(in oklab, var(--k-muted) 70%, transparent);
+  }
+  .submit {
+    height: 3rem;
+    padding-inline: 1.375rem;
+    border-radius: 12px;
+    font-weight: 700;
+    background: var(--k-primary);
+    color: var(--k-on-primary);
+    cursor: pointer;
+    transition: transform 120ms ease;
+  }
+  .submit:hover {
+    transform: translateY(-1px);
+  }
+  .submit:disabled {
+    opacity: 0.6;
+    cursor: progress;
+  }
+  .submit:focus-visible,
+  .consent input:focus-visible,
+  a:focus-visible {
+    outline: 3px solid var(--k-ring);
+    outline-offset: 2px;
+  }
+  .consent {
+    display: flex;
+    gap: 0.625rem;
+    align-items: flex-start;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--k-muted);
+  }
+  .consent input {
+    margin-top: 0.2rem;
+    width: 1.05rem;
+    height: 1.05rem;
+    flex: none;
+    accent-color: var(--k-primary-text);
+  }
+  .linklike,
+  .foot a {
+    color: var(--k-fg);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--k-line);
+  }
+  .linklike {
+    display: inline;
+    font: inherit;
+    cursor: pointer;
+  }
+  .linklike:hover,
+  .foot a:hover {
+    text-decoration-color: currentColor;
+  }
+
+  .privacy {
+    width: min(40rem, calc(100% - 2rem));
+    max-height: min(44rem, calc(100svh - 2rem));
+    margin: auto;
+    padding: 1.5rem;
+    border: 2px solid var(--k-fg);
+    border-radius: 20px;
+    background: var(--k-surface);
+    color: var(--k-fg);
+    box-shadow: 6px 6px 0 var(--k-fg);
+  }
+  .privacy::backdrop {
+    background: color-mix(in oklab, var(--k-ink-surface) 55%, transparent);
+  }
+  .privacy-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .privacy h2 {
+    font-family: var(--k-font-display);
+    font-size: 1.5rem;
+    font-weight: 750;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+  }
+  .privacy .close {
+    flex: none;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 999px;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .privacy .close:hover {
+    background: var(--k-tint);
+  }
+  .updated {
+    margin-top: 0.25rem;
+    font-size: 0.8125rem;
+    color: var(--k-muted);
+  }
+  .privacy section {
+    margin-top: 1.25rem;
+  }
+  .privacy h3 {
+    font-weight: 700;
+  }
+  .privacy section p {
+    margin-top: 0.25rem;
+    line-height: 1.6;
+    color: var(--k-muted);
+  }
+  .privacy .submit {
+    margin-top: 1.5rem;
+  }
+  .privacy :focus-visible {
+    outline: 3px solid var(--k-ring);
+    outline-offset: 2px;
+  }
+  .status {
+    min-height: 1.5rem;
+    font-size: 0.9375rem;
+    color: var(--k-muted);
+  }
+  .status[data-kind='error'] {
+    color: var(--k-live);
+  }
+  .status[data-kind='ok'] {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--k-primary-text);
+  }
+  .note {
+    margin-top: -1.5rem;
+    font-size: 0.8125rem;
+    color: var(--k-muted);
+  }
+  .foot {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+  }
+  .foot nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+  }
+
+  .board {
+    order: -1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.25rem;
+    padding: 1.5rem 1rem;
+    background: var(--k-ink-surface);
+    color: var(--k-on-ink);
+  }
+  @media (min-width: 960px) {
+    .board {
+      order: 0;
+      position: sticky;
+      top: 0;
+      height: 100svh;
+      padding: 3rem;
+    }
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    gap: clamp(4px, 0.8vw, 10px);
+    width: 100%;
+    max-width: 34rem;
+    margin-inline: auto;
+  }
+  /* Telefonda bant: yalnız ilk dört sıra. */
+  .grid .cell:nth-child(n + 49) {
+    display: none;
+  }
+  @media (min-width: 960px) {
+    .grid .cell:nth-child(n + 49) {
+      display: block;
+    }
+  }
+  .cell {
+    aspect-ratio: 1;
+    border-radius: var(--k-cell-radius);
+    background: color-mix(in oklab, var(--k-on-ink) 7%, transparent);
+  }
+  .idea,
+  .cell.idea {
+    background: var(--k-accent);
+  }
+  .code,
+  .cell.code {
+    background: #8f9bf0;
+  }
+  .both,
+  .cell.both {
+    background: var(--k-primary);
+  }
+  .cell:not(.empty) {
+    animation: fill 520ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: var(--d);
+  }
+  @keyframes fill {
+    from {
+      scale: 0.3;
+      background: color-mix(in oklab, var(--k-on-ink) 7%, transparent);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cell:not(.empty) {
+      animation: none;
+    }
+  }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem 1.25rem;
+    font-size: 0.875rem;
+    color: color-mix(in oklab, var(--k-on-ink) 75%, transparent);
+  }
+  .legend li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+</style>

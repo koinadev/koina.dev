@@ -1,0 +1,255 @@
+---
+import { Image } from 'astro:assets';
+import Container from '../ui/Container.astro';
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+import heroPhoto from '../../assets/photos/hero.jpg';
+import { getMessages } from '../../messages';
+import type { Locale } from '../../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const { hero, home } = getMessages(locale);
+const { live } = hero;
+const [before, ringed, after] = hero.titleParts;
+---
+
+<section class="relative overflow-hidden pt-10 pb-16 sm:pt-24 sm:pb-20">
+  <Container class="text-center">
+    <ul class="mb-8 flex flex-wrap justify-center gap-2">
+      {
+        home.badges.map((badge, i) => (
+          <li
+            class:list={[
+              'inline-flex items-center gap-2 rounded-full bg-surface px-3.5 py-1.5 text-sm font-medium shadow-[0_1px_0_var(--k-line)]',
+              i === 2 && 'max-sm:hidden',
+            ]}
+          >
+            <Icon name={badge.icon} class="size-4 text-primary-text" />
+            {badge.label}
+          </li>
+        ))
+      }
+    </ul>
+    <h1 class="font-display mx-auto max-w-4xl text-[clamp(2.75rem,7vw,5.25rem)] leading-[1.02] text-balance">
+      {before}<span class="ring-word relative mx-[0.12em] inline-block whitespace-nowrap"
+        >{ringed}<svg class="hand-ring" viewBox="0 0 240 80" preserveAspectRatio="none" aria-hidden="true"
+          ><path
+            d="M204 12C160 1 64 1 26 15 2 25 3 52 30 65c40 16 150 15 192-2 24-10 20-38-8-49-26-10-70-11-102-8"
+          ></path></svg
+        ></span
+      >{after}
+    </h1>
+    <p class="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
+      {hero.description}
+    </p>
+    <div class="mt-9 flex flex-wrap justify-center gap-3">
+      <Button href={hero.primaryCta.href} size="lg" analytics={{ event: 'hero_cta', cta: 'primary' }}>
+        {hero.primaryCta.label}
+      </Button>
+      <Button
+        href={hero.secondaryCta.href}
+        size="lg"
+        variant="secondary"
+        analytics={{ event: 'hero_cta', cta: 'links' }}
+      >
+        <Icon name="Link01Icon" class="size-5" />
+        {hero.secondaryCta.label}
+      </Button>
+    </div>
+  </Container>
+
+  <div class="relative mx-auto mt-12 max-w-5xl px-4 sm:mt-20 sm:px-6">
+    <!-- Fotoğrafın arkasından geçen el çizimi kıvrım: sayfanın tek dekoratif öğesi. -->
+    <svg class="squiggle" viewBox="0 0 1200 980" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M140 360C40 470 20 610 90 740c80 150 330 170 560 110 230-60 420-30 560 120"></path>
+    </svg>
+
+    <p
+      class="hand note absolute -top-36 right-0 z-10 hidden w-60 rotate-[-5deg] text-[26px] text-foreground lg:block xl:-right-24"
+    >
+      {hero.note}
+      <svg class="arrow" viewBox="0 0 80 90" aria-hidden="true"
+        ><path d="M58 4c-26 6-40 26-30 44 8 14 30 8 26-6-4-15-30-12-38 6-6 14-6 26-2 36M8 74l6 12 10-10"
+        ></path></svg
+      >
+    </p>
+
+    <figure class="relative">
+      <Image
+        src={heroPhoto}
+        alt={hero.imageAlt}
+        widths={[640, 960, 1280, 1600]}
+        sizes="(min-width: 1024px) 960px, 100vw"
+        loading="eager"
+        fetchpriority="high"
+        class="aspect-[4/3] w-full rounded-[24px] sm:aspect-[16/9] sm:rounded-[28px] object-cover shadow-[0_30px_80px_-40px_rgba(15,30,23,0.55)]"
+      />
+      <!-- Canlı durum: sunucu sabit metni basar, tarayıcı bir sonraki yayına geri sayar. -->
+      <figcaption
+        class="mt-3 flex items-center gap-2.5 rounded-2xl bg-surface py-2.5 pr-4 pl-3 text-left text-sm shadow-[0_1px_0_var(--k-line)] sm:absolute sm:bottom-6 sm:left-6 sm:mt-0 sm:max-w-[calc(100%-3rem)] sm:rounded-full sm:bg-surface/95 sm:backdrop-blur"
+        data-live
+        data-live-config={JSON.stringify(live)}
+      >
+        <span class="live-dot relative inline-flex size-2.5 shrink-0 rounded-full bg-live" aria-hidden="true"
+        ></span>
+        <span data-live-text>{live.fallbackDay}: {live.fallback}</span>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<script>
+  type LiveConfig = {
+    next: string;
+    now: string;
+    in: string;
+    days: string;
+    hours: string;
+    minutes: string;
+    weekdays: string[];
+    streams: { weekday: number; name: string }[];
+  };
+
+  // Yayınlar 21:00 TRT = 18:00 UTC; aynı takvim günü (UTC+3, yaz saati yok). Bir yayın 90
+  // dakika sürer; o aralıkta durum "şu an canlı" olur.
+  const START_UTC_HOUR = 18;
+  const LENGTH_MS = 90 * 60 * 1000;
+
+  function nextStream(cfg: LiveConfig, now: Date) {
+    for (let add = -1; add < 8; add++) {
+      const d = new Date(
+        Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + add, START_UTC_HOUR),
+      );
+      const stream = cfg.streams.find((s) => s.weekday === d.getUTCDay());
+      if (stream && d.getTime() + LENGTH_MS > now.getTime()) return { start: d, stream };
+    }
+    return null;
+  }
+
+  function render() {
+    document.querySelectorAll<HTMLElement>('[data-live]').forEach((el) => {
+      const cfg = JSON.parse(el.dataset.liveConfig ?? '{}') as LiveConfig;
+      const text = el.querySelector<HTMLElement>('[data-live-text]');
+      const hit = nextStream(cfg, new Date());
+      if (!text || !hit) return;
+      const ms = hit.start.getTime() - Date.now();
+      if (ms <= 0) {
+        text.textContent = `${cfg.now}: ${hit.stream.name}`;
+        el.dataset.state = 'live';
+        return;
+      }
+      const d = Math.floor(ms / 86_400_000);
+      const h = Math.floor((ms % 86_400_000) / 3_600_000);
+      const m = Math.floor((ms % 3_600_000) / 60_000);
+      const left =
+        d > 0
+          ? `${d} ${cfg.days} ${h} ${cfg.hours}`
+          : h > 0
+            ? `${h} ${cfg.hours} ${m} ${cfg.minutes}`
+            : `${m} ${cfg.minutes}`;
+      text.textContent = `${cfg.next}: ${cfg.weekdays[hit.start.getUTCDay()]} 21:00, ${hit.stream.name} (${left} ${cfg.in})`;
+      el.dataset.state = 'upcoming';
+    });
+    document.querySelectorAll<HTMLElement>('[data-countdown]').forEach((el) => {
+      const days = Math.floor((new Date(el.dataset.countdown!).getTime() - Date.now()) / 86_400_000);
+      el.textContent = String(Math.max(0, days));
+    });
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    render();
+    const timer = window.setInterval(render, 30_000);
+    document.addEventListener('astro:before-swap', () => window.clearInterval(timer), { once: true });
+  });
+</script>
+
+<style>
+  /* Başlıktaki kelimenin etrafına elle çizilmiş halka. */
+  .hand-ring {
+    position: absolute;
+    /* Kenar payları em cinsinden: kelime uzunluğundan bağımsız, halka harflere hiç değmez. */
+    left: -0.32em;
+    top: -0.2em;
+    width: calc(100% + 0.64em);
+    height: calc(100% + 0.36em);
+    overflow: visible;
+    pointer-events: none;
+  }
+  .hand-ring path {
+    fill: none;
+    stroke: var(--k-ring);
+    stroke-width: 3.5;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+    /* `pathLength` + `non-scaling-stroke` Chrome'da geniş ekranda çizgiyi yarıda bırakıyor; çizgi
+       boyunun her ekranda üstünde kalan sabit bir tire bunu yaşamaz. */
+    stroke-dasharray: 4000;
+    stroke-dashoffset: 4000;
+    animation: draw 2400ms 250ms cubic-bezier(0.5, 0, 0.6, 1) forwards;
+  }
+  .squiggle {
+    position: absolute;
+    inset: -46px -40px -160px;
+    width: calc(100% + 80px);
+    height: calc(100% + 206px);
+    overflow: visible;
+    pointer-events: none;
+  }
+  .squiggle path {
+    fill: none;
+    stroke: var(--k-squiggle);
+    stroke-width: 26;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+  }
+  .note .arrow {
+    display: block;
+    width: 56px;
+    height: 64px;
+    margin: 6px 0 0 18px;
+    transform: scaleX(-1);
+  }
+  .note .arrow path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  @keyframes draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  [data-state='live'] .live-dot::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 999px;
+    border: 1.5px solid var(--k-live);
+    animation: pulse 1.6s ease-out infinite;
+  }
+  @keyframes pulse {
+    to {
+      opacity: 0;
+      transform: scale(1.8);
+    }
+  }
+  @media (max-width: 639px) {
+    .squiggle {
+      display: none;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hand-ring path {
+      animation: none;
+      stroke-dashoffset: 0;
+    }
+    [data-state='live'] .live-dot::after {
+      animation: none;
+    }
+  }
+</style>

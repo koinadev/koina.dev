@@ -1,0 +1,44 @@
+---
+import { MEMBER_GOALS, type Feature } from '@koina/shared/features';
+import Section from '../ui/Section.astro';
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import { getMessages } from '../../messages';
+import type { Locale } from '../../i18n/utils';
+
+// Koina'nın açılış sırası: bugün ne açık, hangi üye sayısında ne açılır. Eşikler @koina/shared/features'tan gelir, API de onları
+// uygular. Güncel üye sayısı ve açılmış durum bilerek yok; site durağan, bu bölüm yalnız hedefleri anlatır.
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const { stages } = getMessages(locale);
+---
+
+<Section class="bg-surface">
+  <Container>
+    <SectionHeading eyebrow={stages.eyebrow} title={stages.title} description={stages.description} />
+    <ol class="mx-auto grid max-w-6xl gap-3 md:grid-cols-2 lg:grid-cols-3">
+      {
+        stages.items.map((item) => (
+          <li
+            class:list={[
+              'rounded-[28px] p-6',
+              item.feature ? 'bg-background' : 'bg-ink text-on-ink md:col-span-2 lg:col-span-3',
+            ]}
+          >
+            <p class:list={['label', item.feature && 'text-muted-foreground']}>
+              {item.feature
+                ? stages.goal.replace('{n}', String(MEMBER_GOALS[item.feature as Feature]))
+                : stages.now}
+            </p>
+            <p class="font-display mt-2 text-2xl leading-tight">{item.name}</p>
+            <p class:list={['mt-2 leading-snug', item.feature && 'text-muted-foreground']}>{item.text}</p>
+          </li>
+        ))
+      }
+    </ol>
+    <p class="mx-auto mt-6 max-w-2xl text-center text-sm text-muted-foreground">{stages.note}</p>
+  </Container>
+</Section>

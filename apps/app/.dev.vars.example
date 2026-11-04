@@ -1,0 +1,7 @@
+# `cp .dev.vars.example .dev.vars` — yalnız yerel geliştirme için.
+ENVIRONMENT=development
+# Yerel API (`bun run dev:api`). Tanımlıyken vekil servis bağlantısı yerine buraya gider.
+API_URL=http://127.0.0.1:8787
+APP_URL=http://localhost:5173
+SITE_URL=http://localhost:4321
+TURNSTILE_SITE_KEY=1x00000000000000000000AA

@@ -1,0 +1,10 @@
+# `cp .dev.vars.example .dev.vars` — yalnız yerel geliştirme için.
+ENVIRONMENT=development
+API_URL=http://localhost:8787
+BETTER_AUTH_SECRET=dev-secret-dev-secret-dev-secret-0123456789
+# Cloudflare'in her zaman geçen TEST anahtarı; sitedeki test site key'iyle eşleşir.
+TURNSTILE_SECRET=1x0000000000000000000000000000000AA
+ADMIN_TOKEN=dev-admin-token
+HASH_SALT=dev-salt
+# Üye eşiklerini yok saymak için aç; yerelde her özelliği görmeni sağlar.
+# FEATURE_GATES=off

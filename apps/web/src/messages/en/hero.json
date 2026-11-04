@@ -1,0 +1,43 @@
+{
+  "eyebrow": "Supporting open source, imece style",
+  "title": "A community that grows ideas together.",
+  "description": "Koina is a community where experienced developers and people early in their careers work side by side on open source. Our main goal is supporting open source; everyone shares what they know and we grow together.",
+  "primaryCta": {
+    "label": "Join the community",
+    "href": "/en/signup"
+  },
+  "secondaryCta": {
+    "label": "Our links",
+    "href": "/en/links"
+  },
+  "live": {
+    "fallback": "Code Meetup",
+    "next": "Next stream",
+    "now": "Live now",
+    "in": "from now",
+    "days": "d",
+    "hours": "h",
+    "minutes": "min",
+    "weekdays": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    "streams": [
+      {
+        "weekday": 2,
+        "name": "Code Meetup"
+      }
+    ],
+    "fallbackDay": "Tuesdays 21:00 TRT"
+  },
+  "status": {
+    "liveLabel": "Next stream",
+    "closeLabel": "Applications close",
+    "closeDate": "December 20, 2026",
+    "closeAt": "2026-12-20T20:59:00Z",
+    "kickoffLabel": "Season 1 kickoff",
+    "kickoffDate": "January 4, 2027",
+    "kickoffAt": "2027-01-04T17:00:00Z",
+    "daysLeft": "days left"
+  },
+  "titleParts": ["A community that grows ideas ", "together.", ""],
+  "note": "We’re live every Tuesday at 21:00!",
+  "imageAlt": "Five people working together around a laptop in a workspace with a colorful wall"
+}

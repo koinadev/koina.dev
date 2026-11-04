@@ -1,0 +1,30 @@
+{
+  "eyebrow": "aklına takılanlar",
+  "title": "Sık sorulan sorular",
+  "items": [
+    {
+      "question": "Ücretli mi?",
+      "answer": "Hayır, topluluğa ve yayınlara katılmak için ücret ödemezsin; ileride projeler ve sezonlar da ücretsiz olacak. Ana amacımız açık kaynağa destek olmak. Projelerden zamanla iş ortaklıkları ya da ücretli işler doğabilir, biri bir emeğe karşılık ödeme yapmak isteyebilir; bu tarafların kendi kararıdır. Koina araya girmez, pay almaz."
+    },
+    {
+      "question": "Sezonlar ne zaman başlıyor?",
+      "answer": "Henüz tarih vermiyoruz. Önce yayınlar, sonra konuk ustalar ve topluluk buluşmaları, ardından küçük bir ilk proje geliyor. Sezonlar o proje çalışırsa başlayacak; haber izni verenler ilk duyar."
+    },
+    {
+      "question": "Sadece izlemek istesem olur mu?",
+      "answer": "Elbette. Yayınları izlemek, Discord’da takılmak, bülteni okumak da katılmaktır. Kimse seni koda zorlamaz; hazır hissettiğinde küçük bir adım atarsın."
+    },
+    {
+      "question": "Katılımcı olmak için ne kadar bilgi gerekiyor?",
+      "answer": "Git kullanabiliyor ve en az bir dilde küçük bir program yazabiliyorsan yeterli. Yayınları izlemek için ise hiçbir şey bilmen gerekmiyor."
+    },
+    {
+      "question": "Usta olmak ne kadar zaman alır?",
+      "answer": "Önce bir yayına konuk olmak yeterli: tek bir akşam. İlk projeyle birlikte ustalar için altı hafta boyunca haftada 2–3 saat olacak: 45 dakikalık bir ekip senkronu ve en az üç PR review'u."
+    },
+    {
+      "question": "Yapay zekâ araçları kullanabilir miyim?",
+      "answer": "Evet, serbest. Tek kural: PR açıklamasında belirt ve gönderdiğin kodu açıklayabil. Anlamadığın kodu göndermek yasak, araç kullanmak değil."
+    }
+  ]
+}

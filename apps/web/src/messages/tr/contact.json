@@ -1,0 +1,29 @@
+{
+  "eyebrow": "İletişim",
+  "title": "Bize yaz",
+  "description": "Sponsorluk, basın, ortak etkinlik ya da aklındaki başka bir şey için. 48 saat içinde döneriz.",
+  "form": {
+    "name": "Adın",
+    "email": "E-posta",
+    "message": "Mesajın",
+    "submit": "Gönder",
+    "sending": "Gönderiliyor...",
+    "success": "Mesajın bize ulaştı. 48 saat içinde döneceğiz.",
+    "error": "Mesaj gönderilemedi. Bağlantını kontrol edip tekrar dene ya da info@koina.dev adresine yaz."
+  },
+  "or": "Form yerine",
+  "channels": [
+    {
+      "icon": "Mail01Icon",
+      "label": "E-posta",
+      "value": "info@koina.dev",
+      "href": "mailto:info@koina.dev"
+    },
+    {
+      "icon": "DiscordIcon",
+      "label": "Discord",
+      "value": "#genel kanalı",
+      "href": "https://discord.gg/koinadev"
+    }
+  ]
+}

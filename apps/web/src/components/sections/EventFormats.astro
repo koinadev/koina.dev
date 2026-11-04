@@ -1,0 +1,81 @@
+---
+import Section from '../ui/Section.astro';
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import Icon from '../ui/Icon.astro';
+import { getMessages } from '../../messages';
+import { getLocaleMeta, type Locale } from '../../i18n/utils';
+import { describeSlot, type RhythmItem } from '../../lib/calendar';
+import type { IconName } from '../../lib/icons';
+
+// Yayın formatları: her biri bir satır. Takvimde yeri olanların günü ve saati ritim verisinden
+// gelir, takvimle çelişemez. Süre çubuğu en uzun formata oranlanır; formatlar arasındaki farkı
+// sayılardan önce gösterir.
+
+interface Props {
+  locale: Locale;
+  class?: string;
+}
+const { locale, class: className = '' } = Astro.props;
+const { events, rhythm } = getMessages(locale);
+const lang = getLocaleMeta(locale).htmlLang;
+
+const items = rhythm.items as RhythmItem[];
+const whenOf = (f: (typeof events.formats)[number]) => {
+  const item = 'rhythm' in f ? items.find((i) => i.id === f.rhythm) : undefined;
+  if (item) return describeSlot(item, lang, { weekly: events.weekly, monthly: rhythm.monthly });
+  return 'when' in f ? f.when : '';
+};
+const longest = Math.max(...events.formats.map((f) => f.minutes));
+const formats = events.formats.map((f, i) => ({
+  ...f,
+  icon: f.icon as IconName,
+  when: whenOf(f),
+  share: f.minutes / longest,
+  // Son format (Demo Günü) sezonun doruğu; sitenin geri kalanında olduğu gibi sarıyla ayrılır.
+  peak: i === events.formats.length - 1,
+}));
+---
+
+<Section class={className}>
+  <Container class="max-w-5xl">
+    <SectionHeading title={events.formatsTitle} description={events.formatsLead} />
+    <ol class="grid gap-3">
+      {
+        formats.map((f) => (
+          <li class="grid gap-x-6 gap-y-3 rounded-[28px] bg-surface p-5 shadow-[0_1px_0_var(--k-line)] sm:p-6 md:grid-cols-[17rem_1fr_10rem] md:items-center">
+            <div class="flex items-center gap-4">
+              <span
+                class:list={[
+                  'grid size-12 shrink-0 place-items-center rounded-2xl',
+                  f.peak ? 'bg-primary text-on-primary' : 'bg-tint text-on-tint',
+                ]}
+              >
+                <Icon name={f.icon} class="size-6" />
+              </span>
+              <div>
+                <h3 class="font-display text-xl leading-tight">{f.name}</h3>
+                <p class="mt-0.5 text-sm text-muted-foreground">{f.when}</p>
+              </div>
+            </div>
+            <p class="leading-relaxed text-muted-foreground">{f.text}</p>
+            <div class="flex items-center gap-3 md:flex-col md:items-end md:gap-1.5">
+              <span class="order-2 text-sm font-medium whitespace-nowrap tabular-nums md:order-1">
+                {events.minutes.replace('{n}', String(f.minutes))}
+              </span>
+              <span
+                class="order-1 h-2 w-full max-w-40 overflow-hidden rounded-full bg-line md:order-2"
+                aria-hidden="true"
+              >
+                <span
+                  class:list={['block h-full rounded-full', f.peak ? 'bg-primary' : 'bg-foreground']}
+                  style={`width:${Math.round(f.share * 100)}%`}
+                />
+              </span>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </Container>
+</Section>

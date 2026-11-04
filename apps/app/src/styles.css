@@ -1,0 +1,182 @@
+/* Sitedeki "imece sofrası" dili: açık kâğıt zemin, lacivert mürekkep, sarı hap butonlar; pembe
+   ve mavi yalnız küçük vurgularda. Değerler apps/web/src/styles/palettes.css ve
+   @koina/shared/brand ile aynı; birini değiştirirken diğerlerini de güncelle. Yalnız açık tema. */
+@import 'tailwindcss';
+@import '@fontsource-variable/dm-sans';
+@import '@fontsource-variable/caveat';
+
+:root {
+  --k-bg: #fbfaf7;
+  --k-surface: #ffffff;
+  --k-tint: #eceeff;
+  --k-on-tint: #1b1f3b;
+  --k-fg: #1b1f3b;
+  --k-ink: #11142a;
+  --k-muted: #50567a;
+  --k-line: #e7e5ee;
+  --k-primary: #ffd23f;
+  --k-primary-text: #3341c4;
+  --k-on-primary: #1b1f3b;
+  --k-accent: #ff7aa2;
+  --k-live: #e5484d;
+  --k-squiggle: #9fe3c0;
+  --k-danger-bg: #ffe8ef;
+  color-scheme: light;
+}
+
+@theme inline {
+  --font-sans: 'DM Sans Variable', system-ui, sans-serif;
+  --font-hand: 'Caveat Variable', 'Comic Sans MS', cursive;
+
+  --color-bg: var(--k-bg);
+  --color-surface: var(--k-surface);
+  --color-tint: var(--k-tint);
+  --color-on-tint: var(--k-on-tint);
+  --color-fg: var(--k-fg);
+  --color-ink: var(--k-ink);
+  --color-muted: var(--k-muted);
+  --color-line: var(--k-line);
+  --color-primary: var(--k-primary);
+  --color-primary-text: var(--k-primary-text);
+  --color-on-primary: var(--k-on-primary);
+  --color-accent: var(--k-accent);
+  --color-live: var(--k-live);
+  --color-squiggle: var(--k-squiggle);
+  --color-danger-bg: var(--k-danger-bg);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-bg font-sans text-fg antialiased;
+    min-width: 320px;
+  }
+  :focus-visible {
+    outline: 2px solid var(--k-primary-text);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+  /* Uzun kullanıcı adları ve bağlantılar dar ekranda yatay kaydırma açmasın. */
+  .break-anywhere {
+    overflow-wrap: anywhere;
+  }
+  .hand {
+    font-family: var(--font-hand);
+    font-weight: 600;
+    line-height: 1.05;
+  }
+}
+
+/* Blog yazısı: markdown çıktısı için sade bir tipografi. @tailwindcss/typography yerine elle,
+   çünkü yalnız bu sayfada lazım ve sitenin yazı sayfasına yakın dursun yeter. */
+.prose-koina {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: var(--k-fg);
+}
+.prose-koina > * + * {
+  margin-top: 1.1em;
+}
+.prose-koina h2 {
+  margin-top: 2em;
+  font-size: 1.4rem;
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.prose-koina h3 {
+  margin-top: 1.6em;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+.prose-koina a {
+  color: var(--k-primary-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.prose-koina ul,
+.prose-koina ol {
+  padding-left: 1.4em;
+}
+.prose-koina ul {
+  list-style: disc;
+}
+.prose-koina ol {
+  list-style: decimal;
+}
+.prose-koina li + li {
+  margin-top: 0.35em;
+}
+.prose-koina li::marker {
+  color: var(--k-muted);
+}
+.prose-koina blockquote {
+  border-left: 3px solid var(--k-primary);
+  padding-left: 1em;
+  color: var(--k-muted);
+}
+.prose-koina code {
+  font-size: 0.9em;
+  background: var(--k-tint);
+  padding: 0.1em 0.35em;
+  border-radius: 6px;
+}
+.prose-koina pre {
+  overflow-x: auto;
+  background: var(--k-ink);
+  color: #fbfaf7;
+  padding: 1em 1.2em;
+  border-radius: 14px;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+.prose-koina pre code {
+  background: none;
+  padding: 0;
+}
+.prose-koina img {
+  border-radius: 14px;
+  max-width: 100%;
+  height: auto;
+}
+.prose-koina hr {
+  border-color: var(--k-line);
+}
+.prose-koina table {
+  display: block;
+  overflow-x: auto;
+  border-collapse: collapse;
+}
+.prose-koina th,
+.prose-koina td {
+  border: 1px solid var(--k-line);
+  padding: 0.4em 0.7em;
+}
+
+/* İskelet: hafif nabız. Hareket azaltma isteniyorsa düz kalır. */
+@keyframes k-pulse {
+  50% {
+    opacity: 0.55;
+  }
+}
+.skeleton {
+  background: var(--k-line);
+  animation: k-pulse 1.6s ease-in-out infinite;
+}
+
+dialog::backdrop {
+  background: color-mix(in oklab, var(--k-ink) 40%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

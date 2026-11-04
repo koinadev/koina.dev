@@ -13,7 +13,7 @@ görselleri) açık kaynak lisansların **kapsamı dışındadır**.
   Fork'ladığında adı ve logoyu kendi markanla değiştir.
 - Koina adıyla etkinlik, ürün ya da hizmet sunmak.
 
-İzin için: merhaba@koina.dev
+İzin için: info@koina.dev
 
 ---
 

@@ -1,0 +1,4 @@
+# Expo (Metro) ve React Native paketleri izole kurulumda (`node_modules/.bun/...` symlink'leri)
+# kendi bağımlılıklarını bulamıyor; tüm workspace'ler kökte tek bir `node_modules` paylaşıyor.
+[install]
+linker = "hoisted"

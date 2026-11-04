@@ -1,0 +1,36 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import KoinaHero from '@/components/sections/KoinaHero.astro';
+import Pillars from '@/components/sections/Pillars.astro';
+import TinySteps from '@/components/sections/TinySteps.astro';
+import Imece from '@/components/sections/Imece.astro';
+import Stages from '@/components/sections/Stages.astro';
+import Rhythm from '@/components/sections/Rhythm.astro';
+import Explore from '@/components/sections/Explore.astro';
+import Faq from '@/components/sections/Faq.astro';
+import Cta from '@/components/sections/Cta.astro';
+import Newsletter from '@/components/sections/Newsletter.astro'; /* @feature:newsletter */
+import { useTranslations } from '@/i18n/utils';
+import { alternatesFor } from '@/i18n/routes';
+
+// Koina ana sayfası: önce "burası bir topluluk", sonra küçük adımlar, imece, roller ve ritim.
+// Şablonun Team, Testimonials ve LogoCloud bölümleri bilerek yok: gerçek kişiler ve gerçek
+// destekçiler gelene kadar uydurma içerik göstermiyoruz.
+const t = useTranslations('tr');
+const alternates = alternatesFor('home');
+---
+
+<BaseLayout title={t('site.title')} description={t('site.description')} locale="tr" {alternates} route="home">
+  <KoinaHero locale="tr" />
+  <Pillars locale="tr" />
+  <TinySteps locale="tr" />
+  <Imece locale="tr" />
+  <Stages locale="tr" />
+  <Rhythm locale="tr" />
+  <Explore locale="tr" />
+  <Faq locale="tr" />
+  <Cta locale="tr" />
+  <!-- @feature:newsletter -->
+  <Newsletter locale="tr" />
+  <!-- @/feature:newsletter -->
+</BaseLayout>

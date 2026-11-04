@@ -1,0 +1,4 @@
+# Workers static assets başlıkları. Blog beslemesi web uygulamasından (başka bir kök) okunur.
+/blog/*.json
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=600

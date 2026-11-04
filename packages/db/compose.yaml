@@ -1,0 +1,23 @@
+# Koina yerel altyapısı (proje adı: koina). postgres: doğrudan bağlantı (migration, CLI, seed); pgbouncer: transaction pooling
+# (API'nin `wrangler dev`'de ve testlerde kullandığı yol; canlıda bunun yerini Hyperdrive alır). Portlar 466xx bloğunda:
+# nafru-email 455xx'i kullanıyor, aynı makinede çakışmasın.
+name: koina
+services:
+  postgres:
+    image: postgres:16.15-alpine
+    # Yalnız yerel: diske zorla yazma kapalı (makine çökerse yerel veri gidebilir); testler ve geliştirme hızlanır.
+    command: ['postgres', '-c', 'fsync=off', '-c', 'synchronous_commit=off', '-c', 'full_page_writes=off']
+    environment: {POSTGRES_DB: koina, POSTGRES_USER: admin, POSTGRES_PASSWORD: local_admin_password}
+    ports: ['127.0.0.1:46560:5432']
+    volumes: ['postgres:/var/lib/postgresql/data', './local/init.sql:/docker-entrypoint-initdb.d/init.sql:ro']
+    healthcheck: {test: ['CMD-SHELL', 'pg_isready -U admin -d koina'], interval: 2s, timeout: 2s, retries: 30}
+  pgbouncer:
+    build: ./src/core/local/pgbouncer
+    ports: ['127.0.0.1:46563:5432']
+    volumes:
+      - './local/pgbouncer.ini:/etc/pgbouncer/pgbouncer.ini:ro'
+      - './src/core/local/pgbouncer/userlist.txt:/etc/pgbouncer/userlist.txt:ro'
+    depends_on: {postgres: {condition: service_healthy}}
+    healthcheck: {test: ['CMD-SHELL', 'nc -z 127.0.0.1 5432'], interval: 2s, timeout: 2s, retries: 30}
+volumes:
+  postgres:

@@ -1,0 +1,27 @@
+// Koina web uygulaması: TanStack Start (SSR) Worker'ı. Tanıtım sitesi (apps/web, `koina-site`) ayrı bir Worker;
+// adlar çakışırsa biri diğerini ezer.
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "koina-app",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat"],
+  // Kendi giriş noktamız: `/api/*` vekili ve güvenlik başlıkları Start işleyicisini sarar.
+  "main": "./src/server.ts",
+  "observability": { "enabled": true },
+  // API'ye aynı hesap içinden, internete çıkmadan gidilir. `/api/*` vekili bunu kullanır; `API_URL` tanımlıysa o önce gelir
+  // (yerelde `.dev.vars`).
+  // `SITE`: uygulamanın olmayan yollar tanıtım sitesine gider (src/server.ts).
+  "services": [
+    { "binding": "API", "service": "koina-api" },
+    { "binding": "SITE", "service": "koina-site" }
+  ],
+  "vars": {
+    // Kanonik adres, Open Graph ve site haritası bu kökü kullanır.
+    "APP_URL": "https://koina-app.0furkancolak.workers.dev",
+    // Blog beslemesi ve takvim aboneliği tanıtım sitesinden okunur.
+    "SITE_URL": "https://koina-site.0furkancolak.workers.dev",
+    // Turnstile site anahtarı gizli değil. Canlı anahtar yayından önce buraya yazılır; şimdilik Cloudflare'in test anahtarı.
+    "TURNSTILE_SITE_KEY": "1x00000000000000000000AA",
+    "ENVIRONMENT": "production"
+  }
+}

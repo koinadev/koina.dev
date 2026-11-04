@@ -1,0 +1,45 @@
+{
+  "eyebrow": "sıra sıra",
+  "title": "Topluluk büyüdükçe açılıyor.",
+  "description": "Her şeyi tek seferde açmıyoruz. Bugün yayınlar ve kesitler var; yeni özellikler üye sayısı arttıkça kendiliğinden açılır.",
+  "now": "Şu an açık",
+  "goal": "{n} üyede",
+  "items": [
+    {
+      "feature": null,
+      "name": "Yayın, kesit ve Koina uygulaması",
+      "text": "Her Salı 21:00 canlı kod yazıyoruz, en öğretici anları kısa kesitlerle paylaşıyoruz. Hesabını açıp takvimi ve yazıları takip edebilirsin."
+    },
+    {
+      "feature": "links",
+      "name": "Faydalı bağlantılar",
+      "text": "Üyeler bulduğu araç ve kaynakları paylaşır, en çok işe yarayanlar öne çıkar."
+    },
+    {
+      "feature": "feed",
+      "name": "Akış",
+      "text": "Gönderi, yanıt, kaydetme ve bildirimler: topluluk kendi arasında konuşur."
+    },
+    {
+      "feature": "follow",
+      "name": "Takip",
+      "text": "Üyeleri takip et, akışını kendine göre kur."
+    },
+    {
+      "feature": "projects",
+      "name": "Projeler ve ilk ekip",
+      "text": "Proje sayfaları açılır. İlk proje, bir usta ve küçük bir ekip hazır olunca başlar."
+    },
+    {
+      "feature": "seasons",
+      "name": "Sezonlar",
+      "text": "İlk proje çalıştıysa daha fazla proje ve ekiple düzenli sezonlar."
+    },
+    {
+      "feature": "mobile",
+      "name": "Mobil uygulama",
+      "text": "Topluluk her gün buradayken uygulama cebine de geliyor."
+    }
+  ],
+  "note": "Takvim değil hedef: eşik geçilince özellik açılır, haber izni verenler ilk duyar."
+}

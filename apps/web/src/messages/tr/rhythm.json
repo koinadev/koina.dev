@@ -1,0 +1,43 @@
+{
+  "eyebrow": "takvimine ekle",
+  "title": "Haftalık ritim",
+  "description": "Her hafta aynı gün aynı şey olur. Takvimine bir kere abone ol, yeni bir şey eklendiğinde kendiliğinden güncellenir.",
+  "timezone": "Saatler Türkiye saatiyle (UTC+3).",
+  "next": "Sıradaki",
+  "now": "Şu an yayında",
+  "today": "Bugün",
+  "empty": "Boş gün",
+  "monthly": "Ayın {n}. haftası",
+  "live": "Canlı yayın",
+  "units": {
+    "d": "g",
+    "h": "sa",
+    "m": "dk"
+  },
+  "subscribe": "Takvimine abone ol",
+  "google": "Google Takvim",
+  "download": ".ics indir",
+  "calendarName": "koina.dev etkinlikleri",
+  "items": [
+    {
+      "id": "weekly",
+      "weekday": 1,
+      "time": "09:00",
+      "minutes": 15,
+      "title": "Yayın Notu",
+      "text": "Geçen yayın ve sıradaki konu e-postanda",
+      "where": "E-posta",
+      "kind": "mail"
+    },
+    {
+      "id": "code-meetup",
+      "weekday": 2,
+      "time": "21:00",
+      "minutes": 90,
+      "title": "Kodla Buluşma",
+      "text": "Gerçek bir issue canlı kapanıyor",
+      "where": "YouTube",
+      "kind": "live"
+    }
+  ]
+}

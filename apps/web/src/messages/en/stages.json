@@ -1,0 +1,45 @@
+{
+  "eyebrow": "one step at a time",
+  "title": "It opens as the community grows.",
+  "description": "We’re not opening everything at once. Today it’s streams and clips; new features unlock on their own as membership grows.",
+  "now": "Open now",
+  "goal": "At {n} members",
+  "items": [
+    {
+      "feature": null,
+      "name": "Streams, clips and the Koina app",
+      "text": "We code live every Tuesday at 21:00 and share the most useful moments as short clips. Create an account to follow the calendar and posts."
+    },
+    {
+      "feature": "links",
+      "name": "Useful links",
+      "text": "Members share the tools and resources they find; the most useful rise to the top."
+    },
+    {
+      "feature": "feed",
+      "name": "Feed",
+      "text": "Posts, replies, bookmarks and notifications: the community talks among itself."
+    },
+    {
+      "feature": "follow",
+      "name": "Following",
+      "text": "Follow members and shape your own feed."
+    },
+    {
+      "feature": "projects",
+      "name": "Projects and a first team",
+      "text": "Project pages open. The first project starts once a mentor and a small team are ready."
+    },
+    {
+      "feature": "seasons",
+      "name": "Seasons",
+      "text": "If the first project works: regular seasons with more projects and teams."
+    },
+    {
+      "feature": "mobile",
+      "name": "Mobile app",
+      "text": "Once the community is here every day, the app comes to your pocket too."
+    }
+  ],
+  "note": "Goals, not dates: when a goal is reached the feature opens, and people who opted in to news hear first."
+}

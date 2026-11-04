@@ -1,5 +1,5 @@
-# create-cli'nın kendi doğrulaması ayrı bir iş akışında (template-checks.yml), çünkü üretilen
-# projelerde scripts/create-cli/ yok — bu dosya referans etseydi CI orada hep kırmızı dönerdi.
+# Monorepo CI: her uygulama kendi işinde, kendi dizininde. Kurulum kökte tek seferlik
+# (`bun install` tüm workspace'leri kökteki node_modules'a kurar, bkz. bunfig.toml).
 name: CI
 
 on:
@@ -7,7 +7,7 @@ on:
     branches: [main]
   pull_request:
 
-# Aynı dal için üst üste gelen çalışmaları iptal et; matris birkaç dakika sürer.
+# Aynı dal için üst üste gelen çalışmaları iptal et.
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
@@ -15,42 +15,65 @@ concurrency:
 permissions:
   contents: read
 
-# RUNNER_LINUX: repo/org düzeyinde `vars.RUNNER_LINUX` tanımlıysa self-hosted runner kullanılır
-# (büyük matrisler için 2-3× hız). Tanımsızsa GitHub-hosted ubuntu-latest'e düşer.
+# RUNNER_LINUX: repo/org düzeyinde `vars.RUNNER_LINUX` tanımlıysa self-hosted runner kullanılır.
+# bun sürümü bilerek sabit (gerekçe: self-hosted runner'da `ETXTBSY`); kök package.json
+# `packageManager` alanıyla aynı tutulmalı.
 jobs:
-  ci:
+  web:
     runs-on: ${{ vars.RUNNER_LINUX || 'ubuntu-latest' }}
     timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: apps/web
     steps:
       - uses: actions/checkout@v4
-
-      # bun sürümü bilerek sabit. `latest` her yeni bun sürümünde self-hosted runner'da
-      # yeniden indirme tetikler; o sırada başka bir iş ikiliyi çalıştırıyorsa setup-bun
-      # üzerine yazamaz ve adım `ETXTBSY: text file is busy` ile düşer. Sabit sürüm
-      # runner önbelleğinden gelir, ikiliye hiç yazılmaz. `concurrency` grupları depo
-      # kapsamlı olduğu için farklı depoların işlerini sıraya sokamaz, çare değildir.
-      # package.json'daki `packageManager` alanıyla aynı tutulmalı.
       - uses: oven-sh/setup-bun@v2
         with:
-          bun-version: 1.3.14
-
+          bun-version: 1.4.2
       # `--frozen-lockfile`: kilitli sürümlerden sapma varsa CI kırmızı döner.
       - run: bun install --frozen-lockfile
-
+        working-directory: .
       - name: Tip denetimi (astro check)
         run: bun run check
-
       # `bun test` (boşluklu) bun'un kendi runner'ıdır, vitest'in `vi.*` global'lerini tanımaz.
       - name: Testler (vitest)
         run: bun run test
-
       - name: Format denetimi (prettier)
         run: bun run format:check
-
       - name: Build
         run: bun run build
 
-      # 10 özelliğin 1023 alt kümesinden 14'ü sınanıyor (tek tek + 3 etkileşim kombinasyonu +
-      # hepsi birden) — yeşil CI "sınanan kombinasyonlar sağlam" demek, "hepsi" değil.
-      - name: Çıkarma matrisi
-        run: bun run test:removal
+  api:
+    runs-on: ${{ vars.RUNNER_LINUX || 'ubuntu-latest' }}
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: apps/api
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+      - run: bun install --frozen-lockfile
+        working-directory: .
+      - name: Tip denetimi
+        run: bun run check
+      # Testler Workers çalışma zamanında (Miniflare) ve yerel D1 üstünde koşar; ağa çıkmaz.
+      - name: Testler
+        run: bun run test
+
+  shared-and-mobile:
+    runs-on: ${{ vars.RUNNER_LINUX || 'ubuntu-latest' }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+      - run: bun install --frozen-lockfile
+      - name: Ortak paket (tip + test)
+        working-directory: packages/shared
+        run: bun run check && bun run test
+      - name: Mobil (tip + lint)
+        working-directory: apps/mobile
+        run: bun run check && bun run lint

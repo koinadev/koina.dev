@@ -13,6 +13,9 @@ dist/
 # sessizce girerdi hem de sihirbaz tarafından üretilen her projeye kopyalanırdı.
 .dev.vars
 .dev.vars.*
+!.dev.vars.example
+# Expo'nun yerel önbelleği ve üretilen tip dosyası.
+.expo/
 
 # Yerel geliştirme araçları (depoya girmemeli) — skills hariç: onlar repo'nun parçası,
 # commit edilebilir olmalı.
@@ -25,3 +28,6 @@ dist/
 .removal-tmp/
 
 .playwright-mcp/
+
+# Ön kayıt dışa aktarımları kişisel veri taşır (scripts/export-presignups.ts).
+on-kayitlar-*.csv

@@ -1,0 +1,59 @@
+{
+  "title": "Events and live streams",
+  "description": "At Koina the work happens in the open. On stream you see real projects, real PRs and real mistakes.",
+  "formatsTitle": "Stream formats",
+  "formats": [
+    {
+      "name": "Code Meetup",
+      "text": "We close a real issue live. Questions from chat are part of the stream.",
+      "rhythm": "code-meetup",
+      "minutes": 90,
+      "icon": "CodeIcon"
+    },
+    {
+      "name": "Open Review",
+      "text": "A mentor reviews real PRs from community projects live. The fastest way to learn review culture.",
+      "minutes": 60,
+      "icon": "GitPullRequestIcon",
+      "when": "Next up, with guest mentors"
+    },
+    {
+      "name": "Koina Workshop",
+      "text": "A monthly themed session: writing tests, safe code with AI, CI/CD.",
+      "minutes": 120,
+      "icon": "School01Icon",
+      "when": "Opens with community sessions"
+    },
+    {
+      "name": "Mentor AMA",
+      "text": "Open Q&A on careers, hiring and experience with a senior industry guest.",
+      "minutes": 45,
+      "icon": "BubbleChatQuestionIcon",
+      "when": "Next up, announced with the guest"
+    },
+    {
+      "name": "Demo Day",
+      "text": "At the end of each season every team demos its v0.1 live.",
+      "minutes": 150,
+      "icon": "Presentation01Icon",
+      "when": "Once seasons start"
+    }
+  ],
+  "follow": "Hear when a stream starts",
+  "links": [
+    {
+      "label": "YouTube",
+      "href": "https://youtube.com/@koinadev",
+      "icon": "YoutubeIcon"
+    },
+    {
+      "label": "Discord",
+      "href": "https://discord.gg/koinadev",
+      "icon": "DiscordIcon"
+    }
+  ],
+  "followText": "Turn on notifications on any channel and you will know the moment we go live.",
+  "formatsLead": "Right now it’s Code Meetup every Tuesday. The others open when their turn comes. The bar is relative to the longest format.",
+  "weekly": "Every {day}",
+  "minutes": "{n} min"
+}

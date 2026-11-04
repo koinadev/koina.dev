@@ -1,0 +1,25 @@
+{
+  "name": "@koina/shared",
+  "version": "0.1.0",
+  "private": true,
+  "license": "AGPL-3.0-only",
+  "type": "module",
+  "exports": {
+    "./brand": "./src/brand.ts",
+    "./api": "./src/api.ts",
+    "./features": "./src/features.ts",
+    "./schedule": "./src/schedule.ts",
+    "./calendar": "./src/calendar.ts"
+  },
+  "scripts": {
+    "check": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.11"
+  }
+}

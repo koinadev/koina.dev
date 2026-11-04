@@ -1,0 +1,43 @@
+{
+  "eyebrow": "add it to your calendar",
+  "title": "Weekly rhythm",
+  "description": "The same thing happens on the same day every week. Subscribe once and your calendar updates itself when something changes.",
+  "timezone": "Times are Türkiye time (UTC+3).",
+  "next": "Up next",
+  "now": "Live now",
+  "today": "Today",
+  "empty": "Free day",
+  "monthly": "Week {n} of the month",
+  "live": "Live stream",
+  "units": {
+    "d": "d",
+    "h": "h",
+    "m": "m"
+  },
+  "subscribe": "Subscribe in your calendar",
+  "google": "Google Calendar",
+  "download": "Download .ics",
+  "calendarName": "koina.dev events",
+  "items": [
+    {
+      "id": "weekly",
+      "weekday": 1,
+      "time": "09:00",
+      "minutes": 15,
+      "title": "Stream Notes",
+      "text": "Last stream and next topic in your inbox",
+      "where": "Email",
+      "kind": "mail"
+    },
+    {
+      "id": "code-meetup",
+      "weekday": 2,
+      "time": "21:00",
+      "minutes": 90,
+      "title": "Code Meetup",
+      "text": "A real issue closed live",
+      "where": "YouTube",
+      "kind": "live"
+    }
+  ]
+}

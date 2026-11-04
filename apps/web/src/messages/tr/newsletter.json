@@ -1,0 +1,10 @@
+{
+  "title": "Yayın Notu",
+  "description": "Her pazartesi sabahı: birleşen PR'lar, ilk katkılar, haftanın yayınları. Tek e-posta, istediğin an çık.",
+  "placeholder": "E-posta adresin",
+  "emailLabel": "E-posta adresi",
+  "subscribe": "Abone ol",
+  "sending": "Gönderiliyor…",
+  "success": "Neredeyse tamam! Onay bağlantısı için e-postanı kontrol et.",
+  "error": "Şu an kaydedemedik. Biraz sonra yeniden dener misin?"
+}

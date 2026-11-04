@@ -1,0 +1,47 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Section from '@/components/ui/Section.astro';
+import Container from '@/components/ui/Container.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import Button from '@/components/ui/Button.astro';
+import Icon from '@/components/ui/Icon.astro';
+import Rhythm from '@/components/sections/Rhythm.astro';
+import EventFormats from '@/components/sections/EventFormats.astro';
+import type { IconName } from '@/lib/icons';
+import { getMessages } from '@/messages';
+import { alternatesFor } from '@/i18n/routes';
+
+const { events } = getMessages('tr');
+const alternates = alternatesFor('events');
+---
+
+<BaseLayout title={events.title} description={events.description} locale="tr" {alternates} route="events">
+  <Section class="!pb-0">
+    <Container>
+      <SectionHeading as="h1" title={events.title} description={events.description} />
+      <div
+        class="mx-auto flex max-w-3xl flex-col items-center gap-4 rounded-[28px] bg-surface p-5 text-center shadow-[0_1px_0_var(--k-line)] sm:flex-row sm:p-6 sm:text-left"
+      >
+        <span class="grid size-12 shrink-0 place-items-center rounded-2xl bg-tint text-on-tint">
+          <Icon name="Notification01Icon" class="size-6" />
+        </span>
+        <div class="flex-1">
+          <p class="font-display text-lg leading-tight">{events.follow}</p>
+          <p class="mt-1 text-sm text-muted-foreground">{events.followText}</p>
+        </div>
+        <div class="flex flex-wrap justify-center gap-2">
+          {
+            events.links.map((l) => (
+              <Button href={l.href} variant="secondary" class="!px-4">
+                <Icon name={l.icon as IconName} class="size-[18px]" />
+                {l.label}
+              </Button>
+            ))
+          }
+        </div>
+      </div>
+    </Container>
+  </Section>
+  <Rhythm locale="tr" />
+  <EventFormats class="!pt-0" locale="tr" />
+</BaseLayout>

@@ -1,0 +1,56 @@
+{
+  "title": "One season, six weeks",
+  "description": "Every season runs on the same rhythm. At the end every project ships a release and every team gives a demo.",
+  "steps": [
+    {
+      "week": "Week 0",
+      "name": "Matching",
+      "text": "Projects are picked, teams are formed, kickoff stream.",
+      "start": 0,
+      "span": 1
+    },
+    {
+      "week": "Week 1",
+      "name": "Discovery",
+      "text": "Problem statement, architecture decision record, repo skeleton.",
+      "start": 1,
+      "span": 1
+    },
+    {
+      "week": "Week 2",
+      "name": "Foundation",
+      "text": "CI, test setup and the first vertical slice.",
+      "start": 2,
+      "span": 1
+    },
+    {
+      "week": "Weeks 3–4",
+      "name": "Build",
+      "text": "Features, mid-season demo stream, lots of review.",
+      "start": 3,
+      "span": 2
+    },
+    {
+      "week": "Week 5",
+      "name": "Polish",
+      "text": "Docs, security check, release candidate.",
+      "start": 5,
+      "span": 1
+    },
+    {
+      "week": "Week 6",
+      "name": "Demo Day",
+      "text": "v0.1 release, live demo, retro and portfolio cards.",
+      "start": 6,
+      "span": 1
+    }
+  ],
+  "eyebrow": "six weeks, one rhythm",
+  "before": "Season 1 starts in",
+  "days": "days",
+  "during": "Season 1 is under way",
+  "after": "Season 1 is done. We'll let you know when sign-ups for the next one open.",
+  "today": "Today",
+  "apply": "Apply",
+  "applyBy": "Apply by"
+}

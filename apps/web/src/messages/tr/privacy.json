@@ -1,0 +1,40 @@
+{
+  "eyebrow": "Yasal",
+  "title": "Gizlilik",
+  "description": "Koina hangi kişisel verileri, neden ve ne kadar süre işler; hakların neler.",
+  "notice": "Taslak: Bu metin hukuki gözden geçirmeden ve veri sorumlusu bilgileri eklenmeden kesinleşmiş sayılmaz.",
+  "sections": [
+    {
+      "heading": "Hesap",
+      "body": "Hesap açarken yalnız e-posta adresini alırız; giriş kodu bu adrese gider. Profiline eklediğin ad, kullanıcı adı, biyografi, konum, ilgi alanları, GitHub ve web adresi herkese açık profilinde görünür. Paylaştığın gönderi, bağlantı ve yorumlar da herkese açıktır."
+    },
+    {
+      "heading": "Oturum ve güvenlik",
+      "body": "Girişini hatırlamak için zorunlu bir oturum çerezi kullanırız. Oturum kaydında güvenlik amacıyla IP adresi ve tarayıcı bilgisi tutulur. Kötüye kullanımı sınırlamak için IP adresinin günlük özeti kullanılır ve kendisi saklanmaz. Formlarda bot denetimi için Cloudflare Turnstile çalışır."
+    },
+    {
+      "heading": "Ön kayıt",
+      "body": "Ön kayıt formuna yazdığın e-posta adresini, onay kutusunu işaretlediğin tarih ve onayladığın metnin sürümüyle birlikte Cloudflare'de saklarız. Bu adresi yalnız Koina'nın açılış haberi için kullanırız; açılışta bülten aboneliğine geçmek için ayrıca onayını isteriz. Kaydının silinmesini istersen bize yazman yeterli. Formda bot denetimi için Cloudflare Turnstile çalışır."
+    },
+    {
+      "heading": "Haber e-postaları",
+      "body": "Haber e-postası yalnız açıkça izin verirsen ve onay e-postasındaki bağlantıya tıklarsan gönderilir. Her e-postadaki bağlantıyla istediğin an çıkabilirsin. Haber izni vermemen hesabını etkilemez."
+    },
+    {
+      "heading": "İletişim formu",
+      "body": "İletişim formuna yazdığın ad, e-posta ve mesajı yalnız sana yanıt vermek için kullanırız."
+    },
+    {
+      "heading": "Ölçüm",
+      "body": "Ziyaretleri çerezsiz sayarız: hangi sayfanın açıldığı ve nereden gelindiği kaydedilir; kişi, cihaz ya da IP adresi kaydedilmez. Reklam ve takip çerezi kullanmayız, verini satmayız."
+    },
+    {
+      "heading": "Hizmet sağlayıcılar",
+      "body": "Site ve uygulama Cloudflare üzerinde çalışır, veritabanı Neon'da durur, e-postalar Resend ile gönderilir. Bu sağlayıcıların sunucuları yurt dışında olabilir; veriler yalnız hizmeti sunmak için onlara iletilir."
+    },
+    {
+      "heading": "Saklama ve haklar",
+      "body": "Hesabını profil düzenleme sayfasından istediğin an silebilirsin; profilin, paylaşımların ve oturumların birlikte silinir. Haber aboneliği ayrıdır, e-postadaki bağlantıyla kapanır. KVKK kapsamında verilerine erişme, düzeltme, silme ve itiraz hakların var. Bunun için aşağıdaki adrese yazabilirsin."
+    }
+  ]
+}
